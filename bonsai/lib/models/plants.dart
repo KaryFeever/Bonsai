@@ -1,15 +1,20 @@
 import 'package:bonsai/models/plant.dart';
+import 'package:flutter/material.dart';
 
-class Plants {
+class Plants extends ChangeNotifier {
   int _plants_counter = 0;
 
   List<Plant> _plants = [];
 
-  Object getPlant(String plantName) {
+  Plant? getPlant(String plantName) {
     for (Plant plant in _plants) {
       if (plant.getName() == plantName) return plant;
     }
-    return Null;
+    return null;
+  }
+
+  int getPlantsCounter() {
+    return _plants_counter;
   }
 
   void addPlant(
@@ -39,6 +44,7 @@ class Plants {
 
     _plants.add(plant);
     _plants_counter++;
+    notifyListeners();
   }
 
   void removePlant(String name) {
@@ -47,5 +53,9 @@ class Plants {
         _plants.removeAt(_plants.indexOf(plant));
       }
     }
+  }
+
+  List<Plant> getPlants() {
+    return _plants;
   }
 }

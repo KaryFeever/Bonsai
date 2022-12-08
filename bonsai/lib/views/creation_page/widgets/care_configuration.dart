@@ -2,13 +2,12 @@ import 'package:bonsai/controllers/creation_page/creation_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 
 import '../../../utils/styles.dart';
 
-class CareConfiguration extends StatefulWidget {
-  CareConfiguration(
-      {required this.controller, required this.index, required this.careType});
-  CreationController controller;
+class CareConfiguration extends StatefulWidget with GetItStatefulWidgetMixin {
+  CareConfiguration({required this.index, required this.careType});
   int index;
   String careType;
 
@@ -16,22 +15,18 @@ class CareConfiguration extends StatefulWidget {
   State<CareConfiguration> createState() => _CareConfigurationState();
 }
 
-class _CareConfigurationState extends State<CareConfiguration> {
-  int _selectedHour = 0, _selectedMinute = 0;
-  List<String> time = const <String>[
-    "Day",
-    "Week",
-    "Month",
-    "Year",
-  ];
-  List<int> time_frequency = const <int>[
-    7,
-    4,
-    12,
-    6,
-  ];
+class _CareConfigurationState extends State<CareConfiguration>
+    with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
+    bool careEnabled =
+        watchOnly((CreationController x) => x.getFlag(widget.index));
+    int frequencyIndex =
+        watchOnly((CreationController x) => x.getFrequencyIndex(widget.index));
+    int timeIndex =
+        watchOnly((CreationController x) => x.getTimeIndex(widget.index));
+    String careFrequencyText = watchOnly(
+        (CreationController x) => x.getCareFrequencyText(widget.index));
     return Padding(
       padding: EdgeInsets.only(
         bottom: 16.0,
@@ -47,12 +42,10 @@ class _CareConfigurationState extends State<CareConfiguration> {
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(6.0),
                 topRight: Radius.circular(6.0),
-                bottomLeft: widget.controller.getFlag(widget.index)
-                    ? Radius.circular(0.0)
-                    : Radius.circular(6.0),
-                bottomRight: widget.controller.getFlag(widget.index)
-                    ? Radius.circular(0.0)
-                    : Radius.circular(6.0),
+                bottomLeft:
+                    careEnabled ? Radius.circular(0.0) : Radius.circular(6.0),
+                bottomRight:
+                    careEnabled ? Radius.circular(0.0) : Radius.circular(6.0),
               ),
               color: Styles.fieldsBackgroundColor,
             ),
@@ -65,7 +58,7 @@ class _CareConfigurationState extends State<CareConfiguration> {
                 border: Border(
                   bottom: BorderSide(
                     color: Color(0x33979797),
-                    width: widget.controller.getFlag(widget.index) ? 1.0 : 0.0,
+                    width: careEnabled ? 1.0 : 0.0,
                   ),
                 ),
               ),
@@ -100,11 +93,11 @@ class _CareConfigurationState extends State<CareConfiguration> {
                             // when the switch is off
                             trackColor: Styles.switchOffColor,
                             // boolean variable value
-                            value: widget.controller.getFlag(widget.index),
+                            value: careEnabled,
                             // changes the state of the switch
                             onChanged: (value) {
-                              setState(() => widget.controller
-                                  .UpdateFlag(value, widget.index));
+                              get<CreationController>()
+                                  .UpdateFlag(value, widget.index);
                             }),
                       )),
                 ],
@@ -113,7 +106,7 @@ class _CareConfigurationState extends State<CareConfiguration> {
           ),
           AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            height: widget.controller.getFlag(widget.index) ? 48 : 0,
+            height: careEnabled ? 48 : 0,
             child: Container(
               height: 48,
               width: MediaQuery.of(context).size.width - 40,
@@ -217,15 +210,15 @@ class _CareConfigurationState extends State<CareConfiguration> {
                                               looping: true,
                                               scrollController:
                                                   new FixedExtentScrollController(
-                                                initialItem: _selectedHour,
+                                                initialItem: frequencyIndex,
                                               ),
                                               itemExtent: 40.0,
                                               backgroundColor: Colors.white,
                                               onSelectedItemChanged:
                                                   (int index) {
-                                                setState(() {
-                                                  _selectedHour = index;
-                                                });
+                                                get<CreationController>()
+                                                    .setFrequencyIndex(
+                                                        widget.index, index);
                                               },
                                               children:
                                                   new List<Widget>.generate(31,
@@ -241,21 +234,25 @@ class _CareConfigurationState extends State<CareConfiguration> {
                                               // looping: true,
                                               scrollController:
                                                   new FixedExtentScrollController(
-                                                initialItem: _selectedMinute,
+                                                initialItem: timeIndex,
                                               ),
                                               itemExtent: 40.0,
                                               backgroundColor: Colors.white,
                                               onSelectedItemChanged:
                                                   (int index) {
-                                                setState(() {
-                                                  _selectedMinute = index;
-                                                });
+                                                get<CreationController>()
+                                                    .setTimeIndex(
+                                                        widget.index, index);
                                               },
                                               children:
                                                   new List<Widget>.generate(
-                                                      time.length, (int index) {
+                                                      get<CreationController>()
+                                                          .getTimeListLength(),
+                                                      (int index) {
                                                 return new Center(
-                                                  child: new Text(time[index]),
+                                                  child: new Text(
+                                                      get<CreationController>()
+                                                          .getTimeItem(index)),
                                                 );
                                               })),
                                         ),
@@ -263,32 +260,40 @@ class _CareConfigurationState extends State<CareConfiguration> {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.only(
-                                      left: 20.0,
-                                      right: 20.0,
-                                      bottom: 20.0,
-                                    ),
-                                    child: Container(
-                                        height: 60,
-                                        width:
-                                            MediaQuery.of(context).size.width -
+                                      padding: EdgeInsets.only(
+                                        left: 20.0,
+                                        right: 20.0,
+                                        bottom: 20.0,
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          get<CreationController>()
+                                              .updateCareFrequencyText(
+                                                  widget.index);
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                            height: 60,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width -
                                                 40,
-                                        decoration: BoxDecoration(
-                                          color: Styles.primaryGreenColor,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(20)),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              "Done",
-                                              style: Styles.buttonText,
+                                            decoration: BoxDecoration(
+                                              color: Styles.primaryGreenColor,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
                                             ),
-                                          ],
-                                        )),
-                                  ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "Done",
+                                                  style: Styles.buttonText,
+                                                ),
+                                              ],
+                                            )),
+                                      )),
                                 ],
                               ),
                             );
@@ -297,7 +302,7 @@ class _CareConfigurationState extends State<CareConfiguration> {
                     child: Row(
                       children: [
                         Text(
-                          "Every 3 days",
+                          careFrequencyText,
                           style: Styles.careFrequencyText,
                         ),
                         SvgPicture.asset("assets/icons/arrow_right.svg"),

@@ -1,25 +1,21 @@
-import 'package:flutter/widgets.dart';
-import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:flutter/material.dart';
 
 import '../../views/achievements_page/achievements_page.dart';
 import '../../views/home_page/home_page.dart';
 import '../../views/settings_page/settings_page.dart';
 import '../../views/tips_page/tips_page.dart';
 
-class NavigationController extends ControllerMVC {
-  factory NavigationController() => _this ??= NavigationController._();
-  NavigationController._();
-  static NavigationController? _this;
+class NavigationController extends ChangeNotifier {
+  List<Widget> _pages = [
+    HomePage(),
+    TipsPage(),
+    AchievementsPage(),
+    SettingsPage(),
+  ];
 
   int _currentPageIndex = 0;
-  final List<Widget> _pages = [HomePage(), TipsPage(), AchievementsPage(), SettingsPage()];
-  final PageStorageBucket _bucket = PageStorageBucket();
   Widget _currentPage = HomePage();
-
-  void UpdatePage(int index) {
-    _currentPageIndex = index;
-    _currentPage = _pages[_currentPageIndex];
-  }
+  PageStorageBucket _bucket = PageStorageBucket();
 
   Widget getCurrentPage() {
     return _currentPage;
@@ -27,6 +23,12 @@ class NavigationController extends ControllerMVC {
 
   PageStorageBucket getBucket() {
     return _bucket;
+  }
+
+  void updateCurrentPage(int index) {
+    _currentPageIndex = index;
+    _currentPage = _pages[_currentPageIndex];
+    notifyListeners();
   }
 
   int getCurrentPageIndex() {

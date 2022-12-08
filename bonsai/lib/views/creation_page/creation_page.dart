@@ -1,23 +1,19 @@
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
+import 'package:bonsai/models/plants.dart';
 import 'package:bonsai/utils/styles.dart';
 import 'package:bonsai/views/creation_page/widgets/care_configuration.dart';
 import 'package:bonsai/views/creation_page/widgets/image_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 
-class CreationPage extends StatefulWidget {
-  const CreationPage({super.key});
+class CreationPage extends StatefulWidget with GetItStatefulWidgetMixin {
+  CreationPage({super.key});
 
   @override
   State<CreationPage> createState() => _CreationPageState();
 }
 
-class _CreationPageState extends State<CreationPage> {
-  final CreationController _controller = CreationController();
-
+class _CreationPageState extends State<CreationPage> with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -64,7 +60,10 @@ class _CreationPageState extends State<CreationPage> {
                     style: Styles.headLine2,
                   ),
                   GestureDetector(
-                    onTap: () => Navigator.pop(context),
+                    onTap: () {
+                      get<CreationController>().cancel();
+                      Navigator.pop(context);
+                    },
                     child: Text(
                       "Cancel",
                       style: Styles.bottomSheetCloseText,
@@ -118,6 +117,8 @@ class _CreationPageState extends State<CreationPage> {
                               width: MediaQuery.of(context).size.width - 40,
                               child: TextField(
                                 showCursor: true,
+                                controller: get<CreationController>()
+                                    .getPlantNameController(),
                                 cursorColor: Styles.textColorPrimary,
                                 style: Styles.inputText,
                                 decoration: InputDecoration(
@@ -165,6 +166,8 @@ class _CreationPageState extends State<CreationPage> {
                               height: 96,
                               width: MediaQuery.of(context).size.width - 40,
                               child: TextField(
+                                controller: get<CreationController>()
+                                    .getPlantDescriptionController(),
                                 maxLines: 5,
                                 showCursor: true,
                                 cursorColor: Styles.textColorPrimary,
@@ -213,21 +216,18 @@ class _CreationPageState extends State<CreationPage> {
 
                 /* WATERING */
                 CareConfiguration(
-                  controller: _controller,
                   index: 0,
                   careType: "Watering",
                 ),
 
                 /* SPRAYING */
                 CareConfiguration(
-                  controller: _controller,
                   index: 1,
                   careType: "Spraying",
                 ),
 
                 /* FERTILIZING */
                 CareConfiguration(
-                  controller: _controller,
                   index: 2,
                   careType: "Fertilizing",
                 ),
@@ -240,22 +240,28 @@ class _CreationPageState extends State<CreationPage> {
               right: 20.0,
               bottom: 20.0,
             ),
-            child: Container(
-                height: 60,
-                width: MediaQuery.of(context).size.width - 40,
-                decoration: BoxDecoration(
-                  color: Styles.primaryGreenColor,
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Create",
-                      style: Styles.buttonText,
-                    ),
-                  ],
-                )),
+            child: GestureDetector(
+              onTap: () {
+                get<CreationController>().createPlant(get<Plants>());
+                Navigator.pop(context);
+              },
+              child: Container(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width - 40,
+                  decoration: BoxDecoration(
+                    color: Styles.primaryGreenColor,
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Create",
+                        style: Styles.buttonText,
+                      ),
+                    ],
+                  )),
+            ),
           ),
         ],
       ),
