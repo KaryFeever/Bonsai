@@ -11,6 +11,7 @@ class Styles {
   static Color createPageTextColor = const Color(0xFF979797);
   static Color fieldsBackgroundColor = const Color(0xFFEFF1ED);
   static Color switchOffColor = const Color(0xFFB3BCB3);
+  static Color whiteColor = const Color(0xFFFFFFFF);
 
   static TextStyle textPrimary = GoogleFonts.nunito(
       fontSize: 16, color: textColorPrimary, fontWeight: FontWeight.w500);
@@ -28,4 +29,6 @@ class Styles {
       fontSize: 18, color: textColorPrimary, fontWeight: FontWeight.w600);
   static TextStyle careFrequencyText = GoogleFonts.nunito(
       fontSize: 18, color: textColorPrimary, fontWeight: FontWeight.w500);
+  static TextStyle buttonText = GoogleFonts.nunito(
+      fontSize: 20, color: whiteColor, fontWeight: FontWeight.w700);
 }

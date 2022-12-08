@@ -7,6 +7,12 @@ class CreationController extends ControllerMVC {
   static CreationController? _this;
 
   List<bool> _careFlags = [false, false, false];
+  List<int> _careFrequency = [0, 0, 0];
+
+  String _plantName = "";
+  String _plantDescription = "";
+
+  
 
   void UpdateFlag(bool value, int index) {
     _careFlags[index] = value;

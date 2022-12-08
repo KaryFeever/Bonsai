@@ -17,6 +17,19 @@ class CareConfiguration extends StatefulWidget {
 }
 
 class _CareConfigurationState extends State<CareConfiguration> {
+  int _selectedHour = 0, _selectedMinute = 0;
+  List<String> time = const <String>[
+    "Day",
+    "Week",
+    "Month",
+    "Year",
+  ];
+  List<int> time_frequency = const <int>[
+    7,
+    4,
+    12,
+    6,
+  ];
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -122,15 +135,175 @@ class _CareConfigurationState extends State<CareConfiguration> {
                     "${widget.careType} frequency",
                     style: Styles.careFrequencyText,
                   ),
-                  Row(
-                    children: [
-                      Text(
-                        "Every 3 days",
-                        style: Styles.careFrequencyText,
-                      ),
-                      SvgPicture.asset("assets/icons/arrow_right.svg"),
-                    ],
-                  )
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                          // isScrollControlled: true,
+                          context: context,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(16.0),
+                          )),
+                          builder: (context) {
+                            return Container(
+                              height: 400,
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(20.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width: 80,
+                                          child: Divider(
+                                            color: Color(0x33979797),
+                                            thickness: 4,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: 20.0,
+                                      left: 20.0,
+                                      right: 20.0,
+                                    ),
+                                    child: SizedBox(
+                                      height: 44,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Set care frequency",
+                                            style: Styles.headLine2,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () => Navigator.pop(context),
+                                            child: Text(
+                                              "Cancel",
+                                              style:
+                                                  Styles.bottomSheetCloseText,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        height: 1,
+                                        child: Divider(
+                                          color: Color(0x33979797),
+                                          thickness: 2,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Expanded(
+                                          child: CupertinoPicker(
+                                              looping: true,
+                                              scrollController:
+                                                  new FixedExtentScrollController(
+                                                initialItem: _selectedHour,
+                                              ),
+                                              itemExtent: 40.0,
+                                              backgroundColor: Colors.white,
+                                              onSelectedItemChanged:
+                                                  (int index) {
+                                                setState(() {
+                                                  _selectedHour = index;
+                                                });
+                                              },
+                                              children:
+                                                  new List<Widget>.generate(31,
+                                                      (int index) {
+                                                return new Center(
+                                                  child:
+                                                      new Text('${index + 1}'),
+                                                );
+                                              })),
+                                        ),
+                                        Expanded(
+                                          child: CupertinoPicker(
+                                              // looping: true,
+                                              scrollController:
+                                                  new FixedExtentScrollController(
+                                                initialItem: _selectedMinute,
+                                              ),
+                                              itemExtent: 40.0,
+                                              backgroundColor: Colors.white,
+                                              onSelectedItemChanged:
+                                                  (int index) {
+                                                setState(() {
+                                                  _selectedMinute = index;
+                                                });
+                                              },
+                                              children:
+                                                  new List<Widget>.generate(
+                                                      time.length, (int index) {
+                                                return new Center(
+                                                  child: new Text(time[index]),
+                                                );
+                                              })),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      left: 20.0,
+                                      right: 20.0,
+                                      bottom: 20.0,
+                                    ),
+                                    child: Container(
+                                        height: 60,
+                                        width:
+                                            MediaQuery.of(context).size.width -
+                                                40,
+                                        decoration: BoxDecoration(
+                                          color: Styles.primaryGreenColor,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20)),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "Done",
+                                              style: Styles.buttonText,
+                                            ),
+                                          ],
+                                        )),
+                                  ),
+                                ],
+                              ),
+                            );
+                          });
+                    },
+                    child: Row(
+                      children: [
+                        Text(
+                          "Every 3 days",
+                          style: Styles.careFrequencyText,
+                        ),
+                        SvgPicture.asset("assets/icons/arrow_right.svg"),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
