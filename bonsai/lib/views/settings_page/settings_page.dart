@@ -1,4 +1,4 @@
-import 'package:bonsai/utils/styles.dart';
+import 'package:bonsai/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';

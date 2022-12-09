@@ -12,6 +12,9 @@ class Styles {
   static Color fieldsBackgroundColor = const Color(0xFFEFF1ED);
   static Color switchOffColor = const Color(0xFFB3BCB3);
   static Color whiteColor = const Color(0xFFFFFFFF);
+  static Color buttonBackgroundSecondaryGreen = const Color(0x1A9AB44D);
+  static Color buttonBackgroundSecondaryOrange = const Color(0x1ADD9048);
+  static Color textOrange = const Color(0xFFDD9048);
 
   static TextStyle textPrimary = GoogleFonts.nunito(
       fontSize: 16, color: textColorPrimary, fontWeight: FontWeight.w500);
@@ -31,4 +34,8 @@ class Styles {
       fontSize: 18, color: textColorPrimary, fontWeight: FontWeight.w500);
   static TextStyle buttonText = GoogleFonts.nunito(
       fontSize: 20, color: whiteColor, fontWeight: FontWeight.w700);
+  static TextStyle buttonTextOrange = GoogleFonts.nunito(
+      fontSize: 20, color: textOrange, fontWeight: FontWeight.w700);
+  static TextStyle plantPageDate = GoogleFonts.nunito(
+      fontSize: 32, color: textColorPrimary, fontWeight: FontWeight.w800);
 }

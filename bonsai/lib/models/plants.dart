@@ -25,10 +25,12 @@ class Plants extends ChangeNotifier {
       int sprayingFrequency,
       bool spraying,
       int fertilizingFrequency,
-      bool fertilizing) {
+      bool fertilizing,
+      String imagePath) {
     Plant plant = Plant();
     plant.setName(name);
     plant.setDescription(description);
+    plant.setImagePath(imagePath);
     if (watering) {
       plant.getWatering().setEnabled(watering);
       plant.getWatering().setFrequency(wateringFrequency);

@@ -1,5 +1,5 @@
 import 'package:bonsai/controllers/navigation_page/navigation_controller.dart';
-import 'package:bonsai/utils/styles.dart';
+import 'package:bonsai/constants/styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';

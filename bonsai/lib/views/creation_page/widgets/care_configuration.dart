@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
-import '../../../utils/styles.dart';
+import '../../../constants/styles.dart';
 
 class CareConfiguration extends StatefulWidget with GetItStatefulWidgetMixin {
   CareConfiguration({required this.index, required this.careType});

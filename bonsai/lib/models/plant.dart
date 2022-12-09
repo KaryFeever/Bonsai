@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class Plant {
   String _name = "";
   String _description = "";
+  String _imagePath = "";
   // static Image _image = NULL;
   CareType _watering = CareType("Watering");
   CareType _spraying = CareType("Spraying");
@@ -25,7 +26,13 @@ class Plant {
     _description = description;
   }
 
-  // TODO Image getter and setter
+  String getImagePath() {
+    return _imagePath;
+  }
+
+  void setImagePath(String imagePath) {
+    _imagePath = imagePath;
+  }
 
   CareType getWatering() {
     return _watering;

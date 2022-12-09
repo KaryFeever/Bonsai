@@ -1,24 +1,26 @@
 import 'dart:io';
 
+import 'package:bonsai/controllers/creation_page/creation_controller.dart';
 import 'package:bonsai/views/creation_page/widgets/image_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:image_cropper/image_cropper.dart';
 
-import '../../../utils/styles.dart';
+import '../../../constants/styles.dart';
 
 final imageHelper = ImageHelper();
 
-class ImagePicker extends StatefulWidget {
-  const ImagePicker({
+class ImagePicker extends StatefulWidget with GetItStatefulWidgetMixin {
+  ImagePicker({
     super.key,
   });
   @override
   State<ImagePicker> createState() => _ImagePickerState();
 }
 
-class _ImagePickerState extends State<ImagePicker> {
-  File? _image;
+class _ImagePickerState extends State<ImagePicker> with GetItStateMixin {
+  String _imagePath = "";
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,7 +38,8 @@ class _ImagePickerState extends State<ImagePicker> {
                   file: file, cropStyle: CropStyle.rectangle);
               if (croppedFile != null) {
                 setState(() {
-                  _image = File(croppedFile.path);
+                  _imagePath = croppedFile.path;
+                  get<CreationController>().setImagePath(_imagePath);
                 });
               }
             }
@@ -51,14 +54,14 @@ class _ImagePickerState extends State<ImagePicker> {
                 width: 1,
               ),
               color: Styles.fieldsBackgroundColor,
-              image: _image != null
+              image: _imagePath != ""
                   ? DecorationImage(
-                      image: FileImage(_image!),
+                      image: FileImage(File(_imagePath)),
                       fit: BoxFit.cover,
                     )
                   : null,
             ),
-            child: _image == null
+            child: _imagePath == ""
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

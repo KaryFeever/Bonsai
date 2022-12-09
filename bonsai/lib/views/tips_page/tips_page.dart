@@ -3,7 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../utils/styles.dart';
+import '../../constants/styles.dart';
 
 class TipsPage extends StatefulWidget {
   const TipsPage({super.key});

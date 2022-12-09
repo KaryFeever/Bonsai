@@ -11,7 +11,7 @@ import 'package:get_it_mixin/get_it_mixin.dart';
 
 import '../../models/plant.dart';
 import '../../models/plants.dart';
-import '../../utils/styles.dart';
+import '../../constants/styles.dart';
 
 class HomePage extends StatefulWidget with GetItStatefulWidgetMixin {
   HomePage({super.key});
@@ -105,8 +105,11 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                   ),
                   child: Center(
                     child: GestureDetector(
-                      onTap: () => Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => PlantPage())),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PlantPage(
+                                  plant: get<Plants>().getPlants()[index]))),
                       child: Text(
                         get<Plants>().getPlants()[index].getName(),
                         style: Styles.headLine1,
