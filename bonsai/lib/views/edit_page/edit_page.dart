@@ -1,8 +1,12 @@
+import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:flutter/material.dart';
 
 import '../../constants/styles.dart';
 import '../../models/plant.dart';
+import '../../models/plants.dart';
+import '../creation_page/widgets/care_configuration.dart';
+import '../creation_page/widgets/image_picker.dart';
 
 class EditPage extends StatefulWidget with GetItStatefulWidgetMixin {
   EditPage({required this.plant});
@@ -59,6 +63,7 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                   ),
                   GestureDetector(
                     onTap: () {
+                      get<EditController>().initializeController(widget.plant);
                       Navigator.pop(context);
                     },
                     child: Text(
@@ -89,6 +94,10 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
             child: ListView(
               children: [
                 /* IMAGE */
+                ImagePicker(
+                  image_path: get<EditController>().getImagePath(),
+                  controller: get<EditController>(),
+                ),
 
                 /* PLANT NAME */
                 Padding(
@@ -112,6 +121,8 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                               height: 48,
                               width: MediaQuery.of(context).size.width - 40,
                               child: TextField(
+                                controller: get<EditController>()
+                                    .getPlantNameController(),
                                 showCursor: true,
                                 cursorColor: Styles.textColorPrimary,
                                 style: Styles.inputText,
@@ -160,6 +171,8 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                               height: 96,
                               width: MediaQuery.of(context).size.width - 40,
                               child: TextField(
+                                controller: get<EditController>()
+                                    .getPlantDescriptionController(),
                                 maxLines: 5,
                                 showCursor: true,
                                 cursorColor: Styles.textColorPrimary,
@@ -207,10 +220,28 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                 ),
 
                 /* WATERING */
+                CareConfiguration(
+                  index: 0,
+                  careType: "Watering",
+                  controller: get<EditController>(),
+                  mode: true,
+                ),
 
                 /* SPRAYING */
+                CareConfiguration(
+                  index: 1,
+                  careType: "Spraying",
+                  controller: get<EditController>(),
+                  mode: true,
+                ),
 
                 /* FERTILIZING */
+                CareConfiguration(
+                  index: 2,
+                  careType: "Fertilizing",
+                  controller: get<EditController>(),
+                  mode: true,
+                ),
               ],
             ),
           ),
@@ -222,6 +253,7 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
             ),
             child: GestureDetector(
               onTap: () {
+                get<EditController>().saveChanges(widget.plant);
                 Navigator.pop(context);
               },
               child: Container(
@@ -252,6 +284,8 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
             child: GestureDetector(
               onTap: () {
                 Navigator.pop(context);
+                Navigator.pop(context);
+                get<EditController>().deletePlant(get<Plants>(), widget.plant);
               },
               child: Container(
                   height: 60,

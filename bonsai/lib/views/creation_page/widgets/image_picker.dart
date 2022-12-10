@@ -13,14 +13,16 @@ final imageHelper = ImageHelper();
 
 class ImagePicker extends StatefulWidget with GetItStatefulWidgetMixin {
   ImagePicker({
-    super.key,
+    required this.image_path,
+    required this.controller,
   });
+  String image_path;
+  final controller;
   @override
   State<ImagePicker> createState() => _ImagePickerState();
 }
 
 class _ImagePickerState extends State<ImagePicker> with GetItStateMixin {
-  String _imagePath = "";
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -38,8 +40,10 @@ class _ImagePickerState extends State<ImagePicker> with GetItStateMixin {
                   file: file, cropStyle: CropStyle.rectangle);
               if (croppedFile != null) {
                 setState(() {
-                  _imagePath = croppedFile.path;
-                  get<CreationController>().setImagePath(_imagePath);
+                  widget.image_path = croppedFile.path;
+                  // TODO
+                  widget.controller.setImagePath(widget.image_path);
+                  print(widget.image_path);
                 });
               }
             }
@@ -54,14 +58,14 @@ class _ImagePickerState extends State<ImagePicker> with GetItStateMixin {
                 width: 1,
               ),
               color: Styles.fieldsBackgroundColor,
-              image: _imagePath != ""
+              image: widget.image_path != ""
                   ? DecorationImage(
-                      image: FileImage(File(_imagePath)),
+                      image: FileImage(File(widget.image_path)),
                       fit: BoxFit.cover,
                     )
                   : null,
             ),
-            child: _imagePath == ""
+            child: widget.image_path == ""
                 ? Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

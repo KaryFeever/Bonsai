@@ -92,7 +92,10 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
             child: ListView(
               children: [
                 /* IMAGE */
-                ImagePicker(),
+                ImagePicker(
+                  image_path: get<CreationController>().getImagePath(),
+                  controller: get<CreationController>(),
+                ),
 
                 /* PLANT NAME */
                 Padding(
@@ -218,18 +221,24 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                 CareConfiguration(
                   index: 0,
                   careType: "Watering",
+                  controller: get<CreationController>(),
+                  mode: false,
                 ),
 
                 /* SPRAYING */
                 CareConfiguration(
                   index: 1,
                   careType: "Spraying",
+                  controller: get<CreationController>(),
+                  mode: false,
                 ),
 
                 /* FERTILIZING */
                 CareConfiguration(
                   index: 2,
                   careType: "Fertilizing",
+                  controller: get<CreationController>(),
+                  mode: false,
                 ),
               ],
             ),

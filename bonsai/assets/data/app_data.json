@@ -5,11 +5,17 @@
             "description": "The dahlia is a symbol of loyalty and happiness for your loved ones",
             "watering": true,
             "watering_frequency": 4,
+            "watering_frequency_index": 3,
+            "watering_frequency_time_index": 0,
             "spraying": false,
             "spraying_frequency": 0,
+            "spraying_frequency_index": 0,
+            "spraying_frequency_time_index": 0,
             "fertilizing": false,
             "fertilizing_frequency": 0,
-            "image_path": "/Users/karyfeever/Library/Developer/CoreSimulator/Devices/CD271C2D-9BB3-4B3F-9B34-3F1812412078/data/Containers/Data/Application/5AEC6018-87FD-4D4D-83C0-1937FD876F69/tmp/image_picker_1BAF2C9F-7B29-446D-A71E-7702F41A4521-11264-0000005AD7863052.jpg"
+            "fertilizing_frequency_index": 0,
+            "fertilizing_frequency_time_index": 0,
+            "image_path": "TODO add static path for the image, for now just paste here a path of the image from the simulator"
         }
     ]
 }

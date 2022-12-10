@@ -38,6 +38,10 @@ class CreationController extends ChangeNotifier {
     _imagePath = imagePath;
   }
 
+  String getImagePath() {
+    return _imagePath;
+  }
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -150,10 +154,16 @@ class CreationController extends ChangeNotifier {
         _plantDescriptionController.text,
         _careFrequencyInDays[0],
         _careFlags[0],
+        _careFrequency[0][0],
+        _careFrequency[0][1],
         _careFrequencyInDays[1],
         _careFlags[1],
+        _careFrequency[1][0],
+        _careFrequency[1][1],
         _careFrequencyInDays[2],
         _careFlags[2],
+        _careFrequency[2][0],
+        _careFrequency[2][1],
         _imagePath);
     cancel();
   }

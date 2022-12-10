@@ -1,24 +1,27 @@
 import 'dart:io';
 
 import 'package:bonsai/constants/styles.dart';
+import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 
 import '../../models/plant.dart';
 import '../edit_page/edit_page.dart';
 
-class PlantPage extends StatefulWidget {
+class PlantPage extends StatefulWidget with GetItStatefulWidgetMixin {
   PlantPage({required this.plant});
   Plant plant;
   @override
   State<PlantPage> createState() => _PlantPageState();
 }
 
-class _PlantPageState extends State<PlantPage> {
+class _PlantPageState extends State<PlantPage> with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
+    int changed = watchOnly((EditController x) => x.getChanged());
     return Scaffold(
         body: Stack(
       children: [
@@ -67,13 +70,16 @@ class _PlantPageState extends State<PlantPage> {
                 GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
-                      isScrollControlled: true,
-                      backgroundColor: Styles.secondaryGreenColor,
-                      context: context,
-                      builder: (context) => EditPage(
-                        plant: widget.plant,
-                      ),
-                    );
+                        isScrollControlled: true,
+                        backgroundColor: Styles.secondaryGreenColor,
+                        context: context,
+                        builder: (context) {
+                          get<EditController>()
+                              .initializeController(widget.plant);
+                          return EditPage(
+                            plant: widget.plant,
+                          );
+                        });
                   },
                   child: Container(
                     height: 52,

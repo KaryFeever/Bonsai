@@ -1,4 +1,5 @@
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
+import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,9 +8,15 @@ import 'package:get_it_mixin/get_it_mixin.dart';
 import '../../../constants/styles.dart';
 
 class CareConfiguration extends StatefulWidget with GetItStatefulWidgetMixin {
-  CareConfiguration({required this.index, required this.careType});
+  CareConfiguration(
+      {required this.index,
+      required this.careType,
+      required this.controller,
+      required this.mode});
   int index;
   String careType;
+  final controller;
+  bool mode;
 
   @override
   State<CareConfiguration> createState() => _CareConfigurationState();
@@ -19,14 +26,19 @@ class _CareConfigurationState extends State<CareConfiguration>
     with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
-    bool careEnabled =
-        watchOnly((CreationController x) => x.getFlag(widget.index));
-    int frequencyIndex =
-        watchOnly((CreationController x) => x.getFrequencyIndex(widget.index));
-    int timeIndex =
-        watchOnly((CreationController x) => x.getTimeIndex(widget.index));
-    String careFrequencyText = watchOnly(
-        (CreationController x) => x.getCareFrequencyText(widget.index));
+    bool careEnabled = widget.mode == false
+        ? watchOnly((CreationController x) => x.getFlag(widget.index))
+        : watchOnly((EditController x) => x.getFlag(widget.index));
+    int frequencyIndex = widget.mode == false
+        ? watchOnly((CreationController x) => x.getFrequencyIndex(widget.index))
+        : watchOnly((EditController x) => x.getFrequencyIndex(widget.index));
+    int timeIndex = widget.mode == false
+        ? watchOnly((CreationController x) => x.getTimeIndex(widget.index))
+        : watchOnly((EditController x) => x.getTimeIndex(widget.index));
+    String careFrequencyText = widget.mode == false
+        ? watchOnly(
+            (CreationController x) => x.getCareFrequencyText(widget.index))
+        : watchOnly((EditController x) => x.getCareFrequencyText(widget.index));
     return Padding(
       padding: EdgeInsets.only(
         bottom: 16.0,
@@ -96,8 +108,7 @@ class _CareConfigurationState extends State<CareConfiguration>
                             value: careEnabled,
                             // changes the state of the switch
                             onChanged: (value) {
-                              get<CreationController>()
-                                  .UpdateFlag(value, widget.index);
+                              widget.controller.UpdateFlag(value, widget.index);
                             }),
                       )),
                 ],
@@ -216,7 +227,7 @@ class _CareConfigurationState extends State<CareConfiguration>
                                               backgroundColor: Colors.white,
                                               onSelectedItemChanged:
                                                   (int index) {
-                                                get<CreationController>()
+                                                widget.controller
                                                     .setFrequencyIndex(
                                                         widget.index, index);
                                               },
@@ -240,19 +251,18 @@ class _CareConfigurationState extends State<CareConfiguration>
                                               backgroundColor: Colors.white,
                                               onSelectedItemChanged:
                                                   (int index) {
-                                                get<CreationController>()
-                                                    .setTimeIndex(
-                                                        widget.index, index);
+                                                widget.controller.setTimeIndex(
+                                                    widget.index, index);
                                               },
                                               children:
                                                   new List<Widget>.generate(
-                                                      get<CreationController>()
+                                                      widget.controller
                                                           .getTimeListLength(),
                                                       (int index) {
                                                 return new Center(
-                                                  child: new Text(
-                                                      get<CreationController>()
-                                                          .getTimeItem(index)),
+                                                  child: new Text(widget
+                                                      .controller
+                                                      .getTimeItem(index)),
                                                 );
                                               })),
                                         ),
@@ -267,7 +277,7 @@ class _CareConfigurationState extends State<CareConfiguration>
                                       ),
                                       child: GestureDetector(
                                         onTap: () {
-                                          get<CreationController>()
+                                          widget.controller
                                               .updateCareFrequencyText(
                                                   widget.index);
                                           Navigator.pop(context);
