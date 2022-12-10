@@ -1,3 +1,4 @@
+import 'package:bonsai/constants/styles.dart';
 import 'package:bonsai/get_it_mixins/locator.dart';
 import 'package:bonsai/models/plants.dart';
 import 'package:bonsai/utils/process_json.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget with GetItMixin {
       debugShowCheckedModeBanner: false,
       title: 'Bonsai',
       theme: ThemeData(
+        scaffoldBackgroundColor: Styles.backgroundColor,
         primarySwatch: Colors.blue,
       ),
       home: NavigationPage(),

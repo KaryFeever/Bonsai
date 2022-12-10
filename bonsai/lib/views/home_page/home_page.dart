@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
       appBar: AppBar(
         toolbarHeight: 126,
         backgroundColor: Colors.white,
-        shadowColor: Colors.grey.shade50,
+        shadowColor: Color(0x33979797),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
           bottom: Radius.circular(30),
@@ -87,9 +87,10 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
       body: Center(
         child: ListView.builder(
             itemCount: plants_counter,
+            padding: EdgeInsets.only(top: 13),
             itemBuilder: (BuildContext context, int index) {
               return Padding(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.all(10),
                 child: Container(
                   height: 100,
                   decoration: BoxDecoration(
@@ -104,17 +105,61 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                     color: Styles.whiteColor,
                   ),
                   child: Center(
-                    child: GestureDetector(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PlantPage(
-                                  plant: get<Plants>().getPlants()[index]))),
-                      child: Text(
-                        get<Plants>().getPlants()[index].getName(),
-                        style: Styles.headLine1,
+                    //add circle avatar here with image
+
+                    child: Row(children: [
+                      Container(
+                        margin: EdgeInsets.only(left: 21.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0x33979797),
+                              blurRadius: 1,
+                              spreadRadius: 1,
+                            ),
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          radius: 34,
+                          backgroundColor: Styles.primaryGreenColor, //!!
+                          // backgroundImage: AssetImage(
+                          //     get<Plants>().getPlants()[index].getImagePath()),
+                        ),
                       ),
-                    ),
+                      Padding(padding: EdgeInsets.only(left: 15.0)),
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PlantPage(
+                                    plant: get<Plants>().getPlants()[index]))),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                get<Plants>().getPlants()[index].getName(),
+                                style: Styles.headLine1,
+                              ),
+                              //? сделать расстояние между текстом меньше
+                              Text(
+                                "Need water!",
+                                style: Styles.plantStatusBad,
+                              ),
+                            ]),
+                      ),
+                      Container(
+                        //фигура справа
+                        margin: EdgeInsets.only(left: 79.0),
+                        height: 100,
+                        width: 70,
+                        decoration: BoxDecoration(
+                          color: Styles.primaryGreenColor,
+                          borderRadius: BorderRadius.all(Radius.circular(17.0)),
+                        ),
+                      ),
+                    ]),
                   ),
                 ),
               );

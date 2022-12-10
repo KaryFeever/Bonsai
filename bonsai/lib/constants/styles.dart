@@ -38,4 +38,6 @@ class Styles {
       fontSize: 20, color: textOrange, fontWeight: FontWeight.w700);
   static TextStyle plantPageDate = GoogleFonts.nunito(
       fontSize: 32, color: textColorPrimary, fontWeight: FontWeight.w800);
+  static TextStyle plantStatusBad = GoogleFonts.nunito(
+      fontSize: 18, color: primaryGreenColor, fontWeight: FontWeight.w700);
 }
