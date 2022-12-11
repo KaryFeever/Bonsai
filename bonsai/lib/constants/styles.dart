@@ -26,6 +26,8 @@ class Styles {
       fontSize: 34, color: textColorPrimary, fontWeight: FontWeight.w700);
   static TextStyle headLine2 = GoogleFonts.nunito(
       fontSize: 28, color: textColorPrimary, fontWeight: FontWeight.w700);
+  static TextStyle headLine3 = GoogleFonts.nunito(
+      fontSize: 22, color: textColorPrimary, fontWeight: FontWeight.w700);
   static TextStyle bottomSheetCloseText = GoogleFonts.nunito(
       fontSize: 20, color: primaryGreenColor, fontWeight: FontWeight.w700);
   static TextStyle headLineBottomSheet = GoogleFonts.nunito(
@@ -45,5 +47,9 @@ class Styles {
   static TextStyle careTipsText = GoogleFonts.nunito(
       fontSize: 18,
       color: textColorPrimary.withOpacity(0.5),
+      fontWeight: FontWeight.w500);
+  static TextStyle textSecondary = GoogleFonts.nunito(
+      fontSize: 16,
+      color: textColorPrimary.withOpacity(0.65),
       fontWeight: FontWeight.w500);
 }
