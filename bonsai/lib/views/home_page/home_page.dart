@@ -154,6 +154,14 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
 
                                 // статус
                                 Text(
+                                  // get<Plants>()
+                                  //         .getPlants()[index]
+                                  //         .getWateringStatus() ==
+                                  // ? get<Plants>()
+                                  //     .getPlants()[index]
+                                  //     .getName()
+                                  // : "empty",
+                                  // get<Plants>().getPlants()[index].getName()? : "empty",
                                   "Need water!",
                                   style: Styles.plantStatusBad,
                                 ),

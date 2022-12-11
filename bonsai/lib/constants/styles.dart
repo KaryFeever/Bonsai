@@ -12,6 +12,8 @@ class Styles {
   static Color fieldsBackgroundColor = const Color(0xFFEFF1ED);
   static Color switchOffColor = const Color(0xFFB3BCB3);
   static Color whiteColor = const Color(0xFFFFFFFF);
+  static Color whiteColor_30 =
+      Color.fromRGBO(255, 255, 255, 0.7); //!! fix color
   static Color buttonBackgroundSecondaryGreen = const Color(0x1A9AB44D);
   static Color buttonBackgroundSecondaryOrange = const Color(0x1ADD9048);
   static Color textOrange = const Color(0xFFDD9048);
@@ -40,4 +42,8 @@ class Styles {
       fontSize: 32, color: textColorPrimary, fontWeight: FontWeight.w800);
   static TextStyle plantStatusBad = GoogleFonts.nunito(
       fontSize: 18, color: primaryGreenColor, fontWeight: FontWeight.w700);
+  static TextStyle careTipsText = GoogleFonts.nunito(
+      fontSize: 18,
+      color: textColorPrimary.withOpacity(0.5),
+      fontWeight: FontWeight.w500);
 }
