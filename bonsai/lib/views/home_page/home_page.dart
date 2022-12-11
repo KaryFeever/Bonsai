@@ -8,6 +8,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
+import 'package:proste_bezier_curve/proste_bezier_curve.dart';
 
 import '../../models/plant.dart';
 import '../../models/plants.dart';
@@ -104,68 +105,123 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                     ],
                     color: Styles.whiteColor,
                   ),
-                  child: Center(
-                    //add circle avatar here with image
+                  child: Row(
+                      // (круг с (именем и статусом)) и фигура
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            SizedBox(width: 22),
+                            Container(
+                              // круг
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Color(0x33979797),
+                                    blurRadius: 1,
+                                    spreadRadius: 1,
+                                  ),
+                                ],
+                              ),
+                              child: CircleAvatar(
+                                radius: 34,
+                                backgroundColor: Styles.primaryGreenColor, //!!
+                                // backgroundImage: AssetImage(
+                                //     get<Plants>().getPlants()[index].getImagePath()),
+                              ),
+                            ),
+                            SizedBox(width: 15),
+                            Column(
+                              // имя и статус
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                //переход на страницу растения
+                                GestureDetector(
+                                  onTap: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PlantPage(
+                                              plant: get<Plants>()
+                                                  .getPlants()[index]))),
+                                  child: Text(
+                                    get<Plants>().getPlants()[index].getName(),
+                                    style: Styles.headLine1,
+                                  ),
+                                ),
+                                // имя
 
-                    child: Row(children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 21.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color(0x33979797),
-                              blurRadius: 1,
-                              spreadRadius: 1,
+                                // статус
+                                Text(
+                                  "Need water!",
+                                  style: Styles.plantStatusBad,
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                        child: CircleAvatar(
-                          radius: 34,
-                          backgroundColor: Styles.primaryGreenColor, //!!
-                          // backgroundImage: AssetImage(
-                          //     get<Plants>().getPlants()[index].getImagePath()),
-                        ),
-                      ),
-                      Padding(padding: EdgeInsets.only(left: 15.0)),
-                      GestureDetector(
-                        onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PlantPage(
-                                    plant: get<Plants>().getPlants()[index]))),
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                get<Plants>().getPlants()[index].getName(),
-                                style: Styles.headLine1,
+
+                        // фигура
+                        ClipPath(
+                          clipper: MyClipper(),
+                          child: Container(
+                            height: 100,
+                            width: 88,
+                            decoration: BoxDecoration(
+                                color: Styles.primaryGreenColor,
+                                borderRadius: BorderRadius.horizontal(
+                                    right: Radius.circular(17.0))),
+                            child: Container(
+                              margin: EdgeInsets.only(left: 33),
+                              child: SvgPicture.asset(
+                                "assets/icons/water_drop.svg",
+                                color: Colors.white,
+                                height: 34.0,
+                                width: 34.0,
+                                fit: BoxFit.scaleDown,
                               ),
-                              //? сделать расстояние между текстом меньше
-                              Text(
-                                "Need water!",
-                                style: Styles.plantStatusBad,
-                              ),
-                            ]),
-                      ),
-                      Container(
-                        //фигура справа
-                        margin: EdgeInsets.only(left: 79.0),
-                        height: 100,
-                        width: 70,
-                        decoration: BoxDecoration(
-                          color: Styles.primaryGreenColor,
-                          borderRadius: BorderRadius.all(Radius.circular(17.0)),
+                            ),
+                          ),
                         ),
-                      ),
-                    ]),
-                  ),
+                      ]),
                 ),
               );
             }),
       ),
     );
+  }
+}
+
+class MyClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    ThirdOrderBezierCurveSection param = ThirdOrderBezierCurveSection(
+      smooth: .7,
+      p1: Offset(0, size.height),
+      p2: Offset(64, 88.3),
+      p3: Offset(6.5, -5.1),
+      p4: Offset(62.5, 0),
+    );
+    ThirdOrderBezierCurveDots dots =
+        ProsteThirdOrderBezierCurve.calcCurveDots(param);
+    List<double> dotsList = dots.getList(); // Return to list<double>
+    Map<String, double> dotsMap =
+        dots.getMap(); // Return to Map<String, double>
+
+    path.moveTo(62.5, 0);
+    path.lineTo(size.width, 0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+
+    path.cubicTo(dots.x1, dots.y1, dots.x2, dots.y2, dots.x3, dots.y3);
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) {
+    return true;
   }
 }
 
