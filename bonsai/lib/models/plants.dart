@@ -42,18 +42,27 @@ class Plants extends ChangeNotifier {
       plant.getWatering().setFrequency(wateringFrequency);
       plant.getWatering().setFrequencyIndex(wateringFrequencyIndex);
       plant.getWatering().setTimeIndex(wateringFrequencyTimeIndex);
+      plant.getWatering().setCareTime(DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day));
+      plant.getWatering().updateNextCareTime();
     }
     if (spraying) {
       plant.getSpraying().setEnabled(spraying);
       plant.getSpraying().setFrequency(sprayingFrequency);
       plant.getSpraying().setFrequencyIndex(sprayingFrequencyIndex);
       plant.getSpraying().setTimeIndex(sprayingFrequencyTimeIndex);
+      plant.getSpraying().setCareTime(DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day));
+      plant.getSpraying().updateNextCareTime();
     }
     if (fertilizing) {
       plant.getFertilizing().setEnabled(fertilizing);
       plant.getFertilizing().setFrequency(fertilizingFrequency);
       plant.getFertilizing().setFrequencyIndex(fertilizingFrequencyIndex);
       plant.getFertilizing().setTimeIndex(fertilizingFrequencyTimeIndex);
+      plant.getFertilizing().setCareTime(DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day));
+      plant.getFertilizing().updateNextCareTime();
     }
 
     _plants.add(plant);

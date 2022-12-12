@@ -170,20 +170,38 @@ class EditController extends ChangeNotifier {
     plant.setName(_plantNameController.text);
     plant.setDescription(_plantDescriptionController.text);
 
+    if ((plant.getWatering().getEnabled() == false) &&
+        (_careFlags[0] == true)) {
+      plant.getWatering().setCareTime(DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day));
+    }
     plant.getWatering().setFrequency(_careFrequencyInDays[0]);
     plant.getWatering().setEnabled(_careFlags[0]);
     plant.getWatering().setFrequencyIndex(_careFrequency[0][0]);
     plant.getWatering().setTimeIndex(_careFrequency[0][1]);
+    plant.getWatering().updateNextCareTime();
 
+    if ((plant.getSpraying().getEnabled() == false) &&
+        (_careFlags[1] == true)) {
+      plant.getSpraying().setCareTime(DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day));
+    }
     plant.getSpraying().setFrequency(_careFrequencyInDays[1]);
     plant.getSpraying().setEnabled(_careFlags[1]);
     plant.getSpraying().setFrequencyIndex(_careFrequency[1][0]);
     plant.getSpraying().setTimeIndex(_careFrequency[1][1]);
+    plant.getSpraying().updateNextCareTime();
 
+    if ((plant.getFertilizing().getEnabled() == false) &&
+        (_careFlags[2] == true)) {
+      plant.getFertilizing().setCareTime(DateTime(
+          DateTime.now().year, DateTime.now().month, DateTime.now().day));
+    }
     plant.getFertilizing().setFrequency(_careFrequencyInDays[2]);
     plant.getFertilizing().setEnabled(_careFlags[2]);
     plant.getFertilizing().setFrequencyIndex(_careFrequency[2][0]);
     plant.getFertilizing().setTimeIndex(_careFrequency[2][1]);
+    plant.getFertilizing().updateNextCareTime();
 
     plant.setImagePath(_imagePath);
     _changed += 1;

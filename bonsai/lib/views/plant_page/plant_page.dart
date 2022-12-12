@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:bonsai/constants/styles.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
+import 'package:bonsai/controllers/plant_page/plant_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
+import 'package:intl/intl.dart';
 
 import '../../models/plant.dart';
 import '../edit_page/edit_page.dart';
@@ -21,14 +23,16 @@ class PlantPage extends StatefulWidget with GetItStatefulWidgetMixin {
 class _PlantPageState extends State<PlantPage> with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
-    int changed = watchOnly((EditController x) => x.getChanged());
+    int plant_changed = watchOnly((EditController x) => x.getChanged());
+    int plant_care_changed = watchOnly((PlantController x) => x.getChanged());
+
     return Scaffold(
         body: Stack(
       children: [
         Align(
           alignment: Alignment(0.0, -1.0),
           child: Container(
-            height: MediaQuery.of(context).size.height * 0.6,
+            height: MediaQuery.of(context).size.height * 0.66,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
                 image: DecorationImage(
@@ -69,6 +73,8 @@ class _PlantPageState extends State<PlantPage> with GetItStateMixin {
                 ),
                 GestureDetector(
                   onTap: () {
+                    // TODO
+                    print(DateTime.now());
                     showModalBottomSheet(
                         isScrollControlled: true,
                         backgroundColor: Styles.secondaryGreenColor,
@@ -105,7 +111,7 @@ class _PlantPageState extends State<PlantPage> with GetItStateMixin {
           alignment: Alignment(0.0, 1.0),
           child: Container(
             width: MediaQuery.of(context).size.width,
-            height: 400,
+            height: get<PlantController>().getHeight(widget.plant),
             decoration: BoxDecoration(
               color: Styles.whiteColor,
               borderRadius: BorderRadius.vertical(
@@ -156,7 +162,12 @@ class _PlantPageState extends State<PlantPage> with GetItStateMixin {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "08 oct.",
+                        DateFormat.d().format(DateTime.now()) +
+                            " " +
+                            DateFormat.MMM()
+                                .format(DateTime.now())
+                                .toLowerCase() +
+                            ".",
                         style: Styles.plantPageDate,
                       ),
                       Container(
@@ -181,6 +192,256 @@ class _PlantPageState extends State<PlantPage> with GetItStateMixin {
                       ),
                     ],
                   ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 20.0,
+                    right: 20.0,
+                    top: 21.0,
+                  ),
+                  child: get<PlantController>().wateringEnabled(widget.plant)
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Need watering",
+                                  style: Styles.plantPageCareHeadline,
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                      text: get<PlantController>()
+                                              .wateringNeeded(widget.plant)
+                                          ? "Next care "
+                                          : "Next care in ",
+                                      style: Styles.plantPageNextCareText,
+                                      children: [
+                                        TextSpan(
+                                            text: get<PlantController>()
+                                                    .wateringNeeded(
+                                                        widget.plant)
+                                                ? 'Today'
+                                                : get<PlantController>()
+                                                    .wateringNextCareDays(
+                                                        widget.plant),
+                                            style: get<PlantController>()
+                                                    .wateringNeeded(
+                                                        widget.plant)
+                                                ? Styles.plantPageNextCareToday
+                                                : Styles
+                                                    .plantPageNextCareDays) //Styles.plantPageNextCareToday)
+                                      ]),
+                                ),
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (get<PlantController>()
+                                    .wateringNeeded(widget.plant)) {
+                                  get<PlantController>().water(widget.plant);
+                                }
+                              },
+                              child: Container(
+                                width: 100,
+                                height: 52,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.0)),
+                                  color: get<PlantController>()
+                                          .wateringNeeded(widget.plant)
+                                      ? Styles.primaryGreenColor
+                                      : Styles.buttonBackgroundSecondaryGreen,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      get<PlantController>()
+                                              .wateringNeeded(widget.plant)
+                                          ? "Water"
+                                          : "Done",
+                                      style: get<PlantController>()
+                                              .wateringNeeded(widget.plant)
+                                          ? Styles.buttonText
+                                          : Styles.buttonTextSecondaryGreen,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
+                      : null,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 20.0,
+                    right: 20.0,
+                    top: 21.0,
+                  ),
+                  child: get<PlantController>().sprayingEnabled(widget.plant)
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Need spraying",
+                                  style: Styles.plantPageCareHeadline,
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                      text: get<PlantController>()
+                                              .sprayingNeeded(widget.plant)
+                                          ? "Next care "
+                                          : "Next care in ",
+                                      style: Styles.plantPageNextCareText,
+                                      children: [
+                                        TextSpan(
+                                            text: get<PlantController>()
+                                                    .sprayingNeeded(
+                                                        widget.plant)
+                                                ? 'Today'
+                                                : get<PlantController>()
+                                                    .sprayingNextCareDays(
+                                                        widget.plant),
+                                            style: get<PlantController>()
+                                                    .sprayingNeeded(
+                                                        widget.plant)
+                                                ? Styles.plantPageNextCareToday
+                                                : Styles
+                                                    .plantPageNextCareDays) //Styles.plantPageNextCareToday)
+                                      ]),
+                                ),
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (get<PlantController>()
+                                    .sprayingNeeded(widget.plant)) {
+                                  get<PlantController>().spray(widget.plant);
+                                }
+                              },
+                              child: Container(
+                                width: 100,
+                                height: 52,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.0)),
+                                  color: get<PlantController>()
+                                          .sprayingNeeded(widget.plant)
+                                      ? Styles.primaryGreenColor
+                                      : Styles.buttonBackgroundSecondaryGreen,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      get<PlantController>()
+                                              .sprayingNeeded(widget.plant)
+                                          ? "Spray"
+                                          : "Done",
+                                      style: get<PlantController>()
+                                              .sprayingNeeded(widget.plant)
+                                          ? Styles.buttonText
+                                          : Styles.buttonTextSecondaryGreen,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      : null,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                    left: 20.0,
+                    right: 20.0,
+                    top: 21.0,
+                  ),
+                  child: get<PlantController>().fertilizingEnabled(widget.plant)
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Need fertilizing",
+                                  style: Styles.plantPageCareHeadline,
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                      text: get<PlantController>()
+                                              .fertilizingNeeded(widget.plant)
+                                          ? "Next care "
+                                          : "Next care in ",
+                                      style: Styles.plantPageNextCareText,
+                                      children: [
+                                        TextSpan(
+                                            text: get<PlantController>()
+                                                    .fertilizingNeeded(
+                                                        widget.plant)
+                                                ? 'Today'
+                                                : get<PlantController>()
+                                                    .fertilizingNextCareDays(
+                                                        widget.plant),
+                                            style: get<PlantController>()
+                                                    .fertilizingNeeded(
+                                                        widget.plant)
+                                                ? Styles.plantPageNextCareToday
+                                                : Styles
+                                                    .plantPageNextCareDays) //Styles.plantPageNextCareToday)
+                                      ]),
+                                ),
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                if (get<PlantController>()
+                                    .fertilizingNeeded(widget.plant)) {
+                                  get<PlantController>()
+                                      .fertilize(widget.plant);
+                                }
+                              },
+                              child: Container(
+                                width: 100,
+                                height: 52,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(8.0)),
+                                  color: get<PlantController>()
+                                          .fertilizingNeeded(widget.plant)
+                                      ? Styles.primaryGreenColor
+                                      : Styles.buttonBackgroundSecondaryGreen,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      get<PlantController>()
+                                              .fertilizingNeeded(widget.plant)
+                                          ? "Fertilize"
+                                          : "Done",
+                                      style: get<PlantController>()
+                                              .fertilizingNeeded(widget.plant)
+                                          ? Styles.buttonText
+                                          : Styles.buttonTextSecondaryGreen,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        )
+                      : null,
                 ),
               ],
             ),
