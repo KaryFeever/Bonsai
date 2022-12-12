@@ -5,6 +5,7 @@ class Styles {
   static Color backgroundColor = const Color(0xFFFBFFF6);
   static Color primaryGreenColor = const Color(0xE6B1CF58);
   static Color secondaryGreenColor = const Color(0x33B1CF58);
+  static Color scheduleGreenColor = const Color.fromRGBO(88, 99, 54, 1);
   static Color primaryOrangeColor = const Color(0xFFDD9048);
   static Color secondaryOrangeColor = const Color(0x1ADD9048);
   static Color textColorPrimary = const Color(0xFF586336);
@@ -44,6 +45,8 @@ class Styles {
       fontSize: 32, color: textColorPrimary, fontWeight: FontWeight.w800);
   static TextStyle plantStatusBad = GoogleFonts.nunito(
       fontSize: 18, color: primaryGreenColor, fontWeight: FontWeight.w700);
+  static TextStyle plantStatusOk = GoogleFonts.nunito(
+      fontSize: 18, color: scheduleGreenColor, fontWeight: FontWeight.w700);
   static TextStyle careTipsText = GoogleFonts.nunito(
       fontSize: 18,
       color: textColorPrimary.withOpacity(0.5),
