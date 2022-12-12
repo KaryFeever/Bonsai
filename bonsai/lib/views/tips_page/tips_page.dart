@@ -53,7 +53,7 @@ class _TipsPageState extends State<TipsPage> {
             child: Container(
                 margin: EdgeInsets.only(top: 24, left: 25),
                 height: 132,
-                width: 325,
+                width: MediaQuery.of(context).size.width - 40,
                 decoration: BoxDecoration(
                   color: Styles.primaryGreenColor.withOpacity(0.20),
                   borderRadius: BorderRadius.circular(24),
@@ -74,7 +74,7 @@ class _TipsPageState extends State<TipsPage> {
                     ],
                   ),
                   Container(
-                      margin: EdgeInsets.only(top: 20),
+                      margin: EdgeInsets.only(top: 15, left: 50),
                       child: SvgPicture.asset(
                         "assets/icons/drop_tips.svg",
                         fit: BoxFit.scaleDown,
@@ -94,7 +94,7 @@ class _TipsPageState extends State<TipsPage> {
             child: Container(
                 margin: EdgeInsets.only(top: 24, left: 25),
                 height: 132,
-                width: 325,
+                width: MediaQuery.of(context).size.width - 40,
                 decoration: BoxDecoration(
                   color: Styles.primaryGreenColor.withOpacity(0.20),
                   borderRadius: BorderRadius.circular(24),
@@ -115,7 +115,7 @@ class _TipsPageState extends State<TipsPage> {
                     ],
                   ),
                   Container(
-                      margin: EdgeInsets.only(top: 20),
+                      margin: EdgeInsets.only(top: 15, left: 52),
                       child: SvgPicture.asset(
                         "assets/icons/drop_tips.svg",
                         fit: BoxFit.scaleDown,
@@ -135,7 +135,7 @@ class _TipsPageState extends State<TipsPage> {
             child: Container(
                 margin: EdgeInsets.only(top: 24, left: 25),
                 height: 132,
-                width: 325,
+                width: MediaQuery.of(context).size.width - 40,
                 decoration: BoxDecoration(
                   color: Styles.primaryGreenColor.withOpacity(0.20),
                   borderRadius: BorderRadius.circular(24),
@@ -156,7 +156,7 @@ class _TipsPageState extends State<TipsPage> {
                     ],
                   ),
                   Container(
-                      margin: EdgeInsets.only(top: 20),
+                      margin: EdgeInsets.only(top: 15, left: 37),
                       child: SvgPicture.asset(
                         "assets/icons/drop_tips.svg",
                         fit: BoxFit.scaleDown,

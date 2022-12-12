@@ -140,10 +140,10 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                       ),
                                       child: CircleAvatar(
                                         radius: 34,
-                                        backgroundColor:
-                                            Styles.primaryGreenColor, //!!
-                                        // backgroundImage: AssetImage(
-                                        //     get<Plants>().getPlants()[index].getImagePath()),
+                                        backgroundImage: AssetImage(
+                                            get<Plants>()
+                                                .getPlants()[index]
+                                                .getImagePath()),
                                       ),
                                     ),
                                     SizedBox(width: 15),
