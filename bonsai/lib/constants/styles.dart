@@ -5,6 +5,7 @@ class Styles {
   static Color backgroundColor = const Color(0xFFFBFFF6);
   static Color primaryGreenColor = const Color(0xE6B1CF58);
   static Color secondaryGreenColor = const Color(0x33B1CF58);
+  static Color scheduleGreenColor = const Color.fromRGBO(88, 99, 54, 1);
   static Color primaryOrangeColor = const Color(0xFFDD9048);
   static Color secondaryOrangeColor = const Color(0x1ADD9048);
   static Color textColorPrimary = const Color(0xFF586336);
@@ -12,6 +13,8 @@ class Styles {
   static Color fieldsBackgroundColor = const Color(0xFFEFF1ED);
   static Color switchOffColor = const Color(0xFFB3BCB3);
   static Color whiteColor = const Color(0xFFFFFFFF);
+  static Color whiteColor_30 =
+      Color.fromRGBO(255, 255, 255, 0.7); //!! fix color
   static Color buttonBackgroundSecondaryGreen = const Color(0x1A9AB44D);
   static Color buttonBackgroundSecondaryOrange = const Color(0x1ADD9048);
   static Color textOrange = const Color(0xFFDD9048);
@@ -25,6 +28,8 @@ class Styles {
       fontSize: 34, color: textColorPrimary, fontWeight: FontWeight.w700);
   static TextStyle headLine2 = GoogleFonts.nunito(
       fontSize: 28, color: textColorPrimary, fontWeight: FontWeight.w700);
+  static TextStyle headLine3 = GoogleFonts.nunito(
+      fontSize: 22, color: textColorPrimary, fontWeight: FontWeight.w700);
   static TextStyle bottomSheetCloseText = GoogleFonts.nunito(
       fontSize: 20, color: primaryGreenColor, fontWeight: FontWeight.w700);
   static TextStyle headLineBottomSheet = GoogleFonts.nunito(
@@ -49,4 +54,16 @@ class Styles {
       fontSize: 15, color: createPageTextColor, fontWeight: FontWeight.w700);
   static TextStyle buttonTextSecondaryGreen = GoogleFonts.nunito(
       fontSize: 20, color: textSecondaryGreen, fontWeight: FontWeight.w700);
+  static TextStyle plantStatusBad = GoogleFonts.nunito(
+      fontSize: 18, color: primaryGreenColor, fontWeight: FontWeight.w700);
+  static TextStyle plantStatusOk = GoogleFonts.nunito(
+      fontSize: 18, color: scheduleGreenColor, fontWeight: FontWeight.w700);
+  static TextStyle careTipsText = GoogleFonts.nunito(
+      fontSize: 18,
+      color: textColorPrimary.withOpacity(0.5),
+      fontWeight: FontWeight.w500);
+  static TextStyle textSecondary = GoogleFonts.nunito(
+      fontSize: 16,
+      color: textColorPrimary.withOpacity(0.65),
+      fontWeight: FontWeight.w500);
 }
