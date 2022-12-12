@@ -126,24 +126,32 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                 Row(
                                   children: [
                                     SizedBox(width: 22),
-                                    Container(
-                                      // круг
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Color(0x33979797),
-                                            blurRadius: 1,
-                                            spreadRadius: 1,
-                                          ),
-                                        ],
-                                      ),
-                                      child: CircleAvatar(
-                                        radius: 34,
-                                        backgroundImage: AssetImage(
-                                            get<Plants>()
-                                                .getPlants()[index]
-                                                .getImagePath()),
+                                    GestureDetector(
+                                      onTap: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => PlantPage(
+                                                  plant: get<Plants>()
+                                                      .getPlants()[index]))),
+                                      child: Container(
+                                        // круг
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Color(0x33979797),
+                                              blurRadius: 1,
+                                              spreadRadius: 1,
+                                            ),
+                                          ],
+                                        ),
+                                        child: CircleAvatar(
+                                          radius: 34,
+                                          backgroundImage: AssetImage(
+                                              get<Plants>()
+                                                  .getPlants()[index]
+                                                  .getImagePath()),
+                                        ),
                                       ),
                                     ),
                                     SizedBox(width: 15),
@@ -238,24 +246,32 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                   Row(
                                     children: [
                                       SizedBox(width: 22),
-                                      Container(
-                                        // круг
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Color(0x33979797),
-                                              blurRadius: 1,
-                                              spreadRadius: 1,
-                                            ),
-                                          ],
-                                        ),
-                                        child: CircleAvatar(
-                                          radius: 34,
-                                          backgroundColor:
-                                              Styles.primaryGreenColor, //!!
-                                          // backgroundImage: AssetImage(
-                                          //     get<Plants>().getPlants()[index].getImagePath()),
+                                      GestureDetector(
+                                        onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => PlantPage(
+                                                    plant: get<Plants>()
+                                                        .getPlants()[index]))),
+                                        child: Container(
+                                          // круг
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Color(0x33979797),
+                                                blurRadius: 1,
+                                                spreadRadius: 1,
+                                              ),
+                                            ],
+                                          ),
+                                          child: CircleAvatar(
+                                            radius: 34,
+                                            backgroundColor:
+                                                Styles.primaryGreenColor, //!!
+                                            // backgroundImage: AssetImage(
+                                            //     get<Plants>().getPlants()[index].getImagePath()),
+                                          ),
                                         ),
                                       ),
                                       SizedBox(width: 15),
