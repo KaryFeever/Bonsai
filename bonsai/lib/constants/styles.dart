@@ -19,6 +19,7 @@ class Styles {
   static Color buttonBackgroundSecondaryOrange = const Color(0x1ADD9048);
   static Color textOrange = const Color(0xFFDD9048);
   static Color textSecondaryGreen = const Color(0xFFB1CF58);
+  static Color hintColor = const Color(0x33586336);
 
   static TextStyle textPrimary = GoogleFonts.nunito(
       fontSize: 16, color: textColorPrimary, fontWeight: FontWeight.w500);
@@ -34,8 +35,14 @@ class Styles {
       fontSize: 20, color: primaryGreenColor, fontWeight: FontWeight.w700);
   static TextStyle headLineBottomSheet = GoogleFonts.nunito(
       fontSize: 15, color: createPageTextColor, fontWeight: FontWeight.w600);
+  static TextStyle headLineBottomSheetError = GoogleFonts.nunito(
+      fontSize: 15, color: textOrange, fontWeight: FontWeight.w600);
   static TextStyle inputText = GoogleFonts.nunito(
       fontSize: 18, color: textColorPrimary, fontWeight: FontWeight.w600);
+  static TextStyle inputTextError = GoogleFonts.nunito(
+      fontSize: 18, color: textOrange, fontWeight: FontWeight.w600);
+  static TextStyle hintText = GoogleFonts.nunito(
+      fontSize: 18, color: hintColor, fontWeight: FontWeight.w600);
   static TextStyle careFrequencyText = GoogleFonts.nunito(
       fontSize: 18, color: textColorPrimary, fontWeight: FontWeight.w500);
   static TextStyle buttonText = GoogleFonts.nunito(

@@ -170,26 +170,26 @@ class _PlantPageState extends State<PlantPage> with GetItStateMixin {
                             ".",
                         style: Styles.plantPageDate,
                       ),
-                      Container(
-                        height: 52,
-                        width: 52,
-                        decoration: BoxDecoration(
-                          color: Styles.buttonBackgroundSecondaryGreen,
-                          borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                          border: Border.all(
-                            color: Styles.buttonBackgroundSecondaryGreen,
-                            width: 1,
-                          ),
-                        ),
-                        child: SizedBox(
-                          height: 26,
-                          width: 26,
-                          child: SvgPicture.asset(
-                            "assets/icons/calendar.svg",
-                            fit: BoxFit.scaleDown,
-                          ),
-                        ),
-                      ),
+                      // Container(
+                      //   height: 52,
+                      //   width: 52,
+                      //   decoration: BoxDecoration(
+                      //     color: Styles.buttonBackgroundSecondaryGreen,
+                      //     borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                      //     border: Border.all(
+                      //       color: Styles.buttonBackgroundSecondaryGreen,
+                      //       width: 1,
+                      //     ),
+                      //   ),
+                      //   child: SizedBox(
+                      //     height: 26,
+                      //     width: 26,
+                      //     child: SvgPicture.asset(
+                      //       "assets/icons/calendar.svg",
+                      //       fit: BoxFit.scaleDown,
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

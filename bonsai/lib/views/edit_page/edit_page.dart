@@ -18,6 +18,8 @@ class EditPage extends StatefulWidget with GetItStatefulWidgetMixin {
 class _EditPageeState extends State<EditPage> with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
+    watchOnly((EditController x) => x.getSumbit());
+    watchOnly((EditController x) => x.careChanged());
     return Container(
       height: MediaQuery.of(context).size.height * 0.92,
       decoration: new BoxDecoration(
@@ -107,7 +109,8 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                     right: 20.0,
                   ),
                   child: SizedBox(
-                    height: 74,
+                    height:
+                        get<EditController>().validateName() == null ? 74 : 90,
                     child: Row(
                       children: [
                         Column(
@@ -118,17 +121,26 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                               style: Styles.headLineBottomSheet,
                             ),
                             SizedBox(
-                              height: 48,
+                              height:
+                                  get<EditController>().validateName() == null
+                                      ? 48
+                                      : 70,
                               width: MediaQuery.of(context).size.width - 40,
                               child: TextField(
+                                onChanged: (text) => setState(() {}),
                                 controller: get<EditController>()
                                     .getPlantNameController(),
                                 showCursor: true,
                                 cursorColor: Styles.textColorPrimary,
                                 style: Styles.inputText,
                                 decoration: InputDecoration(
+                                    errorText: get<EditController>().getSumbit()
+                                        ? get<EditController>().validateName()
+                                        : null,
+                                    errorStyle:
+                                        TextStyle(color: Styles.textOrange),
                                     hintText: "Black Dahlia",
-                                    hintStyle: Styles.inputText,
+                                    hintStyle: Styles.hintText,
                                     filled: true,
                                     fillColor: Styles.fieldsBackgroundColor,
                                     border: OutlineInputBorder(
@@ -177,10 +189,17 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                                 showCursor: true,
                                 cursorColor: Styles.textColorPrimary,
                                 style: Styles.inputText,
+                                onChanged: (string) => setState(() {}),
                                 decoration: InputDecoration(
+                                    errorText: get<EditController>().getSumbit()
+                                        ? get<EditController>()
+                                            .validateDescription()
+                                        : null,
+                                    errorStyle:
+                                        TextStyle(color: Styles.textOrange),
                                     hintText:
                                         "The dahlia is a symbol of loyalty and happiness for your loved ones",
-                                    hintStyle: Styles.inputText,
+                                    hintStyle: Styles.hintText,
                                     filled: true,
                                     fillColor: Styles.fieldsBackgroundColor,
                                     border: OutlineInputBorder(
@@ -212,8 +231,13 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Type of care",
-                        style: Styles.headLineBottomSheet,
+                        get<EditController>().getSumbit()
+                            ? get<EditController>().validateCare()
+                            : "Type of care",
+                        style: get<EditController>().validateCare() ==
+                                "Type of care"
+                            ? Styles.headLineBottomSheet
+                            : Styles.headLineBottomSheetError,
                       ),
                     ],
                   ),
@@ -253,8 +277,7 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
             ),
             child: GestureDetector(
               onTap: () {
-                get<EditController>().saveChanges(widget.plant);
-                Navigator.pop(context);
+                get<EditController>().saveChanges(widget.plant, context);
               },
               child: Container(
                 height: 60,
