@@ -75,6 +75,4 @@ class Styles {
       fontSize: 16,
       color: textColorPrimary.withOpacity(0.65),
       fontWeight: FontWeight.w500);
-  static TextStyle noPlantsText = GoogleFonts.nunito(
-      fontSize: 26, color: textColorPrimary, fontWeight: FontWeight.w700);
 }

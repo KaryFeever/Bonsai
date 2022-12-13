@@ -23,6 +23,16 @@ class HomeController extends ChangeNotifier {
     return false;
   }
 
+  int counterPlantsToCareToday(List<Plant> plants) {
+    int counter = 0;
+    for (Plant plant in plants) {
+      if (careTodayPlantNeeded(plant)) {
+        counter++;
+      }
+    }
+    return counter;
+  }
+
   // что нужно сделать сегодня
   String whatNeedToDoToday(Plant plant) {
     if (plant.getWatering().careNeeded()) {

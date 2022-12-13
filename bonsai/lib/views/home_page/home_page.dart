@@ -46,28 +46,26 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (plants_counter == 0)
-                      Text(
-                        "You don't have any plants",
-                        style: Styles.noPlantsText,
-                      )
-                    else
-                      Text(
-                        "Your plants",
-                        style: Styles.headLine1,
-                      ),
+                    Text(
+                      "Your plants",
+                      style: Styles.headLine1,
+                    ),
                     if (plants_counter > 0 &&
                         HomeController()
                             .careTodayPlantsNeeded(get<Plants>().getPlants()))
                       Text(
-                        "Need care today",
+                        HomeController()
+                                .counterPlantsToCareToday(
+                                    get<Plants>().getPlants())
+                                .toString() +
+                            " plants need care",
                         style: Styles.textGray,
                       )
                     else if (plants_counter > 0 &&
                         !HomeController()
                             .careTodayPlantsNeeded(get<Plants>().getPlants()))
                       Text(
-                        "No plants need care today",
+                        "All plants are cared",
                         style: Styles.textGreen,
                       ),
                   ],
@@ -195,15 +193,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                                 style: Styles.headLine1,
                                                 maxLines: 1,
                                               ),
-                                            )
-
-                                            // Text(
-                                            //   get<Plants>()
-                                            //       .getPlants()[index]
-                                            //       .getName(),
-                                            //   style: Styles.headLine1,
-                                            // ),
-                                            ),
+                                            )),
                                         // имя
 
                                         // статус
