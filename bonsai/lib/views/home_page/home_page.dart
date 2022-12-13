@@ -1,4 +1,5 @@
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
+import 'package:bonsai/controllers/plant_page/plant_controller.dart';
 import 'package:bonsai/main.dart';
 import 'package:bonsai/views/creation_page/creation_page.dart';
 import 'package:bonsai/views/plant_page/plant_page.dart';
@@ -14,14 +15,14 @@ import '../../models/plant.dart';
 import '../../models/plants.dart';
 import '../../constants/styles.dart';
 
-bool changeForTest = true; // меняет вид карточки растения
-
 class HomePage extends StatefulWidget with GetItStatefulWidgetMixin {
   HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
+
+//todo сортировка по уходу за растением
 
 class _HomePageState extends State<HomePage> with GetItStateMixin {
   @override
@@ -105,7 +106,9 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                   padding: EdgeInsets.all(10),
-                  child: changeForTest
+                  child: get<PlantController>().careTodayNeeded(get<Plants>()
+                              .getPlants()[
+                          index]) // проверка на необходимость ухода за растением сегодня
                       ? Container(
                           height: 100,
                           decoration: BoxDecoration(
@@ -183,15 +186,11 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
 
                                         // статус
                                         Text(
-                                          // get<Plants>()
-                                          //         .getPlants()[index]
-                                          //         .getWateringStatus() ==
-                                          // ? get<Plants>()
-                                          //     .getPlants()[index]
-                                          //     .getName()
-                                          // : "empty",
-                                          // get<Plants>().getPlants()[index].getName()? : "empty",
-                                          "Need water!",
+                                          "Need " +
+                                              get<PlantController>()
+                                                  .whatNeedToDoToday(
+                                                      get<Plants>()
+                                                          .getPlants()[index]),
                                           style: Styles.plantStatusBad,
                                         ),
                                       ],
@@ -200,27 +199,35 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                 ),
 
                                 // фигура
-                                ClipPath(
-                                  clipper: MyClipper(),
-                                  child: Container(
-                                    height: 100,
-                                    width: 88,
-                                    decoration: BoxDecoration(
-                                        color: Styles.primaryGreenColor,
-                                        borderRadius: BorderRadius.horizontal(
-                                            right: Radius.circular(17.0))),
+                                GestureDetector(
+                                  onTap: () {
+                                    get<PlantController>().doCare(
+                                        get<Plants>().getPlants()[index]);
+                                    setState(
+                                        () {}); // обновляет целую страницу (плохо)
+                                  },
+                                  child: ClipPath(
+                                    clipper: MyClipper(),
                                     child: Container(
-                                      margin: EdgeInsets.only(left: 33),
-                                      child: SvgPicture.asset(
-                                        "assets/icons/water_drop.svg",
-                                        color: Colors.white,
-                                        height: 34.0,
-                                        width: 34.0,
-                                        fit: BoxFit.scaleDown,
+                                      height: 100,
+                                      width: 88,
+                                      decoration: BoxDecoration(
+                                          color: Styles.primaryGreenColor,
+                                          borderRadius: BorderRadius.horizontal(
+                                              right: Radius.circular(17.0))),
+                                      child: Container(
+                                        margin: EdgeInsets.only(left: 33),
+                                        child: SvgPicture.asset(
+                                          "assets/icons/water_drop.svg",
+                                          color: Colors.white,
+                                          height: 34.0,
+                                          width: 34.0,
+                                          fit: BoxFit.scaleDown,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
+                                )
                               ]),
                         )
                       : Opacity(
@@ -306,11 +313,11 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                             Opacity(
                                                 opacity: 0.6,
                                                 child: Text(
-                                                  "Next water in ",
+                                                  "Next ${get<PlantController>().nextCare(get<Plants>().getPlants()[index])}",
                                                   style: Styles.plantStatusOk,
                                                 )),
                                             Text(
-                                              "3 days",
+                                              " in ${get<PlantController>().nextCareDays(get<Plants>().getPlants()[index])}",
                                               style: Styles.plantStatusOk,
                                             ),
                                           ]),
