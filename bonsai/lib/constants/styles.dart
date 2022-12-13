@@ -24,6 +24,8 @@ class Styles {
       fontSize: 16, color: textColorPrimary, fontWeight: FontWeight.w500);
   static TextStyle textGreen = GoogleFonts.nunito(
       fontSize: 16, color: primaryGreenColor, fontWeight: FontWeight.w500);
+  static TextStyle textGray = GoogleFonts.nunito(
+      fontSize: 16, color: createPageTextColor, fontWeight: FontWeight.w500);
   static TextStyle headLine1 = GoogleFonts.nunito(
       fontSize: 34, color: textColorPrimary, fontWeight: FontWeight.w700);
   static TextStyle headLine2 = GoogleFonts.nunito(
@@ -66,4 +68,6 @@ class Styles {
       fontSize: 16,
       color: textColorPrimary.withOpacity(0.65),
       fontWeight: FontWeight.w500);
+  static TextStyle noPlantsText = GoogleFonts.nunito(
+      fontSize: 26, color: textColorPrimary, fontWeight: FontWeight.w700);
 }

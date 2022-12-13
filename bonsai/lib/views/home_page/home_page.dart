@@ -1,4 +1,5 @@
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
+import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:bonsai/controllers/home_page/home_controller.dart';
 import 'package:bonsai/controllers/plant_page/plant_controller.dart';
 import 'package:bonsai/main.dart';
@@ -27,6 +28,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
     int plants_counter = watchOnly((Plants x) => x.getPlantsCounter());
+    watchOnly((EditController x) => x.getChanged());
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(126),
@@ -51,14 +53,30 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Your plants",
-                      style: Styles.headLine1,
-                    ),
-                    Text(
-                      "All plants watered",
-                      style: Styles.textGreen,
-                    )
+                    if (plants_counter == 0)
+                      Text(
+                        "You don't have any plants",
+                        style: Styles.noPlantsText,
+                      )
+                    else
+                      Text(
+                        "Your plants",
+                        style: Styles.headLine1,
+                      ),
+                    if (plants_counter > 0 &&
+                        HomeController()
+                            .careTodayPlantsNeeded(get<Plants>().getPlants()))
+                      Text(
+                        "Need care today",
+                        style: Styles.textGray,
+                      )
+                    else if (plants_counter > 0 &&
+                        !HomeController()
+                            .careTodayPlantsNeeded(get<Plants>().getPlants()))
+                      Text(
+                        "No plants need care today",
+                        style: Styles.textGreen,
+                      ),
                   ],
                 ),
                 GestureDetector(
@@ -105,8 +123,8 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                   padding: EdgeInsets.all(10),
-                  child: get<HomeController>().careTodayNeeded(HomeController()
-                          .getPlantsSortedByNextCare(
+                  child: get<HomeController>().careTodayPlantNeeded(
+                          HomeController().getPlantsSortedByNextCare(
                               get<Plants>().getPlants())[index])
                       // проверка на необходимость ухода за растением сегодня
                       ? Container(

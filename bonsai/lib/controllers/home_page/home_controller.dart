@@ -4,8 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:bonsai/models/plant.dart';
 
 class HomeController extends ChangeNotifier {
+  bool careTodayPlantsNeeded(List<Plant> plants) {
+    for (Plant plant in plants) {
+      if (careTodayPlantNeeded(plant)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   // проверка на необходимость ухода за растением сегодня
-  bool careTodayNeeded(Plant plant) {
+  bool careTodayPlantNeeded(Plant plant) {
     if (plant.getWatering().careNeeded() ||
         plant.getSpraying().careNeeded() ||
         plant.getFertilizing().careNeeded()) {
