@@ -1,5 +1,6 @@
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
+import 'package:bonsai/controllers/home_page/home_controller.dart';
 import 'package:bonsai/controllers/navigation_page/navigation_controller.dart';
 import 'package:bonsai/controllers/plant_page/plant_controller.dart';
 import 'package:bonsai/models/plants.dart';
@@ -13,4 +14,5 @@ void setup() {
   locator.registerSingleton<EditController>(EditController());
   locator.registerSingleton<Plants>(Plants());
   locator.registerSingleton<PlantController>(PlantController());
+  locator.registerSingleton<HomeController>(HomeController());
 }

@@ -1,20 +1,14 @@
-import 'package:bonsai/controllers/creation_page/creation_controller.dart';
-import 'package:bonsai/main.dart';
+import 'package:bonsai/controllers/edit_page/edit_controller.dart';
+import 'package:bonsai/controllers/home_page/home_controller.dart';
 import 'package:bonsai/views/creation_page/creation_page.dart';
 import 'package:bonsai/views/plant_page/plant_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:proste_bezier_curve/proste_bezier_curve.dart';
-
-import '../../models/plant.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import '../../models/plants.dart';
 import '../../constants/styles.dart';
-
-bool changeForTest = true; // меняет вид карточки растения
 
 class HomePage extends StatefulWidget with GetItStatefulWidgetMixin {
   HomePage({super.key});
@@ -27,6 +21,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
     int plants_counter = watchOnly((Plants x) => x.getPlantsCounter());
+    watchOnly((EditController x) => x.getChanged());
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(126),
@@ -51,14 +46,30 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Your plants",
-                      style: Styles.headLine1,
-                    ),
-                    Text(
-                      "All plants watered",
-                      style: Styles.textGreen,
-                    )
+                    if (plants_counter == 0)
+                      Text(
+                        "You don't have any plants",
+                        style: Styles.noPlantsText,
+                      )
+                    else
+                      Text(
+                        "Your plants",
+                        style: Styles.headLine1,
+                      ),
+                    if (plants_counter > 0 &&
+                        HomeController()
+                            .careTodayPlantsNeeded(get<Plants>().getPlants()))
+                      Text(
+                        "Need care today",
+                        style: Styles.textGray,
+                      )
+                    else if (plants_counter > 0 &&
+                        !HomeController()
+                            .careTodayPlantsNeeded(get<Plants>().getPlants()))
+                      Text(
+                        "No plants need care today",
+                        style: Styles.textGreen,
+                      ),
                   ],
                 ),
                 GestureDetector(
@@ -105,7 +116,10 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                   padding: EdgeInsets.all(10),
-                  child: changeForTest
+                  child: get<HomeController>().careTodayPlantNeeded(
+                          HomeController().getPlantsSortedByNextCare(
+                              get<Plants>().getPlants())[index])
+                      // проверка на необходимость ухода за растением сегодня
                       ? Container(
                           height: 100,
                           decoration: BoxDecoration(
@@ -126,24 +140,32 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                 Row(
                                   children: [
                                     SizedBox(width: 22),
-                                    Container(
-                                      // круг
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Color(0x33979797),
-                                            blurRadius: 1,
-                                            spreadRadius: 1,
-                                          ),
-                                        ],
-                                      ),
-                                      child: CircleAvatar(
-                                        radius: 34,
-                                        backgroundColor:
-                                            Styles.primaryGreenColor, //!!
-                                        // backgroundImage: AssetImage(
-                                        //     get<Plants>().getPlants()[index].getImagePath()),
+                                    GestureDetector(
+                                      onTap: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => PlantPage(
+                                                  plant: get<Plants>()
+                                                      .getPlants()[index]))),
+                                      child: Container(
+                                        // круг
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Color(0x33979797),
+                                              blurRadius: 1,
+                                              spreadRadius: 1,
+                                            ),
+                                          ],
+                                        ),
+                                        child: CircleAvatar(
+                                          radius: 34,
+                                          backgroundImage: AssetImage(
+                                              get<Plants>()
+                                                  .getPlants()[index]
+                                                  .getImagePath()),
+                                        ),
                                       ),
                                     ),
                                     SizedBox(width: 15),
@@ -156,34 +178,41 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                       children: [
                                         //переход на страницу растения
                                         GestureDetector(
-                                          onTap: () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PlantPage(
-                                                          plant: get<Plants>()
-                                                                  .getPlants()[
-                                                              index]))),
-                                          child: Text(
-                                            get<Plants>()
-                                                .getPlants()[index]
-                                                .getName(),
-                                            style: Styles.headLine1,
-                                          ),
-                                        ),
+                                            onTap: () => Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PlantPage(
+                                                            plant: get<Plants>()
+                                                                    .getPlants()[
+                                                                index]))),
+                                            child: Container(
+                                              width: 201,
+                                              child: AutoSizeText(
+                                                get<Plants>()
+                                                    .getPlants()[index]
+                                                    .getName(),
+                                                style: Styles.headLine1,
+                                                maxLines: 1,
+                                              ),
+                                            )
+
+                                            // Text(
+                                            //   get<Plants>()
+                                            //       .getPlants()[index]
+                                            //       .getName(),
+                                            //   style: Styles.headLine1,
+                                            // ),
+                                            ),
                                         // имя
 
                                         // статус
                                         Text(
-                                          // get<Plants>()
-                                          //         .getPlants()[index]
-                                          //         .getWateringStatus() ==
-                                          // ? get<Plants>()
-                                          //     .getPlants()[index]
-                                          //     .getName()
-                                          // : "empty",
-                                          // get<Plants>().getPlants()[index].getName()? : "empty",
-                                          "Need water!",
+                                          "Need " +
+                                              get<HomeController>()
+                                                  .whatNeedToDoToday(
+                                                      get<Plants>()
+                                                          .getPlants()[index]),
                                           style: Styles.plantStatusBad,
                                         ),
                                       ],
@@ -192,27 +221,35 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                 ),
 
                                 // фигура
-                                ClipPath(
-                                  clipper: MyClipper(),
-                                  child: Container(
-                                    height: 100,
-                                    width: 88,
-                                    decoration: BoxDecoration(
-                                        color: Styles.primaryGreenColor,
-                                        borderRadius: BorderRadius.horizontal(
-                                            right: Radius.circular(17.0))),
+                                GestureDetector(
+                                  onTap: () {
+                                    get<HomeController>().doCare(
+                                        get<Plants>().getPlants()[index]);
+                                    setState(
+                                        () {}); // обновляет целую страницу (плохо)
+                                  },
+                                  child: ClipPath(
+                                    clipper: MyClipper(),
                                     child: Container(
-                                      margin: EdgeInsets.only(left: 33),
-                                      child: SvgPicture.asset(
-                                        "assets/icons/water_drop.svg",
-                                        color: Colors.white,
-                                        height: 34.0,
-                                        width: 34.0,
-                                        fit: BoxFit.scaleDown,
+                                      height: 100,
+                                      width: 88,
+                                      decoration: BoxDecoration(
+                                          color: Styles.primaryGreenColor,
+                                          borderRadius: BorderRadius.horizontal(
+                                              right: Radius.circular(17.0))),
+                                      child: Container(
+                                        margin: EdgeInsets.only(left: 33),
+                                        child: SvgPicture.asset(
+                                          "assets/icons/water_drop.svg",
+                                          color: Colors.white,
+                                          height: 34.0,
+                                          width: 34.0,
+                                          fit: BoxFit.scaleDown,
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
+                                )
                               ]),
                         )
                       : Opacity(
@@ -238,24 +275,32 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                   Row(
                                     children: [
                                       SizedBox(width: 22),
-                                      Container(
-                                        // круг
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Color(0x33979797),
-                                              blurRadius: 1,
-                                              spreadRadius: 1,
-                                            ),
-                                          ],
-                                        ),
-                                        child: CircleAvatar(
-                                          radius: 34,
-                                          backgroundColor:
-                                              Styles.primaryGreenColor, //!!
-                                          // backgroundImage: AssetImage(
-                                          //     get<Plants>().getPlants()[index].getImagePath()),
+                                      GestureDetector(
+                                        onTap: () => Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => PlantPage(
+                                                    plant: get<Plants>()
+                                                        .getPlants()[index]))),
+                                        child: Container(
+                                          // круг
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Color(0x33979797),
+                                                blurRadius: 1,
+                                                spreadRadius: 1,
+                                              ),
+                                            ],
+                                          ),
+                                          child: CircleAvatar(
+                                            radius: 34,
+                                            backgroundImage: AssetImage(
+                                                get<Plants>()
+                                                    .getPlants()[index]
+                                                    .getImagePath()),
+                                          ),
                                         ),
                                       ),
                                       SizedBox(width: 15),
@@ -268,21 +313,24 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                         children: [
                                           //переход на страницу растения
                                           GestureDetector(
-                                            onTap: () => Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        PlantPage(
-                                                            plant: get<Plants>()
-                                                                    .getPlants()[
-                                                                index]))),
-                                            child: Text(
-                                              get<Plants>()
-                                                  .getPlants()[index]
-                                                  .getName(),
-                                              style: Styles.headLine1,
-                                            ),
-                                          ),
+                                              onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PlantPage(
+                                                              plant: get<Plants>()
+                                                                      .getPlants()[
+                                                                  index]))),
+                                              child: Container(
+                                                width: 201,
+                                                child: AutoSizeText(
+                                                  get<Plants>()
+                                                      .getPlants()[index]
+                                                      .getName(),
+                                                  style: Styles.headLine1,
+                                                  maxLines: 1,
+                                                ),
+                                              )),
                                           // имя
 
                                           // статус
@@ -290,11 +338,11 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                             Opacity(
                                                 opacity: 0.6,
                                                 child: Text(
-                                                  "Next water in ",
+                                                  "Next ${get<HomeController>().nextCare(get<Plants>().getPlants()[index])}",
                                                   style: Styles.plantStatusOk,
                                                 )),
                                             Text(
-                                              "3 days",
+                                              " in ${get<HomeController>().nextCareDays(get<Plants>().getPlants()[index])}",
                                               style: Styles.plantStatusOk,
                                             ),
                                           ]),
@@ -342,7 +390,3 @@ class MyClipper extends CustomClipper<Path> {
     return true;
   }
 }
-
-//  Text(
-//         plant != null ? get<Plants>().getPlants()[0].getName() : "empty",
-//       )
