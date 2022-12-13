@@ -1,19 +1,12 @@
-import 'package:bonsai/controllers/creation_page/creation_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:bonsai/controllers/home_page/home_controller.dart';
-import 'package:bonsai/controllers/plant_page/plant_controller.dart';
-import 'package:bonsai/main.dart';
 import 'package:bonsai/views/creation_page/creation_page.dart';
 import 'package:bonsai/views/plant_page/plant_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:proste_bezier_curve/proste_bezier_curve.dart';
-
-import '../../models/plant.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import '../../models/plants.dart';
 import '../../constants/styles.dart';
 
@@ -185,21 +178,32 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                       children: [
                                         //переход на страницу растения
                                         GestureDetector(
-                                          onTap: () => Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PlantPage(
-                                                          plant: get<Plants>()
-                                                                  .getPlants()[
-                                                              index]))),
-                                          child: Text(
-                                            get<Plants>()
-                                                .getPlants()[index]
-                                                .getName(),
-                                            style: Styles.headLine1,
-                                          ),
-                                        ),
+                                            onTap: () => Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PlantPage(
+                                                            plant: get<Plants>()
+                                                                    .getPlants()[
+                                                                index]))),
+                                            child: Container(
+                                              width: 200,
+                                              child: AutoSizeText(
+                                                get<Plants>()
+                                                    .getPlants()[index]
+                                                    .getName(),
+                                                style: Styles.headLine1,
+                                                maxLines: 1,
+                                              ),
+                                            )
+
+                                            // Text(
+                                            //   get<Plants>()
+                                            //       .getPlants()[index]
+                                            //       .getName(),
+                                            //   style: Styles.headLine1,
+                                            // ),
+                                            ),
                                         // имя
 
                                         // статус

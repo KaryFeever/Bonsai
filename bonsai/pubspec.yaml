@@ -43,6 +43,7 @@ dependencies:
   get_it_mixin: ^3.1.4+2
   intl: ^0.17.0
   proste_bezier_curve: ^2.0.2
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:
