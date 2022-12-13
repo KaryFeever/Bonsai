@@ -187,7 +187,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                                                     .getPlants()[
                                                                 index]))),
                                             child: Container(
-                                              width: 200,
+                                              width: 201,
                                               child: AutoSizeText(
                                                 get<Plants>()
                                                     .getPlants()[index]
@@ -313,21 +313,24 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                         children: [
                                           //переход на страницу растения
                                           GestureDetector(
-                                            onTap: () => Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        PlantPage(
-                                                            plant: get<Plants>()
-                                                                    .getPlants()[
-                                                                index]))),
-                                            child: Text(
-                                              get<Plants>()
-                                                  .getPlants()[index]
-                                                  .getName(),
-                                              style: Styles.headLine1,
-                                            ),
-                                          ),
+                                              onTap: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PlantPage(
+                                                              plant: get<Plants>()
+                                                                      .getPlants()[
+                                                                  index]))),
+                                              child: Container(
+                                                width: 201,
+                                                child: AutoSizeText(
+                                                  get<Plants>()
+                                                      .getPlants()[index]
+                                                      .getName(),
+                                                  style: Styles.headLine1,
+                                                  maxLines: 1,
+                                                ),
+                                              )),
                                           // имя
 
                                           // статус
