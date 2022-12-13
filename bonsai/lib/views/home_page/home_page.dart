@@ -1,4 +1,5 @@
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
+import 'package:bonsai/controllers/home_page/home_controller.dart';
 import 'package:bonsai/controllers/plant_page/plant_controller.dart';
 import 'package:bonsai/main.dart';
 import 'package:bonsai/views/creation_page/creation_page.dart';
@@ -21,8 +22,6 @@ class HomePage extends StatefulWidget with GetItStatefulWidgetMixin {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
-//todo сортировка по уходу за растением
 
 class _HomePageState extends State<HomePage> with GetItStateMixin {
   @override
@@ -106,9 +105,10 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
             itemBuilder: (BuildContext context, int index) {
               return Padding(
                   padding: EdgeInsets.all(10),
-                  child: get<PlantController>().careTodayNeeded(get<Plants>()
-                              .getPlants()[
-                          index]) // проверка на необходимость ухода за растением сегодня
+                  child: get<HomeController>().careTodayNeeded(HomeController()
+                          .getPlantsSortedByNextCare(
+                              get<Plants>().getPlants())[index])
+                      // проверка на необходимость ухода за растением сегодня
                       ? Container(
                           height: 100,
                           decoration: BoxDecoration(
@@ -187,7 +187,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                         // статус
                                         Text(
                                           "Need " +
-                                              get<PlantController>()
+                                              get<HomeController>()
                                                   .whatNeedToDoToday(
                                                       get<Plants>()
                                                           .getPlants()[index]),
@@ -201,7 +201,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                 // фигура
                                 GestureDetector(
                                   onTap: () {
-                                    get<PlantController>().doCare(
+                                    get<HomeController>().doCare(
                                         get<Plants>().getPlants()[index]);
                                     setState(
                                         () {}); // обновляет целую страницу (плохо)
@@ -274,10 +274,10 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                           ),
                                           child: CircleAvatar(
                                             radius: 34,
-                                            backgroundColor:
-                                                Styles.primaryGreenColor, //!!
-                                            // backgroundImage: AssetImage(
-                                            //     get<Plants>().getPlants()[index].getImagePath()),
+                                            backgroundImage: AssetImage(
+                                                get<Plants>()
+                                                    .getPlants()[index]
+                                                    .getImagePath()),
                                           ),
                                         ),
                                       ),
@@ -313,11 +313,11 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                             Opacity(
                                                 opacity: 0.6,
                                                 child: Text(
-                                                  "Next ${get<PlantController>().nextCare(get<Plants>().getPlants()[index])}",
+                                                  "Next ${get<HomeController>().nextCare(get<Plants>().getPlants()[index])}",
                                                   style: Styles.plantStatusOk,
                                                 )),
                                             Text(
-                                              " in ${get<PlantController>().nextCareDays(get<Plants>().getPlants()[index])}",
+                                              " in ${get<HomeController>().nextCareDays(get<Plants>().getPlants()[index])}",
                                               style: Styles.plantStatusOk,
                                             ),
                                           ]),
@@ -365,7 +365,3 @@ class MyClipper extends CustomClipper<Path> {
     return true;
   }
 }
-
-//  Text(
-//         plant != null ? get<Plants>().getPlants()[0].getName() : "empty",
-//       )

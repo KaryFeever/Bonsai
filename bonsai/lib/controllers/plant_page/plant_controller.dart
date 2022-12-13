@@ -51,30 +51,6 @@ class PlantController extends ChangeNotifier {
     return plant.getFertilizing().careNeeded();
   }
 
-  // проверка на необходимость ухода за растением сегодня
-  bool careTodayNeeded(Plant plant) {
-    if (plant.getWatering().careNeeded() ||
-        plant.getSpraying().careNeeded() ||
-        plant.getFertilizing().careNeeded()) {
-      return true;
-    }
-    return false;
-  }
-
-  // что нужно сделать сегодня
-  String whatNeedToDoToday(Plant plant) {
-    if (plant.getWatering().careNeeded()) {
-      return "water";
-    }
-    if (plant.getSpraying().careNeeded()) {
-      return "spray";
-    }
-    if (plant.getFertilizing().careNeeded()) {
-      return "fertilize";
-    }
-    return "nothing"; // :D
-  }
-
   String wateringNextCareDays(Plant plant) {
     if (plant.getWatering().getDaysUntilNextCare() == 1) {
       return plant.getWatering().getDaysUntilNextCare().toString() + " day";
@@ -94,61 +70,6 @@ class PlantController extends ChangeNotifier {
       return plant.getFertilizing().getDaysUntilNextCare().toString() + " day";
     }
     return plant.getFertilizing().getDaysUntilNextCare().toString() + " days";
-  }
-
-  // что нужно сделать раньше всего
-  String nextCare(Plant plant) {
-    int? w = 99999; // костыли :D
-    int? s = 99999;
-    int? f = 99999;
-
-    if (wateringEnabled(plant)) {
-      w = plant.getWatering().getDaysUntilNextCare();
-    }
-    if (sprayingEnabled(plant)) {
-      s = plant.getSpraying().getDaysUntilNextCare();
-    }
-    if (fertilizingEnabled(plant)) {
-      f = plant.getFertilizing().getDaysUntilNextCare();
-    }
-
-    // // если ничего не нужно делать
-    // if (w == null && s == null && f == null) {
-    //   return "No plans";
-    // }
-
-    int min = w!;
-    if (s! < min) {
-      min = s;
-    }
-    if (f! < min) {
-      min = f;
-    }
-
-    if (min == w) {
-      return "water";
-    } else if (min == s) {
-      return "spray";
-    } else if (min == f) {
-      return "fertilize";
-    }
-
-    return "nothing"; // никогда не должно сюда попасть :D
-  }
-
-  // сколько дней до следующего ухода
-  String nextCareDays(Plant plant) {
-    String care = nextCare(plant);
-
-    if (care == "water") {
-      return wateringNextCareDays(plant);
-    } else if (care == "spray") {
-      return sprayingNextCareDays(plant);
-    } else if (care == "fertilize") {
-      return fertilizingNextCareDays(plant);
-    }
-
-    return "noting";
   }
 
   void water(Plant plant) {
@@ -173,21 +94,5 @@ class PlantController extends ChangeNotifier {
     plant.getFertilizing().updateNextCareTime();
     _changes++;
     notifyListeners();
-  }
-
-  // для кнопки "Ухаживать" на главной странице
-  void doCare(Plant plant) {
-    if (plant.getWatering().careNeeded()) {
-      water(plant);
-      return;
-    }
-    if (plant.getSpraying().careNeeded()) {
-      spray(plant);
-      return;
-    }
-    if (plant.getFertilizing().careNeeded()) {
-      fertilize(plant);
-      return;
-    }
   }
 }
