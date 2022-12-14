@@ -8,20 +8,13 @@ class CareType {
   bool _enabled = false;
   DateTime? _lastCare = null;
   DateTime? _nextCare = null;
-  bool test = false;
 
   void setCareTime(DateTime date) {
     _lastCare = date;
   }
 
   void updateNextCareTime() {
-    if (test) {
-      _nextCare = _lastCare?.add(Duration(days: _frequency));
-      test = false;
-    } else {
-      _nextCare = _lastCare?.add(Duration(days: _frequency - 1));
-      test = true;
-    }
+    _nextCare = _lastCare?.add(Duration(days: _frequency));
   }
 
   int? getDaysUntilNextCare() {

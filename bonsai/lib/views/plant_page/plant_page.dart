@@ -73,8 +73,6 @@ class _PlantPageState extends State<PlantPage> with GetItStateMixin {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // TODO
-                    print(DateTime.now());
                     showModalBottomSheet(
                         isScrollControlled: true,
                         backgroundColor: Styles.secondaryGreenColor,
