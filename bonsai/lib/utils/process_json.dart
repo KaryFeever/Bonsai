@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:bonsai/models/achievement_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/plants.dart';
 
-Future<String> readContent(Plants plants) async {
+Future<String> readContent(Plants plants, Achievements achievements) async {
   SharedPreferences pref = await SharedPreferences.getInstance();
-  Map jsonData = jsonDecode(pref.getString('userData5')!);
+  Map jsonData = jsonDecode(pref.getString('userData8')!);
 
   for (int i = 0; i < jsonData['plants']['plants_counter']; i++) {
     plants.addPlant(
@@ -27,10 +28,19 @@ Future<String> readContent(Plants plants) async {
         jsonData['plants']['plants_list'][i]["image"]);
   }
 
+  for (int i = 0; i < 12; i++) {
+    if (jsonData['achievements']['achievements_list'][i]['unclocked']) {
+      achievements.getAchievement(i).achievementUnlock();
+    }
+  }
+  achievements.setWateringCounter(jsonData['achievements']['watering_counter']);
+  achievements.setSprayingCounter(jsonData['achievements']['spraying_counter']);
+  achievements
+      .setFertilizingCounter(jsonData['achievements']['fertilizing_counter']);
   return jsonData['plants'];
 }
 
-void writeContent(Plants plants) async {
+void writeContent(Plants plants, Achievements achievements) async {
   SharedPreferences pref = await SharedPreferences.getInstance();
   // dynamic jsonString;
   String plantsString = "";
@@ -71,13 +81,33 @@ void writeContent(Plants plants) async {
       plantsString += ",";
     }
   }
+
+  String achievementsString = "";
+
+  for (int i = 0; i < achievements.getCountOfAchievements(); i++) {
+    achievementsString += "{" +
+        "\"name\": \"${achievements.getAchievement(i).getName()}\"," +
+        "\"description\": \"${achievements.getAchievement(i).getDescription()}\"," +
+        "\"svg\": \"${achievements.getAchievement(i).getSvgPath()}\"," +
+        "\"unclocked\": ${achievements.getAchievement(i).getStatus()}" +
+        "}";
+    if (i != achievements.getCountOfAchievements() - 1) {
+      achievementsString += ",";
+    }
+  }
   String jsonString = "{ " +
       "\"plants\": { " +
       "\"plants_counter\": ${plants.getPlantsCounter()}," +
       " \"plants_list\": [ $plantsString ]" +
-      "}" +
+      "},"
+          "\"achievements\": {" +
+      "\"achievements_list\": [ $achievementsString ]," +
+      "\"watering_counter\": ${achievements.getWateringCounter()}," +
+      "\"spraying_counter\": ${achievements.getSprayingCounter()}," +
+      "\"fertilizing_counter\": ${achievements.getFertilizingCounter()}"
+          "}" +
       "}";
 
   String json = jsonEncode(jsonDecode(jsonString));
-  pref.setString('userData5', json);
+  pref.setString('userData8', json);
 }

@@ -38,6 +38,18 @@ class Achievements extends ChangeNotifier {
   int _sprayingCounter = 0;
   int _fertilizingCounter = 0;
 
+  void setWateringCounter(int value) {
+    _wateringCounter = value;
+  }
+
+  void setSprayingCounter(int value) {
+    _sprayingCounter = value;
+  }
+
+  void setFertilizingCounter(int value) {
+    _fertilizingCounter = value;
+  }
+
   void incrementWateringCounter() {
     _wateringCounter++;
   }
