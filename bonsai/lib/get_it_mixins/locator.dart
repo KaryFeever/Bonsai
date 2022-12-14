@@ -16,4 +16,7 @@ void setup() {
   locator.registerSingleton<AchievementController>(AchievementController());
   locator.registerSingleton<EditController>(EditController());
   locator.registerSingleton<Plants>(Plants());
+  locator.registerSingleton<PlantController>(PlantController());
+  locator.registerSingleton<HomeController>(HomeController());
+  locator.registerSingleton<Achievements>(Achievements());
 }
