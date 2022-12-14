@@ -146,6 +146,12 @@ class AchievementController extends ChangeNotifier {
     return nextRank;
   }
 
+  bool platinumEarned(Achievements achievements) {
+    return achievements
+        .getAchievement(achievements.getCountOfAchievements() - 1)
+        .getStatus();
+  }
+
   void updatePlantsAchievements(Achievements achievements, Plants plants) {
     switch (plants.getPlants().length) {
       case 1:

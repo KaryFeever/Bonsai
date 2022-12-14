@@ -80,7 +80,10 @@ class _AchievementsPageState extends State<AchievementsPage>
                               style: Styles.rankLeftBold,
                             ),
                             Text(
-                              " left to ",
+                              get<AchievementController>()
+                                      .platinumEarned(get<Achievements>())
+                                  ? ""
+                                  : " left to ",
                               style: Styles.rankLeftOfBold,
                             ),
                             Text(
