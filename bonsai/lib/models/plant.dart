@@ -1,11 +1,11 @@
+/// Model for the plant
+/// Author: Naumenko Maksim (xnaume01)
 import 'package:bonsai/models/care_type.dart';
-import 'package:flutter/material.dart';
 
 class Plant {
   String _name = "";
   String _description = "";
   String _imagePath = "";
-  // static Image _image = NULL;
   CareType _watering = CareType("Watering");
   CareType _spraying = CareType("Spraying");
   CareType _fertilizing = CareType("Fertilizing");

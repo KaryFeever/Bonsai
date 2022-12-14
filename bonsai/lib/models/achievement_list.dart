@@ -1,3 +1,5 @@
+/// Model for the Achievements
+/// Author: Mikhailov Kirill (xmikha00)
 import 'package:bonsai/models/achievement.dart';
 import 'package:flutter/material.dart';
 

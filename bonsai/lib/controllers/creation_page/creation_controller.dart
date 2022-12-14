@@ -1,10 +1,9 @@
+/// Controller for the plant creation page
+/// Author: Naumenko Maksim (xnaume01)
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
-import 'package:bonsai/main.dart';
 import 'package:bonsai/models/achievement_list.dart';
 import 'package:bonsai/services/local_notification_service.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
-import '../../models/plant.dart';
 import '../../models/plants.dart';
 
 class CreationController extends ChangeNotifier {

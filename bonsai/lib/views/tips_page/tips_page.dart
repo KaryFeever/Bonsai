@@ -1,3 +1,5 @@
+/// View for the Care tips page
+/// Author: Kovalets Vladyslav (xkoval21)
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

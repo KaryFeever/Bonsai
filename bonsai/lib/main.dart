@@ -1,13 +1,11 @@
+/// Main class to execute the application
+/// Author: Naumenko Maksim (xnaume01)
 import 'package:bonsai/constants/styles.dart';
 import 'package:bonsai/get_it_mixins/locator.dart';
-import 'package:bonsai/models/plants.dart';
-import 'package:bonsai/utils/process_json.dart';
 import 'package:bonsai/views/navigation_page/navigation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:bonsai/services/local_notification_service.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

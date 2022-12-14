@@ -1,3 +1,7 @@
+/// View for the home page
+/// Authors:
+/// - Kovalets Vladyslav (xkoval21)
+/// - Naumenko Maksim (xnaume01)
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:bonsai/controllers/home_page/home_controller.dart';
@@ -10,7 +14,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:proste_bezier_curve/proste_bezier_curve.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../models/plants.dart';
 import '../../constants/styles.dart';
 
@@ -214,8 +217,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                         get<Plants>().getPlants()[index],
                                         get<AchievementController>(),
                                         get<Achievements>());
-                                    setState(
-                                        () {}); // обновляет целую страницу (плохо)
+                                    setState(() {});
                                   },
                                   child: ClipPath(
                                     clipper: MyClipper(),

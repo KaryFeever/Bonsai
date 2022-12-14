@@ -1,5 +1,6 @@
+/// Controller for the plant page
+/// Author: Naumenko Maksim (xnaume01)
 import 'package:flutter/material.dart';
-
 import '../../models/plant.dart';
 
 class PlantController extends ChangeNotifier {

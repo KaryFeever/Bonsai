@@ -1,3 +1,8 @@
+/// Color and text style constants
+/// Authors:
+/// - Naumenko Maksim (xnaume01)
+/// - Mikhailov Kirill (xmikha00)
+/// - Kovalets Vladyslav (xkoval21)
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 

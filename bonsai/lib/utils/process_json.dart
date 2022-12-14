@@ -1,13 +1,13 @@
+/// Functions for parsing json file
+/// Author: Naumenko Maksim (xnaume01)
 import 'dart:convert';
-
 import 'package:bonsai/models/achievement_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../models/plants.dart';
 
 Future<String> readContent(Plants plants, Achievements achievements) async {
   SharedPreferences pref = await SharedPreferences.getInstance();
-  Map jsonData = jsonDecode(pref.getString('userData8')!);
+  Map jsonData = jsonDecode(pref.getString('structure123')!);
 
   for (int i = 0; i < jsonData['plants']['plants_counter']; i++) {
     plants.addPlant(
@@ -109,5 +109,5 @@ void writeContent(Plants plants, Achievements achievements) async {
       "}";
 
   String json = jsonEncode(jsonDecode(jsonString));
-  pref.setString('userData8', json);
+  pref.setString('structure123', json);
 }

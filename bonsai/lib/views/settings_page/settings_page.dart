@@ -1,12 +1,10 @@
+/// View for the setting page
+/// Author: Mikhailov Kirill (xmikha00)
 import 'package:bonsai/constants/styles.dart';
 import 'package:bonsai/controllers/settings_page/settings_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_svg/parser.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
 class SettingsPage extends StatefulWidget with GetItStatefulWidgetMixin {

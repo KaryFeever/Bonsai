@@ -1,13 +1,9 @@
+/// View for the Achievements page
+/// Author: Mikhailov Kirill (xmikha00)
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
-import 'package:bonsai/models/plants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
-
-import '../../models/achievement.dart';
 import '../../models/achievement_list.dart';
 import '../../constants/styles.dart';
 

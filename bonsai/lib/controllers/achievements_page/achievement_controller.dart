@@ -1,7 +1,6 @@
-import 'package:bonsai/main.dart';
+/// Controller for the achievement page
+/// Author: Mikhailov Kirill (xmikha00)
 import 'package:flutter/material.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:bonsai/services/local_notification_service.dart';
 import '../../models/achievement.dart';
 import '../../models/achievement_list.dart';
@@ -157,6 +156,7 @@ class AchievementController extends ChangeNotifier {
   void updatePlantsAchievements(Achievements achievements, Plants plants) {
     switch (plants.getPlants().length) {
       case 1:
+        if (achievements.getAchievement(0).getStatus()) return;
         achievements.getAchievement(0).achievementUnlock();
         LocalNotificationService().showNotification(
             id: 0,
@@ -166,6 +166,7 @@ class AchievementController extends ChangeNotifier {
                 "\" unlocked!");
         break;
       case 5:
+        if (achievements.getAchievement(6).getStatus()) return;
         achievements.getAchievement(6).achievementUnlock();
         LocalNotificationService().showNotification(
             id: 6,
@@ -175,6 +176,7 @@ class AchievementController extends ChangeNotifier {
                 "\" unlocked!");
         break;
       case 15:
+        if (achievements.getAchievement(7).getStatus()) return;
         achievements.getAchievement(7).achievementUnlock();
         LocalNotificationService().showNotification(
             id: 7,
@@ -191,6 +193,7 @@ class AchievementController extends ChangeNotifier {
     achievements.incrementWateringCounter();
     switch (achievements.getWateringCounter()) {
       case 1:
+        if (achievements.getAchievement(1).getStatus()) return;
         achievements.getAchievement(1).achievementUnlock();
         LocalNotificationService().showNotification(
             id: 1,
@@ -200,6 +203,7 @@ class AchievementController extends ChangeNotifier {
                 "\" unlocked!");
         break;
       case 5:
+        if (achievements.getAchievement(9).getStatus()) return;
         achievements.getAchievement(9).achievementUnlock();
         LocalNotificationService().showNotification(
             id: 9,
@@ -209,6 +213,7 @@ class AchievementController extends ChangeNotifier {
                 "\" unlocked!");
         break;
       case 15:
+        if (achievements.getAchievement(10).getStatus()) return;
         achievements.getAchievement(10).achievementUnlock();
         LocalNotificationService().showNotification(
             id: 10,
@@ -224,6 +229,7 @@ class AchievementController extends ChangeNotifier {
   void updateSpraying(Achievements achievements) {
     achievements.incrementSprayingCounter();
     if (achievements.getSprayingCounter() == 1) {
+      if (achievements.getAchievement(2).getStatus()) return;
       achievements.getAchievement(2).achievementUnlock();
       LocalNotificationService().showNotification(
           id: 2,
@@ -237,6 +243,7 @@ class AchievementController extends ChangeNotifier {
   void updateFertilizng(Achievements achievements) {
     achievements.incrementFertilizingCounter();
     if (achievements.getFertilizingCounter() == 1) {
+      if (achievements.getAchievement(3).getStatus()) return;
       achievements.getAchievement(3).achievementUnlock();
       LocalNotificationService().showNotification(
           id: 3,
@@ -248,6 +255,7 @@ class AchievementController extends ChangeNotifier {
   }
 
   void unlockDescriptionAchievement(Achievements achievements) {
+    if (achievements.getAchievement(4).getStatus()) return;
     achievements.getAchievement(4).achievementUnlock();
     LocalNotificationService().showNotification(
         id: 4,
@@ -259,6 +267,7 @@ class AchievementController extends ChangeNotifier {
   }
 
   void unlockRenameAchievement(Achievements achievements) {
+    if (achievements.getAchievement(5).getStatus()) return;
     achievements.getAchievement(5).achievementUnlock();
     LocalNotificationService().showNotification(
         id: 5,
@@ -270,6 +279,7 @@ class AchievementController extends ChangeNotifier {
   }
 
   void unlockDeletedAchievement(Achievements achievements) {
+    if (achievements.getAchievement(8).getStatus()) return;
     achievements.getAchievement(8).achievementUnlock();
     LocalNotificationService().showNotification(
         id: 8,
@@ -281,6 +291,9 @@ class AchievementController extends ChangeNotifier {
   }
 
   void unlockPlatinumTrophy(Achievements achievements) {
+    if (achievements
+        .getAchievement(achievements.getCountOfAchievements() - 1)
+        .getStatus()) return;
     for (int i = 0; i < achievements.getCountOfAchievements() - 1; i++) {
       if (!achievements.getAchievement(i).getStatus()) return;
     }

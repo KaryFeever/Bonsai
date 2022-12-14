@@ -1,3 +1,5 @@
+/// Widget for the care configuration
+/// Author: Naumenko Maksim (xnaume01)
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:flutter/cupertino.dart';

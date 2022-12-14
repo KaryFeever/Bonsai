@@ -1,3 +1,5 @@
+/// Model for the Care type
+/// Author: Naumenko Maksim (xnaume01)
 class CareType {
   String _name = "";
   int _frequency = 0;
@@ -31,11 +33,6 @@ class CareType {
   }
 
   bool careNeeded() {
-    // if ((DateTime.now().year == _nextCare?.year) &&
-    //     (DateTime.now().month == _nextCare?.month) &&
-    //     (DateTime.now().day == _nextCare?.day)) {
-    //   return true;
-    // }
     if (_nextCare
             ?.difference(DateTime(
                 DateTime.now().year, DateTime.now().month, DateTime.now().day))

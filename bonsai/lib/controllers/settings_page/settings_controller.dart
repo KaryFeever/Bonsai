@@ -1,6 +1,6 @@
-import 'package:bonsai/main.dart';
+/// Controller for the settings page
+/// Author: Mikhailov Kirill (xmikha00)
 import 'package:flutter/material.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
 
 class SettingsController extends ChangeNotifier {
   bool _darkTheme = false;

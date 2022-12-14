@@ -1,3 +1,5 @@
+/// View for the navigation page
+/// Author: Naumenko Maksim (xnaume01)
 import 'package:bonsai/controllers/navigation_page/navigation_controller.dart';
 import 'package:bonsai/constants/styles.dart';
 import 'package:bonsai/models/achievement_list.dart';

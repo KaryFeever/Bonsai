@@ -1,3 +1,8 @@
+/// Register all needed controllers and classes to be global accessed
+/// Authors:
+/// - Naumenko Maksim (xnaume01)
+/// - Mikhailov Kirill (xmikha00)
+/// - Kovalets Vladyslav (xkoval21)
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
