@@ -1,4 +1,6 @@
+import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/main.dart';
+import 'package:bonsai/models/achievement_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import '../../models/plant.dart';
@@ -6,6 +8,7 @@ import '../../models/plants.dart';
 
 class CreationController extends ChangeNotifier {
   List<bool> _careFlags = [false, false, false];
+  int _careFlagsChanged = 0;
 
   List<int> _careFrequencyInDays = [0, 0, 0];
 
@@ -34,6 +37,16 @@ class CreationController extends ChangeNotifier {
 
   String _imagePath = "";
 
+  bool _submit = false;
+
+  bool getSumbit() {
+    return _submit;
+  }
+
+  int careChanged() {
+    return _careFlagsChanged;
+  }
+
   void setImagePath(String imagePath) {
     _imagePath = imagePath;
   }
@@ -52,6 +65,41 @@ class CreationController extends ChangeNotifier {
 
   TextEditingController getPlantNameController() {
     return _plantNameController;
+  }
+
+  String? validateName() {
+    if (_submit) {
+      if (_plantNameController.text.isEmpty) {
+        return 'Enter plant\'s name';
+      }
+      if (_plantNameController.text.length < 4) {
+        return 'Too short';
+      }
+      if (_plantNameController.text.length > 12) {
+        return 'Too long';
+      }
+    }
+    return null;
+  }
+
+  String? validateDescription() {
+    if ('\n'.allMatches(_plantDescriptionController.text).length >= 3) {
+      return 'Only 3 rows are available';
+    }
+    if (_plantDescriptionController.text.length > 100) {
+      return 'Too long';
+    }
+    return null;
+  }
+
+  String validateCare() {
+    if ((_careFlags[0] == false) &&
+        (_careFlags[1] == false) &&
+        (_careFlags[2] == false) &&
+        _submit == true) {
+      return "Select at least one type of care";
+    }
+    return "Type of care";
   }
 
   TextEditingController getPlantDescriptionController() {
@@ -103,6 +151,7 @@ class CreationController extends ChangeNotifier {
 
   void UpdateFlag(bool value, int index) {
     _careFlags[index] = value;
+    _careFlagsChanged++;
     notifyListeners();
   }
 
@@ -126,6 +175,7 @@ class CreationController extends ChangeNotifier {
     _plantNameController.clear();
     _careFrequencyInDays = [0, 0, 0];
     _imagePath = "";
+    _submit = false;
   }
 
   void _transformCareFrequency() {
@@ -147,24 +197,36 @@ class CreationController extends ChangeNotifier {
     }
   }
 
-  void createPlant(Plants plants) {
-    _transformCareFrequency();
-    plants.addPlant(
-        _plantNameController.text,
-        _plantDescriptionController.text,
-        _careFrequencyInDays[0],
-        _careFlags[0],
-        _careFrequency[0][0],
-        _careFrequency[0][1],
-        _careFrequencyInDays[1],
-        _careFlags[1],
-        _careFrequency[1][0],
-        _careFrequency[1][1],
-        _careFrequencyInDays[2],
-        _careFlags[2],
-        _careFrequency[2][0],
-        _careFrequency[2][1],
-        _imagePath);
-    cancel();
+  void createPlant(Plants plants, BuildContext context,
+      AchievementController controller, Achievements achievements) {
+    _submit = true;
+    if ((this.validateDescription() == null) &&
+        (this.validateName() == null) &&
+        (this.validateCare() == "Type of care") &&
+        (_imagePath != "")) {
+      _transformCareFrequency();
+      if (_plantDescriptionController.text != "") {
+        controller.unlockDescriptionAchievement(achievements);
+      }
+      plants.addPlant(
+          _plantNameController.text,
+          _plantDescriptionController.text,
+          _careFrequencyInDays[0],
+          _careFlags[0],
+          _careFrequency[0][0],
+          _careFrequency[0][1],
+          _careFrequencyInDays[1],
+          _careFlags[1],
+          _careFrequency[1][0],
+          _careFrequency[1][1],
+          _careFrequencyInDays[2],
+          _careFlags[2],
+          _careFrequency[2][0],
+          _careFrequency[2][1],
+          _imagePath);
+      cancel();
+      Navigator.pop(context);
+    }
+    notifyListeners();
   }
 }

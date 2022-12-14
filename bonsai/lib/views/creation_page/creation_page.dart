@@ -1,4 +1,6 @@
+import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
+import 'package:bonsai/models/achievement_list.dart';
 import 'package:bonsai/models/plants.dart';
 import 'package:bonsai/constants/styles.dart';
 import 'package:bonsai/views/creation_page/widgets/care_configuration.dart';
@@ -16,6 +18,8 @@ class CreationPage extends StatefulWidget with GetItStatefulWidgetMixin {
 class _CreationPageState extends State<CreationPage> with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
+    watchOnly((CreationController x) => x.getSumbit());
+    watchOnly((CreationController x) => x.careChanged());
     return Container(
       height: MediaQuery.of(context).size.height * 0.92,
       decoration: new BoxDecoration(
@@ -105,7 +109,9 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                     right: 20.0,
                   ),
                   child: SizedBox(
-                    height: 74,
+                    height: get<CreationController>().validateName() == null
+                        ? 74
+                        : 90,
                     child: Row(
                       children: [
                         Column(
@@ -116,28 +122,39 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                               style: Styles.headLineBottomSheet,
                             ),
                             SizedBox(
-                              height: 48,
+                              height:
+                                  get<CreationController>().validateName() ==
+                                          null
+                                      ? 48
+                                      : 70,
                               width: MediaQuery.of(context).size.width - 40,
                               child: TextField(
+                                onChanged: (text) => setState(() {}),
                                 showCursor: true,
                                 controller: get<CreationController>()
                                     .getPlantNameController(),
                                 cursorColor: Styles.textColorPrimary,
                                 style: Styles.inputText,
                                 decoration: InputDecoration(
-                                    hintText: "Black Dahlia",
-                                    hintStyle: Styles.inputText,
-                                    filled: true,
-                                    fillColor: Styles.fieldsBackgroundColor,
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                        borderRadius:
-                                            BorderRadius.circular(8.0)),
-                                    contentPadding: EdgeInsets.only(
-                                      bottom: 48 / 2,
-                                      left: 12,
-                                      right: 12,
-                                    )),
+                                  errorText: get<CreationController>()
+                                          .getSumbit()
+                                      ? get<CreationController>().validateName()
+                                      : null,
+                                  errorStyle:
+                                      TextStyle(color: Styles.textOrange),
+                                  hintText: "Black Dahlia",
+                                  hintStyle: Styles.hintText,
+                                  filled: true,
+                                  fillColor: Styles.fieldsBackgroundColor,
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.circular(8.0)),
+                                  contentPadding: EdgeInsets.only(
+                                    bottom: 48 / 2,
+                                    left: 12,
+                                    right: 12,
+                                  ),
+                                ),
                               ),
                             )
                           ],
@@ -175,10 +192,18 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                                 showCursor: true,
                                 cursorColor: Styles.textColorPrimary,
                                 style: Styles.inputText,
+                                onChanged: (string) => setState(() {}),
                                 decoration: InputDecoration(
+                                    errorText:
+                                        get<CreationController>().getSumbit()
+                                            ? get<CreationController>()
+                                                .validateDescription()
+                                            : null,
+                                    errorStyle:
+                                        TextStyle(color: Styles.textOrange),
                                     hintText:
                                         "The dahlia is a symbol of loyalty and happiness for your loved ones",
-                                    hintStyle: Styles.inputText,
+                                    hintStyle: Styles.hintText,
                                     filled: true,
                                     fillColor: Styles.fieldsBackgroundColor,
                                     border: OutlineInputBorder(
@@ -210,8 +235,13 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Type of care",
-                        style: Styles.headLineBottomSheet,
+                        get<CreationController>().getSumbit()
+                            ? get<CreationController>().validateCare()
+                            : "Type of care",
+                        style: get<CreationController>().validateCare() ==
+                                "Type of care"
+                            ? Styles.headLineBottomSheet
+                            : Styles.headLineBottomSheetError,
                       ),
                     ],
                   ),
@@ -251,8 +281,10 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
             ),
             child: GestureDetector(
               onTap: () {
-                get<CreationController>().createPlant(get<Plants>());
-                Navigator.pop(context);
+                get<CreationController>().createPlant(get<Plants>(), context,
+                    get<AchievementController>(), get<Achievements>());
+                get<AchievementController>().updatePlantsAchievements(
+                    get<Achievements>(), get<Plants>());
               },
               child: Container(
                   height: 60,

@@ -1,3 +1,5 @@
+import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
+import 'package:bonsai/models/achievement_list.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/plant.dart';
@@ -5,6 +7,7 @@ import '../../models/plants.dart';
 
 class EditController extends ChangeNotifier {
   int _changed = 0;
+  int _careFlagsChanged = 0;
 
   final _plantNameController = TextEditingController();
 
@@ -34,13 +37,55 @@ class EditController extends ChangeNotifier {
   List<int> _careFrequencyInDays = [0, 0, 0];
 
   List<bool> _careFlags = [false, false, false];
+  bool _submit = false;
+
+  bool getSumbit() {
+    return _submit;
+  }
 
   int getChanged() {
     return _changed;
   }
 
+  int careChanged() {
+    return _careFlagsChanged;
+  }
+
   String getCareFrequencyText(int index) {
     return _careFrequencyText[index];
+  }
+
+  String? validateName() {
+    if (_plantNameController.text.isEmpty) {
+      return 'Enter plant\'s name';
+    }
+    if (_plantNameController.text.length < 4) {
+      return 'Too short';
+    }
+    if (_plantNameController.text.length > 12) {
+      return 'Too long';
+    }
+    return null;
+  }
+
+  String? validateDescription() {
+    if ('\n'.allMatches(_plantDescriptionController.text).length >= 3) {
+      return 'Only 3 rows are available';
+    }
+    if (_plantDescriptionController.text.length > 100) {
+      return 'Too long';
+    }
+    return null;
+  }
+
+  String validateCare() {
+    if ((_careFlags[0] == false) &&
+        (_careFlags[1] == false) &&
+        (_careFlags[2] == false) &&
+        _submit == true) {
+      return "Select at least one type of care";
+    }
+    return "Type of care";
   }
 
   void updateCareFrequencyText(int index) {
@@ -84,6 +129,7 @@ class EditController extends ChangeNotifier {
 
   void UpdateFlag(bool value, int index) {
     _careFlags[index] = value;
+    _careFlagsChanged++;
     notifyListeners();
   }
 
@@ -163,48 +209,65 @@ class EditController extends ChangeNotifier {
     this.updateCareFrequencyText(0);
     this.updateCareFrequencyText(1);
     this.updateCareFrequencyText(2);
+    _submit = false;
   }
 
-  void saveChanges(Plant plant) {
-    _transformCareFrequency();
-    plant.setName(_plantNameController.text);
-    plant.setDescription(_plantDescriptionController.text);
+  void saveChanges(Plant plant, BuildContext context,
+      AchievementController controller, Achievements achievements) {
+    _submit = true;
+    if ((this.validateDescription() == null) &&
+        (this.validateName() == null) &&
+        (this.validateCare() == "Type of care") &&
+        (_imagePath != "")) {
+      _transformCareFrequency();
+      if (plant.getName() != _plantNameController.text) {
+        controller.unlockRenameAchievement(achievements);
+      }
+      plant.setName(_plantNameController.text);
+      if ((plant.getDescription() == "") &&
+          (plant.getDescription() != _plantDescriptionController.text)) {
+        controller.unlockDescriptionAchievement(achievements);
+      }
+      plant.setDescription(_plantDescriptionController.text);
 
-    if ((plant.getWatering().getEnabled() == false) &&
-        (_careFlags[0] == true)) {
-      plant.getWatering().setCareTime(DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day));
+      if ((plant.getWatering().getEnabled() == false) &&
+          (_careFlags[0] == true)) {
+        plant.getWatering().setCareTime(DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day));
+      }
+      plant.getWatering().setFrequency(_careFrequencyInDays[0]);
+      plant.getWatering().setEnabled(_careFlags[0]);
+      plant.getWatering().setFrequencyIndex(_careFrequency[0][0]);
+      plant.getWatering().setTimeIndex(_careFrequency[0][1]);
+      plant.getWatering().updateNextCareTime();
+
+      if ((plant.getSpraying().getEnabled() == false) &&
+          (_careFlags[1] == true)) {
+        plant.getSpraying().setCareTime(DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day));
+      }
+      plant.getSpraying().setFrequency(_careFrequencyInDays[1]);
+      plant.getSpraying().setEnabled(_careFlags[1]);
+      plant.getSpraying().setFrequencyIndex(_careFrequency[1][0]);
+      plant.getSpraying().setTimeIndex(_careFrequency[1][1]);
+      plant.getSpraying().updateNextCareTime();
+
+      if ((plant.getFertilizing().getEnabled() == false) &&
+          (_careFlags[2] == true)) {
+        plant.getFertilizing().setCareTime(DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day));
+      }
+      plant.getFertilizing().setFrequency(_careFrequencyInDays[2]);
+      plant.getFertilizing().setEnabled(_careFlags[2]);
+      plant.getFertilizing().setFrequencyIndex(_careFrequency[2][0]);
+      plant.getFertilizing().setTimeIndex(_careFrequency[2][1]);
+      plant.getFertilizing().updateNextCareTime();
+
+      plant.setImagePath(_imagePath);
+      _changed += 1;
+      Navigator.pop(context);
     }
-    plant.getWatering().setFrequency(_careFrequencyInDays[0]);
-    plant.getWatering().setEnabled(_careFlags[0]);
-    plant.getWatering().setFrequencyIndex(_careFrequency[0][0]);
-    plant.getWatering().setTimeIndex(_careFrequency[0][1]);
-    plant.getWatering().updateNextCareTime();
 
-    if ((plant.getSpraying().getEnabled() == false) &&
-        (_careFlags[1] == true)) {
-      plant.getSpraying().setCareTime(DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day));
-    }
-    plant.getSpraying().setFrequency(_careFrequencyInDays[1]);
-    plant.getSpraying().setEnabled(_careFlags[1]);
-    plant.getSpraying().setFrequencyIndex(_careFrequency[1][0]);
-    plant.getSpraying().setTimeIndex(_careFrequency[1][1]);
-    plant.getSpraying().updateNextCareTime();
-
-    if ((plant.getFertilizing().getEnabled() == false) &&
-        (_careFlags[2] == true)) {
-      plant.getFertilizing().setCareTime(DateTime(
-          DateTime.now().year, DateTime.now().month, DateTime.now().day));
-    }
-    plant.getFertilizing().setFrequency(_careFrequencyInDays[2]);
-    plant.getFertilizing().setEnabled(_careFlags[2]);
-    plant.getFertilizing().setFrequencyIndex(_careFrequency[2][0]);
-    plant.getFertilizing().setTimeIndex(_careFrequency[2][1]);
-    plant.getFertilizing().updateNextCareTime();
-
-    plant.setImagePath(_imagePath);
-    _changed += 1;
     notifyListeners();
   }
 

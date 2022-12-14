@@ -77,7 +77,10 @@ class _ImagePickerState extends State<ImagePicker> with GetItStateMixin {
                       ),
                       Text(
                         "Add photo for your plant",
-                        style: Styles.inputText,
+                        style: widget.controller.getImagePath() == "" &&
+                                widget.controller.getSumbit()
+                            ? Styles.inputTextError
+                            : Styles.inputText,
                       )
                     ],
                   )

@@ -1,5 +1,7 @@
+import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:bonsai/controllers/home_page/home_controller.dart';
+import 'package:bonsai/models/achievement_list.dart';
 import 'package:bonsai/views/creation_page/creation_page.dart';
 import 'package:bonsai/views/plant_page/plant_page.dart';
 import 'package:flutter/material.dart';
@@ -20,16 +22,17 @@ class HomePage extends StatefulWidget with GetItStatefulWidgetMixin {
 class _HomePageState extends State<HomePage> with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
-    int plants_counter = watchOnly((Plants x) => x.getPlantsCounter());
+    int plantsCounter = watchOnly((Plants x) => x.getPlantsCounter());
     watchOnly((EditController x) => x.getChanged());
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(126),
         child: Container(
           decoration: BoxDecoration(boxShadow: [
+            // Shadow of the appbar.
             BoxShadow(
               color: Color(0x33979797),
-              blurRadius: 60, // можно отрегулировать тень
+              blurRadius: 60,
             ),
           ]),
           child: AppBar(
@@ -46,32 +49,28 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (plants_counter == 0)
-                      Text(
-                        "You don't have any plants",
-                        style: Styles.noPlantsText,
-                      )
-                    else
-                      Text(
-                        "Your plants",
-                        style: Styles.headLine1,
-                      ),
-                    if (plants_counter > 0 &&
+                    Text(
+                      "Your plants",
+                      style: Styles.headLine1,
+                    ),
+                    // Check if plants need care today.
+                    if (plantsCounter > 0 &&
                         HomeController()
                             .careTodayPlantsNeeded(get<Plants>().getPlants()))
                       Text(
-                        "Need care today",
+                        "${HomeController().counterPlantsToCareToday(get<Plants>().getPlants())} plants need care",
                         style: Styles.textGray,
                       )
-                    else if (plants_counter > 0 &&
+                    else if (plantsCounter > 0 &&
                         !HomeController()
                             .careTodayPlantsNeeded(get<Plants>().getPlants()))
                       Text(
-                        "No plants need care today",
+                        "All plants are cared",
                         style: Styles.textGreen,
                       ),
                   ],
                 ),
+                // Adds new plant button.
                 GestureDetector(
                   onTap: () {
                     showModalBottomSheet(
@@ -109,9 +108,10 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
           ),
         ),
       ),
+      // Shows all garden.
       body: Center(
         child: ListView.builder(
-            itemCount: plants_counter,
+            itemCount: plantsCounter,
             padding: EdgeInsets.only(top: 13),
             itemBuilder: (BuildContext context, int index) {
               return Padding(
@@ -119,7 +119,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                   child: get<HomeController>().careTodayPlantNeeded(
                           HomeController().getPlantsSortedByNextCare(
                               get<Plants>().getPlants())[index])
-                      // проверка на необходимость ухода за растением сегодня
+                      // Checks if plant needs care today and shows special design.
                       ? Container(
                           height: 100,
                           decoration: BoxDecoration(
@@ -134,12 +134,12 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                             color: Styles.whiteColor,
                           ),
                           child: Row(
-                              // (круг с (именем и статусом)) и фигура
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   children: [
                                     SizedBox(width: 22),
+                                    // To plant page.
                                     GestureDetector(
                                       onTap: () => Navigator.push(
                                           context,
@@ -147,8 +147,8 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                               builder: (context) => PlantPage(
                                                   plant: get<Plants>()
                                                       .getPlants()[index]))),
+                                      // Plant avatar.
                                       child: Container(
-                                        // круг
                                         decoration: BoxDecoration(
                                           shape: BoxShape.circle,
                                           boxShadow: [
@@ -170,13 +170,12 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                     ),
                                     SizedBox(width: 15),
                                     Column(
-                                      // имя и статус
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        //переход на страницу растения
+                                        // To plant page.
                                         GestureDetector(
                                             onTap: () => Navigator.push(
                                                 context,
@@ -186,7 +185,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                                             plant: get<Plants>()
                                                                     .getPlants()[
                                                                 index]))),
-                                            child: Container(
+                                            child: SizedBox(
                                               width: 201,
                                               child: AutoSizeText(
                                                 get<Plants>()
@@ -195,24 +194,10 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                                 style: Styles.headLine1,
                                                 maxLines: 1,
                                               ),
-                                            )
-
-                                            // Text(
-                                            //   get<Plants>()
-                                            //       .getPlants()[index]
-                                            //       .getName(),
-                                            //   style: Styles.headLine1,
-                                            // ),
-                                            ),
-                                        // имя
-
-                                        // статус
+                                            )),
+                                        // Shows what action need to do today.
                                         Text(
-                                          "Need " +
-                                              get<HomeController>()
-                                                  .whatNeedToDoToday(
-                                                      get<Plants>()
-                                                          .getPlants()[index]),
+                                          "Need ${get<HomeController>().whatNeedToDoToday(get<Plants>().getPlants()[index])}",
                                           style: Styles.plantStatusBad,
                                         ),
                                       ],
@@ -220,11 +205,13 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                   ],
                                 ),
 
-                                // фигура
+                                // Do care button.
                                 GestureDetector(
                                   onTap: () {
                                     get<HomeController>().doCare(
-                                        get<Plants>().getPlants()[index]);
+                                        get<Plants>().getPlants()[index],
+                                        get<AchievementController>(),
+                                        get<Achievements>());
                                     setState(
                                         () {}); // обновляет целую страницу (плохо)
                                   },
@@ -252,6 +239,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                 )
                               ]),
                         )
+                      // Shows plants that don't need to be taken care of today.
                       : Opacity(
                           opacity: 0.8,
                           child: Container(
@@ -268,13 +256,13 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                               color: Color.fromRGBO(252, 255, 248, 1),
                             ),
                             child: Row(
-                                // (круг с (именем и статусом)) и фигура
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
                                       SizedBox(width: 22),
+                                      // To plant page.
                                       GestureDetector(
                                         onTap: () => Navigator.push(
                                             context,
@@ -282,8 +270,8 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                                 builder: (context) => PlantPage(
                                                     plant: get<Plants>()
                                                         .getPlants()[index]))),
+                                        // Plant avatar.
                                         child: Container(
-                                          // круг
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             boxShadow: [
@@ -305,13 +293,12 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                       ),
                                       SizedBox(width: 15),
                                       Column(
-                                        // имя и статус
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          //переход на страницу растения
+                                          // To plant page.
                                           GestureDetector(
                                               onTap: () => Navigator.push(
                                                   context,
@@ -321,7 +308,8 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                                               plant: get<Plants>()
                                                                       .getPlants()[
                                                                   index]))),
-                                              child: Container(
+                                              // Name of the plant with auto size.
+                                              child: SizedBox(
                                                 width: 201,
                                                 child: AutoSizeText(
                                                   get<Plants>()
@@ -331,9 +319,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                                   maxLines: 1,
                                                 ),
                                               )),
-                                          // имя
-
-                                          // статус
+                                          // Shows when the plant needs to be taken care of.
                                           Row(children: [
                                             Opacity(
                                                 opacity: 0.6,
@@ -359,6 +345,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
   }
 }
 
+/// Custom clipper for do care button.
 class MyClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
