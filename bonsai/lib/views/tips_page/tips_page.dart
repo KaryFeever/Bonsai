@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
-
 import '../../constants/styles.dart';
 
 String typeOfTips = "";
@@ -169,6 +166,7 @@ class _TipsPageState extends State<TipsPage> {
   }
 }
 
+/// Counts the number of tips for the selected type of tips.
 int tipsCount() {
   if (typeOfTips == "Watering") {
     return wateringTipsHeadings.length;
@@ -180,6 +178,7 @@ int tipsCount() {
   return 0;
 }
 
+/// Returns the heading of the tip at the given index.
 String getTextHeadings(int index) {
   if (typeOfTips == "Watering") {
     return wateringTipsHeadings[index];
@@ -191,6 +190,7 @@ String getTextHeadings(int index) {
   return "";
 }
 
+/// Returns the content of the tip at the given index.
 String getTextContents(int index) {
   if (typeOfTips == "Watering") {
     return wateringTipsContents[index];
@@ -202,6 +202,7 @@ String getTextContents(int index) {
   return "";
 }
 
+/// Headings for the watering tips.
 List<String> wateringTipsHeadings = [
   "How To Water Your Plants Correctly",
   "Tip #1: The plant’s pot matters",
@@ -212,6 +213,7 @@ List<String> wateringTipsHeadings = [
   "Tip #6: Consider the seasons",
 ];
 
+/// Contents for the watering tips.
 List<String> wateringTipsContents = [
   "Knowing when and how to water potted plants is one of the most impactful and easiest ways "
       "to ensure your plants thrive in your home.",
@@ -239,6 +241,7 @@ List<String> wateringTipsContents = [
       "specific plant and to take time to understand when it’s actually in need of watering.\n"
 ];
 
+/// Headings for the spraying tips.
 List<String> sprayingTipsHeadings = [
   "How Not To Harm Your Plants",
   "Tip #1: What plants need to be sprayed?",
@@ -249,6 +252,7 @@ List<String> sprayingTipsHeadings = [
   "Tip #6: When is enough?",
 ];
 
+/// Contents for the spraying tips.
 List<String> sprayingTipsContents = [
   "How, why and how to spray plants, and also take into account that not all indoor flowers require this procedure.",
   "Plants that need spraying are: native to the tropics, coniferous or have fleshy leaves painted bright green. \n"
@@ -265,6 +269,7 @@ List<String> sprayingTipsContents = [
   "Spraying the indoor flower should be done until water begins to drip from its leaves.\n",
 ];
 
+/// Headings for the fertilizing tips.
 List<String> fertilizingTipsHeadings = [
   "How To Fertilize Plants",
   "Tip #1: Types of Fertilizers",
@@ -273,6 +278,7 @@ List<String> fertilizingTipsHeadings = [
   "Tip #4: Follow The Instructions",
 ];
 
+/// Contents for the fertilizing tips.
 List<String> fertilizingTipsContents = [
   "Too many people overlook the importance of fertilizing indoor plants. However, proper feedings are essential to grow healthy, "
       "beautiful plants.",
@@ -338,7 +344,7 @@ class _WateringTipsState extends State<WateringTips> with GetItStateMixin {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(typeOfTips + " tips", style: Styles.headLine2),
+                  Text("$typeOfTips tips", style: Styles.headLine2),
                   GestureDetector(
                     onTap: () {
                       get<CreationController>().cancel();

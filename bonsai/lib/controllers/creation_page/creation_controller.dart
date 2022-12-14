@@ -72,7 +72,7 @@ class CreationController extends ChangeNotifier {
     if (_plantNameController.text.length < 4) {
       return 'Too short';
     }
-    if (_plantNameController.text.length > 12) {
+    if (_plantNameController.text.length > 20) {
       return 'Too long';
     }
     return null;
