@@ -18,6 +18,9 @@ class Styles {
   static Color buttonBackgroundSecondaryGreen = const Color(0x1A9AB44D);
   static Color buttonBackgroundSecondaryOrange = const Color(0x1ADD9048);
   static Color textOrange = const Color(0xFFDD9048);
+  static Color textPaleGreen = const Color.fromRGBO(88, 99, 54, 100);
+  static Color achievementLocked = Color.fromRGBO(217, 228, 217, 100);
+  static Color cupertinoSwitchBlock = Color.fromRGBO(232, 239, 225, 100);
   static Color textSecondaryGreen = const Color(0xFFB1CF58);
   static Color hintColor = const Color(0x33586336);
 
@@ -25,6 +28,14 @@ class Styles {
       fontSize: 16, color: textColorPrimary, fontWeight: FontWeight.w500);
   static TextStyle textGreen = GoogleFonts.nunito(
       fontSize: 16, color: primaryGreenColor, fontWeight: FontWeight.w500);
+  static TextStyle rankText = GoogleFonts.nunito(
+      fontSize: 18, color: primaryGreenColor, fontWeight: FontWeight.w500);
+  static TextStyle optionText = GoogleFonts.nunito(
+      fontSize: 18, color: textPaleGreen, fontWeight: FontWeight.w500);
+  static TextStyle optionTextBigger = GoogleFonts.nunito(
+      fontSize: 22, color: textPaleGreen, fontWeight: FontWeight.w500);
+  static TextStyle achievementName = GoogleFonts.nunito(
+      fontSize: 30, color: textColorPrimary, fontWeight: FontWeight.w700);
   static TextStyle textGray = GoogleFonts.nunito(
       fontSize: 16, color: createPageTextColor, fontWeight: FontWeight.w500);
   static TextStyle headLine1 = GoogleFonts.nunito(
@@ -37,10 +48,16 @@ class Styles {
       fontSize: 20, color: primaryGreenColor, fontWeight: FontWeight.w700);
   static TextStyle headLineBottomSheet = GoogleFonts.nunito(
       fontSize: 15, color: createPageTextColor, fontWeight: FontWeight.w600);
+  static TextStyle settingDescription = GoogleFonts.nunito(
+      fontSize: 18, color: createPageTextColor, fontWeight: FontWeight.w500);
+  static TextStyle achievementStatusDescription = GoogleFonts.nunito(
+      fontSize: 20, color: createPageTextColor, fontWeight: FontWeight.w600);
+  static TextStyle settingsHeader = GoogleFonts.nunito(
+      fontSize: 20, color: textColorPrimary, fontWeight: FontWeight.w600);
   static TextStyle headLineBottomSheetError = GoogleFonts.nunito(
       fontSize: 15, color: textOrange, fontWeight: FontWeight.w600);
   static TextStyle inputText = GoogleFonts.nunito(
-      fontSize: 18, color: textColorPrimary, fontWeight: FontWeight.w600);
+      fontSize: 18, color: textColorPrimary, fontWeight: FontWeight.w500);
   static TextStyle inputTextError = GoogleFonts.nunito(
       fontSize: 18, color: textOrange, fontWeight: FontWeight.w600);
   static TextStyle hintText = GoogleFonts.nunito(
