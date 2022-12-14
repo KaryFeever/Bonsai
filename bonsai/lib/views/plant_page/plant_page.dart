@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:bonsai/constants/styles.dart';
+import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:bonsai/controllers/plant_page/plant_controller.dart';
+import 'package:bonsai/models/achievement_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -242,6 +244,8 @@ class _PlantPageState extends State<PlantPage> with GetItStateMixin {
                                 if (get<PlantController>()
                                     .wateringNeeded(widget.plant)) {
                                   get<PlantController>().water(widget.plant);
+                                  get<AchievementController>()
+                                      .updateWatering(get<Achievements>());
                                 }
                               },
                               child: Container(
@@ -325,6 +329,8 @@ class _PlantPageState extends State<PlantPage> with GetItStateMixin {
                                 if (get<PlantController>()
                                     .sprayingNeeded(widget.plant)) {
                                   get<PlantController>().spray(widget.plant);
+                                  get<AchievementController>()
+                                      .updateSpraying(get<Achievements>());
                                 }
                               },
                               child: Container(
@@ -409,6 +415,8 @@ class _PlantPageState extends State<PlantPage> with GetItStateMixin {
                                     .fertilizingNeeded(widget.plant)) {
                                   get<PlantController>()
                                       .fertilize(widget.plant);
+                                  get<AchievementController>()
+                                      .updateFertilizng(get<Achievements>());
                                 }
                               },
                               child: Container(

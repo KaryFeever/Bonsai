@@ -1,4 +1,6 @@
+import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
+import 'package:bonsai/models/achievement_list.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:flutter/material.dart';
 
@@ -277,7 +279,8 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
             ),
             child: GestureDetector(
               onTap: () {
-                get<EditController>().saveChanges(widget.plant, context);
+                get<EditController>().saveChanges(widget.plant, context,
+                    get<AchievementController>(), get<Achievements>());
               },
               child: Container(
                 height: 60,
@@ -309,6 +312,8 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                 Navigator.pop(context);
                 Navigator.pop(context);
                 get<EditController>().deletePlant(get<Plants>(), widget.plant);
+                get<AchievementController>()
+                    .unlockDeletedAchievement(get<Achievements>());
               },
               child: Container(
                   height: 60,

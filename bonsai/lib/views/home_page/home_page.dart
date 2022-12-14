@@ -1,5 +1,7 @@
+import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:bonsai/controllers/home_page/home_controller.dart';
+import 'package:bonsai/models/achievement_list.dart';
 import 'package:bonsai/views/creation_page/creation_page.dart';
 import 'package:bonsai/views/plant_page/plant_page.dart';
 import 'package:flutter/material.dart';
@@ -207,8 +209,11 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                 GestureDetector(
                                   onTap: () {
                                     get<HomeController>().doCare(
-                                        get<Plants>().getPlants()[index]);
-                                    setState(() {});
+                                        get<Plants>().getPlants()[index],
+                                        get<AchievementController>(),
+                                        get<Achievements>());
+                                    setState(
+                                        () {}); // обновляет целую страницу (плохо)
                                   },
                                   child: ClipPath(
                                     clipper: MyClipper(),

@@ -1,4 +1,6 @@
+import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
+import 'package:bonsai/models/achievement_list.dart';
 import 'package:bonsai/models/plants.dart';
 import 'package:bonsai/constants/styles.dart';
 import 'package:bonsai/views/creation_page/widgets/care_configuration.dart';
@@ -279,7 +281,10 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
             ),
             child: GestureDetector(
               onTap: () {
-                get<CreationController>().createPlant(get<Plants>(), context);
+                get<CreationController>().createPlant(get<Plants>(), context,
+                    get<AchievementController>(), get<Achievements>());
+                get<AchievementController>().updatePlantsAchievements(
+                    get<Achievements>(), get<Plants>());
               },
               child: Container(
                   height: 60,

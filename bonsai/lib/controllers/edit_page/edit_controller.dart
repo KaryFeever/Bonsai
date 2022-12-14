@@ -1,3 +1,5 @@
+import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
+import 'package:bonsai/models/achievement_list.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/plant.dart';
@@ -210,14 +212,22 @@ class EditController extends ChangeNotifier {
     _submit = false;
   }
 
-  void saveChanges(Plant plant, BuildContext context) {
+  void saveChanges(Plant plant, BuildContext context,
+      AchievementController controller, Achievements achievements) {
     _submit = true;
     if ((this.validateDescription() == null) &&
         (this.validateName() == null) &&
         (this.validateCare() == "Type of care") &&
         (_imagePath != "")) {
       _transformCareFrequency();
+      if (plant.getName() != _plantNameController.text) {
+        controller.unlockRenameAchievement(achievements);
+      }
       plant.setName(_plantNameController.text);
+      if ((plant.getDescription() == "") &&
+          (plant.getDescription() != _plantDescriptionController.text)) {
+        controller.unlockDescriptionAchievement(achievements);
+      }
       plant.setDescription(_plantDescriptionController.text);
 
       if ((plant.getWatering().getEnabled() == false) &&

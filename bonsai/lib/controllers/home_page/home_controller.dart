@@ -1,4 +1,7 @@
+import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/plant_page/plant_controller.dart';
+import 'package:bonsai/models/achievement_list.dart';
+import 'package:bonsai/models/plants.dart';
 import 'package:flutter/material.dart';
 import 'package:bonsai/models/plant.dart';
 
@@ -103,17 +106,21 @@ class HomeController extends ChangeNotifier {
   }
 
   // Do care for the plant.
-  void doCare(Plant plant) {
+  void doCare(Plant plant, AchievementController controller,
+      Achievements achievements) {
     if (plant.getWatering().careNeeded()) {
       PlantController().water(plant);
+      controller.updateWatering(achievements);
       return;
     }
     if (plant.getSpraying().careNeeded()) {
       PlantController().spray(plant);
+      controller.updateSpraying(achievements);
       return;
     }
     if (plant.getFertilizing().careNeeded()) {
       PlantController().fertilize(plant);
+      controller.updateFertilizng(achievements);
       return;
     }
   }

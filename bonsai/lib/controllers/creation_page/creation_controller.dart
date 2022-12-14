@@ -1,4 +1,6 @@
+import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/main.dart';
+import 'package:bonsai/models/achievement_list.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import '../../models/plant.dart';
@@ -66,14 +68,16 @@ class CreationController extends ChangeNotifier {
   }
 
   String? validateName() {
-    if (_plantNameController.text.isEmpty) {
-      return 'Enter plant\'s name';
-    }
-    if (_plantNameController.text.length < 4) {
-      return 'Too short';
-    }
-    if (_plantNameController.text.length > 20) {
-      return 'Too long';
+    if (_submit) {
+      if (_plantNameController.text.isEmpty) {
+        return 'Enter plant\'s name';
+      }
+      if (_plantNameController.text.length < 4) {
+        return 'Too short';
+      }
+      if (_plantNameController.text.length > 12) {
+        return 'Too long';
+      }
     }
     return null;
   }
@@ -193,13 +197,17 @@ class CreationController extends ChangeNotifier {
     }
   }
 
-  void createPlant(Plants plants, BuildContext context) {
+  void createPlant(Plants plants, BuildContext context,
+      AchievementController controller, Achievements achievements) {
     _submit = true;
     if ((this.validateDescription() == null) &&
         (this.validateName() == null) &&
         (this.validateCare() == "Type of care") &&
         (_imagePath != "")) {
       _transformCareFrequency();
+      if (_plantDescriptionController.text != "") {
+        controller.unlockDescriptionAchievement(achievements);
+      }
       plants.addPlant(
           _plantNameController.text,
           _plantDescriptionController.text,
