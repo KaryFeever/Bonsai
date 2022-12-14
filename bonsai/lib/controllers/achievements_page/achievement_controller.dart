@@ -1,6 +1,8 @@
 import 'package:bonsai/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:bonsai/services/local_notification_service.dart';
 import '../../models/achievement.dart';
 import '../../models/achievement_list.dart';
 import '../../models/plants.dart';
@@ -156,12 +158,30 @@ class AchievementController extends ChangeNotifier {
     switch (plants.getPlants().length) {
       case 1:
         achievements.getAchievement(0).achievementUnlock();
+        LocalNotificationService().showNotification(
+            id: 0,
+            title: "Bonsai",
+            body: "Achievement \"" +
+                achievements.getAchievement(0).getName() +
+                "\" unlocked!");
         break;
       case 5:
         achievements.getAchievement(6).achievementUnlock();
+        LocalNotificationService().showNotification(
+            id: 6,
+            title: "Bonsai",
+            body: "Achievement \"" +
+                achievements.getAchievement(6).getName() +
+                "\" unlocked!");
         break;
       case 15:
         achievements.getAchievement(7).achievementUnlock();
+        LocalNotificationService().showNotification(
+            id: 7,
+            title: "Bonsai",
+            body: "Achievement \"" +
+                achievements.getAchievement(7).getName() +
+                "\" unlocked!");
         break;
     }
     this.unlockPlatinumTrophy(achievements);
@@ -172,12 +192,30 @@ class AchievementController extends ChangeNotifier {
     switch (achievements.getWateringCounter()) {
       case 1:
         achievements.getAchievement(1).achievementUnlock();
+        LocalNotificationService().showNotification(
+            id: 1,
+            title: "Bonsai",
+            body: "Achievement \"" +
+                achievements.getAchievement(1).getName() +
+                "\" unlocked!");
         break;
       case 5:
         achievements.getAchievement(9).achievementUnlock();
+        LocalNotificationService().showNotification(
+            id: 9,
+            title: "Bonsai",
+            body: "Achievement \"" +
+                achievements.getAchievement(9).getName() +
+                "\" unlocked!");
         break;
       case 15:
         achievements.getAchievement(10).achievementUnlock();
+        LocalNotificationService().showNotification(
+            id: 10,
+            title: "Bonsai",
+            body: "Achievement \"" +
+                achievements.getAchievement(10).getName() +
+                "\" unlocked!");
         break;
     }
     this.unlockPlatinumTrophy(achievements);
@@ -187,6 +225,11 @@ class AchievementController extends ChangeNotifier {
     achievements.incrementSprayingCounter();
     if (achievements.getSprayingCounter() == 1) {
       achievements.getAchievement(2).achievementUnlock();
+      LocalNotificationService().showNotification(
+          id: 2,
+          title: "Bonsai",
+          body:
+              "\"" + achievements.getAchievement(2).getName() + "\" unlocked!");
     }
     this.unlockPlatinumTrophy(achievements);
   }
@@ -195,22 +238,45 @@ class AchievementController extends ChangeNotifier {
     achievements.incrementFertilizingCounter();
     if (achievements.getFertilizingCounter() == 1) {
       achievements.getAchievement(3).achievementUnlock();
+      LocalNotificationService().showNotification(
+          id: 3,
+          title: "Bonsai",
+          body:
+              "\"" + achievements.getAchievement(3).getName() + "\" unlocked!");
     }
     this.unlockPlatinumTrophy(achievements);
   }
 
   void unlockDescriptionAchievement(Achievements achievements) {
     achievements.getAchievement(4).achievementUnlock();
+    LocalNotificationService().showNotification(
+        id: 4,
+        title: "Bonsai",
+        body: "Achievement \"" +
+            achievements.getAchievement(4).getName() +
+            "\" unlocked!");
     this.unlockPlatinumTrophy(achievements);
   }
 
   void unlockRenameAchievement(Achievements achievements) {
     achievements.getAchievement(5).achievementUnlock();
+    LocalNotificationService().showNotification(
+        id: 5,
+        title: "Bonsai",
+        body: "Achievement \"" +
+            achievements.getAchievement(5).getName() +
+            "\" unlocked!");
     this.unlockPlatinumTrophy(achievements);
   }
 
   void unlockDeletedAchievement(Achievements achievements) {
     achievements.getAchievement(8).achievementUnlock();
+    LocalNotificationService().showNotification(
+        id: 8,
+        title: "Bonsai",
+        body: "Achievement \"" +
+            achievements.getAchievement(8).getName() +
+            "\" unlocked!");
     this.unlockPlatinumTrophy(achievements);
   }
 
@@ -221,5 +287,13 @@ class AchievementController extends ChangeNotifier {
     achievements
         .getAchievement(achievements.getCountOfAchievements() - 1)
         .achievementUnlock();
+    LocalNotificationService().showNotification(
+        id: 12,
+        title: "Bonsai",
+        body: "Achievement \"" +
+            achievements
+                .getAchievement(achievements.getCountOfAchievements() - 1)
+                .getName() +
+            "\" unlocked!");
   }
 }
