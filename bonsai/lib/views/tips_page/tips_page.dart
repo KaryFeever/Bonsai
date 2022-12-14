@@ -48,7 +48,7 @@ class _TipsPageState extends State<TipsPage> {
               );
             },
             child: Container(
-                margin: EdgeInsets.only(top: 24, left: 25),
+                margin: EdgeInsets.only(top: 24, left: 20),
                 height: 132,
                 width: MediaQuery.of(context).size.width - 40,
                 decoration: BoxDecoration(
@@ -89,7 +89,7 @@ class _TipsPageState extends State<TipsPage> {
               );
             },
             child: Container(
-                margin: EdgeInsets.only(top: 24, left: 25),
+                margin: EdgeInsets.only(top: 24, left: 20),
                 height: 132,
                 width: MediaQuery.of(context).size.width - 40,
                 decoration: BoxDecoration(
@@ -130,7 +130,7 @@ class _TipsPageState extends State<TipsPage> {
               );
             },
             child: Container(
-                margin: EdgeInsets.only(top: 24, left: 25),
+                margin: EdgeInsets.only(top: 24, left: 20),
                 height: 132,
                 width: MediaQuery.of(context).size.width - 40,
                 decoration: BoxDecoration(
