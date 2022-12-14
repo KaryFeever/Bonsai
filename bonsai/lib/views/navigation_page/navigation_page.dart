@@ -4,12 +4,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
+import '../../models/plants.dart';
+import '../../utils/process_json.dart';
+
 class NavigationPage extends StatefulWidget with GetItStatefulWidgetMixin {
   @override
   State<NavigationPage> createState() => _NavigationPageState();
 }
 
-class _NavigationPageState extends State<NavigationPage> with GetItStateMixin {
+class _NavigationPageState extends State<NavigationPage>
+    with GetItStateMixin, WidgetsBindingObserver {
+  @override
+  initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    readContent(get<Plants>()).then((String value) {});
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    if (state == AppLifecycleState.inactive ||
+        state == AppLifecycleState.detached) return;
+
+    final isBackground = state == AppLifecycleState.paused;
+
+    if (isBackground) {
+      writeContent(get<Plants>());
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget currentPage =

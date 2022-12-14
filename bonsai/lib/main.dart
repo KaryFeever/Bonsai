@@ -18,9 +18,6 @@ class MyApp extends StatelessWidget with GetItMixin {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // uncomment this line if you want to use JSON
-    // don't forget to add image path to JSON file
-    // readJson(get<Plants>());
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Bonsai',

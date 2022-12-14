@@ -1,0 +1,39 @@
+{
+    "plants": {
+        "plants_counter": 1,
+        "plants_list": [
+            {
+                "name": "Black Dahlia",
+                "description": "test",
+                "image": "",
+                "watering": {
+                    "name": "Watering",
+                    "frequency": 1,
+                    "frequency_index": 0,
+                    "time_index": 0,
+                    "enable": true,
+                    "lastCare": "",
+                    "nextCare": ""  
+                },
+                "spraying": {
+                    "name": "Spraying",
+                    "frequency": 0,
+                    "frequency_index": 0,
+                    "time_index": 0,
+                    "enable": false,
+                    "lastCare": "",
+                    "nextCare": ""  
+                },
+                "fertilizing": {
+                    "name": "Fertilizing",
+                    "frequency": 0,
+                    "frequency_index": 0,
+                    "time_index": 0,
+                    "enable": false,
+                    "lastCare": "",
+                    "nextCare": ""  
+                }
+            }
+        ]
+    }
+}
