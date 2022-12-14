@@ -6,7 +6,7 @@ import '../models/plants.dart';
 
 Future<String> readContent(Plants plants) async {
   SharedPreferences pref = await SharedPreferences.getInstance();
-  Map jsonData = jsonDecode(pref.getString('userData4')!);
+  Map jsonData = jsonDecode(pref.getString('userData5')!);
 
   for (int i = 0; i < jsonData['plants']['plants_counter']; i++) {
     plants.addPlant(
@@ -79,5 +79,5 @@ void writeContent(Plants plants) async {
       "}";
 
   String json = jsonEncode(jsonDecode(jsonString));
-  pref.setString('userData4', json);
+  pref.setString('userData5', json);
 }
