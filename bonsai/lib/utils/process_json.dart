@@ -7,7 +7,7 @@ import '../models/plants.dart';
 
 Future<String> readContent(Plants plants, Achievements achievements) async {
   SharedPreferences pref = await SharedPreferences.getInstance();
-  Map jsonData = jsonDecode(pref.getString('structure123')!);
+  Map jsonData = jsonDecode(pref.getString('structure')!);
 
   for (int i = 0; i < jsonData['plants']['plants_counter']; i++) {
     plants.addPlant(
@@ -42,6 +42,7 @@ Future<String> readContent(Plants plants, Achievements achievements) async {
 
 void writeContent(Plants plants, Achievements achievements) async {
   SharedPreferences pref = await SharedPreferences.getInstance();
+  pref.clear();
   // dynamic jsonString;
   String plantsString = "";
   for (int i = 0; i < plants.getPlantsCounter(); i++) {
@@ -109,5 +110,6 @@ void writeContent(Plants plants, Achievements achievements) async {
       "}";
 
   String json = jsonEncode(jsonDecode(jsonString));
-  pref.setString('structure123', json);
+
+  pref.setString('structure', json);
 }
