@@ -7,6 +7,8 @@ import 'package:bonsai/views/creation_page/widgets/care_configuration.dart';
 import 'package:bonsai/views/creation_page/widgets/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
+import 'package:bonsai/services/local_notification_service.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class CreationPage extends StatefulWidget with GetItStatefulWidgetMixin {
   CreationPage({super.key});
@@ -20,6 +22,7 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
   Widget build(BuildContext context) {
     watchOnly((CreationController x) => x.getSumbit());
     watchOnly((CreationController x) => x.careChanged());
+
     return Container(
       height: MediaQuery.of(context).size.height * 0.92,
       decoration: new BoxDecoration(

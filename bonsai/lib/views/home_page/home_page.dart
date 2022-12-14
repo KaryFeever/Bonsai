@@ -2,6 +2,7 @@ import 'package:bonsai/controllers/achievements_page/achievement_controller.dart
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:bonsai/controllers/home_page/home_controller.dart';
 import 'package:bonsai/models/achievement_list.dart';
+import 'package:bonsai/services/local_notification_service.dart';
 import 'package:bonsai/views/creation_page/creation_page.dart';
 import 'package:bonsai/views/plant_page/plant_page.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +10,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:proste_bezier_curve/proste_bezier_curve.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import '../../models/plants.dart';
 import '../../constants/styles.dart';
 
 class HomePage extends StatefulWidget with GetItStatefulWidgetMixin {
   HomePage({super.key});
-
+  late final LocalNotificationService service;
   @override
   State<HomePage> createState() => _HomePageState();
 }

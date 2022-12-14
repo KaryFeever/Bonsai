@@ -47,7 +47,7 @@ class _AchievementsPageState extends State<AchievementsPage>
           child: Column(
             children: [
               Container(
-                  height: 141,
+                  height: 160,
                   width: MediaQuery.of(context).size.width - 50,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(24)),
@@ -65,10 +65,60 @@ class _AchievementsPageState extends State<AchievementsPage>
                       Padding(
                         padding: EdgeInsets.only(left: 25, right: 0, top: 0),
                         child: Text(
-                          "Beginer Gardener",
+                          get<AchievementController>()
+                              .getRank(get<Achievements>()),
                           style: Styles.rankText,
                         ),
                       ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 25, right: 0, top: 16),
+                        child: Row(
+                          children: [
+                            Text(
+                              get<AchievementController>()
+                                  .leftToNextRank(get<Achievements>()),
+                              style: Styles.rankLeftBold,
+                            ),
+                            Text(
+                              get<AchievementController>()
+                                      .platinumEarned(get<Achievements>())
+                                  ? ""
+                                  : " left to ",
+                              style: Styles.rankLeftOfBold,
+                            ),
+                            Text(
+                              get<AchievementController>()
+                                  .nextRank(get<Achievements>()),
+                              style: Styles.rankLeftBold,
+                            )
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 10),
+                        child: Stack(children: <Widget>[
+                          Container(
+                            height: 16,
+                            width: (MediaQuery.of(context).size.width - 52),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(24),
+                                    bottomRight: Radius.circular(24)),
+                                color: Styles.secondaryGreenColor),
+                          ),
+                          Container(
+                            height: 16,
+                            width: (MediaQuery.of(context).size.width - 52) *
+                                get<AchievementController>()
+                                    .getProgressBarCoeff(get<Achievements>()),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(24),
+                                    topRight: Radius.circular(24)),
+                                color: Styles.primaryGreenColor),
+                          )
+                        ]),
+                      )
                     ],
                   )),
               Padding(
@@ -89,11 +139,11 @@ class _AchievementsPageState extends State<AchievementsPage>
                                 get<Achievements>()
                                     .getCountOfUnlocked()
                                     .toString(),
-                                style: Styles.rankText,
+                                style: Styles.countOfAchievesText,
                               ),
                               Text(
                                 " of ",
-                                style: Styles.rankText,
+                                style: Styles.countOfAchievesText,
                               ),
                               Text(
                                 get<Achievements>()
