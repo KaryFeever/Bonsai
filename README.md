@@ -73,3 +73,6 @@ $ flutter run
 - [auto_size_text: 3.0.0](https://pub.dev/packages/auto_size_text)
 - [shared_preferences: 2.0.15](https://pub.dev/packages/shared_preferences)
 - [flutter_launcher_icons: 0.11.0](https://pub.dev/packages/flutter_launcher_icons)
+
+## Video example
+https://user-images.githubusercontent.com/41788036/208754001-da70ffc6-f7bc-46e0-924a-4391f43c2ec5.mp4
