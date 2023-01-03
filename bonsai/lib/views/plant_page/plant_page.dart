@@ -1,17 +1,15 @@
+/// View for the plant page
+/// Author: Naumenko Maksim (xnaume01)
 import 'dart:io';
-
 import 'package:bonsai/constants/styles.dart';
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:bonsai/controllers/plant_page/plant_controller.dart';
 import 'package:bonsai/models/achievement_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:intl/intl.dart';
-
 import '../../models/plant.dart';
 import '../edit_page/edit_page.dart';
 
@@ -75,8 +73,6 @@ class _PlantPageState extends State<PlantPage> with GetItStateMixin {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // TODO
-                    print(DateTime.now());
                     showModalBottomSheet(
                         isScrollControlled: true,
                         backgroundColor: Styles.secondaryGreenColor,

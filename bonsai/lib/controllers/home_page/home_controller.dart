@@ -1,7 +1,8 @@
+/// Controller for the home page
+/// Author: Kovalets Vladyslav (xkoval21)
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/plant_page/plant_controller.dart';
 import 'package:bonsai/models/achievement_list.dart';
-import 'package:bonsai/models/plants.dart';
 import 'package:flutter/material.dart';
 import 'package:bonsai/models/plant.dart';
 

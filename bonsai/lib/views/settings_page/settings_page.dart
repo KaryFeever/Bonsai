@@ -1,20 +1,20 @@
+/// View for the setting page
+/// Author: Mikhailov Kirill (xmikha00)
 import 'package:bonsai/constants/styles.dart';
+import 'package:bonsai/controllers/settings_page/settings_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_svg/parser.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 
-class SettingsPage extends StatefulWidget {
-  const SettingsPage({super.key});
+class SettingsPage extends StatefulWidget with GetItStatefulWidgetMixin {
+  SettingsPage({super.key});
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsPageState extends State<SettingsPage> with GetItStateMixin {
   bool _enableNotifications = true;
   bool _darkTheme = false;
   @override
@@ -90,76 +90,19 @@ class _SettingsPageState extends State<SettingsPage> {
                                   // when the switch is off
                                   trackColor: Styles.switchOffColor,
                                   // boolean variable value
-                                  value: _enableNotifications,
+                                  value: get<SettingsController>()
+                                      .notificationsEnabled(),
                                   // changes the state of the switch
                                   onChanged: (value) {
                                     setState(() {
-                                      _enableNotifications = value;
+                                      get<SettingsController>()
+                                          .setEnableNotifications(value);
                                     });
                                   }),
                             ))
                       ],
                     ),
                   )),
-              Padding(
-                padding: EdgeInsets.only(top: 25, bottom: 4),
-                child: Text(
-                  "App Theme",
-                  style: Styles.settingDescription,
-                ),
-              ),
-              Container(
-                  height: 51,
-                  width: MediaQuery.of(context).size.width - 40,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: Styles.cupertinoSwitchBlock),
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16, right: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(children: [
-                          SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: SvgPicture.asset(
-                              "assets/icons/moon.svg",
-                              fit: BoxFit.scaleDown,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Text(
-                              "Dark Theme",
-                              style: Styles.settingsHeader,
-                            ),
-                          )
-                        ]),
-                        SizedBox(
-                            width: 40,
-                            height: 24,
-                            child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: CupertinoSwitch(
-                                  // overrides the default green color of the track
-                                  activeColor: Styles.primaryGreenColor,
-                                  // color of the round icon, which moves from right to left
-                                  thumbColor: Colors.white,
-                                  // when the switch is off
-                                  trackColor: Styles.switchOffColor,
-                                  // boolean variable value
-                                  value: _darkTheme,
-                                  // changes the state of the switch
-                                  onChanged: (value) {
-                                    setState(() {
-                                      _darkTheme = value;
-                                    });
-                                  }),
-                            ))
-                      ],
-                    ),
-                  ))
             ])));
   }
 }

@@ -1,10 +1,10 @@
+/// Model for the Achievement
+/// Author: Mikhailov Kirill (xmikha00)
 class Achievement {
   String _name = "";
   String _description = "";
   String _svgPath = "";
   bool _unlocked = false;
-  int _exp = 0;
-  // static Image _image = NULL;
 
   Achievement(this._name, this._description, this._svgPath);
 

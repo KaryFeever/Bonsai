@@ -1,9 +1,9 @@
+/// Controller for the plant creation page
+/// Author: Naumenko Maksim (xnaume01)
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
-import 'package:bonsai/main.dart';
 import 'package:bonsai/models/achievement_list.dart';
+import 'package:bonsai/services/local_notification_service.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
-import '../../models/plant.dart';
 import '../../models/plants.dart';
 
 class CreationController extends ChangeNotifier {
@@ -17,6 +17,8 @@ class CreationController extends ChangeNotifier {
     [0, 0],
     [0, 0],
   ];
+
+  int _plantCounter = 0;
 
   List _careFrequencyText = [
     "Every day",
@@ -199,6 +201,7 @@ class CreationController extends ChangeNotifier {
 
   void createPlant(Plants plants, BuildContext context,
       AchievementController controller, Achievements achievements) {
+    _plantCounter++;
     _submit = true;
     if ((this.validateDescription() == null) &&
         (this.validateName() == null) &&
@@ -227,6 +230,29 @@ class CreationController extends ChangeNotifier {
       cancel();
       Navigator.pop(context);
     }
+
+    if (_careFlags[0]) {
+      LocalNotificationService().showScheduledNotification(
+          id: _plantCounter * 20,
+          title: "Bonsai",
+          body: _plantNameController.text + "requires watering",
+          seconds: _careFrequencyInDays[0] * 86400);
+    }
+    if (_careFlags[1]) {
+      LocalNotificationService().showScheduledNotification(
+          id: _plantCounter * 21,
+          title: "Bonsai",
+          body: _plantNameController.text + "requires spraying",
+          seconds: _careFrequencyInDays[1] * 86400);
+    }
+    if (_careFlags[2]) {
+      LocalNotificationService().showScheduledNotification(
+          id: _plantCounter * 22,
+          title: "Bonsai",
+          body: _plantNameController.text + "requires fertilizing",
+          seconds: _careFrequencyInDays[2] * 86400);
+    }
+
     notifyListeners();
   }
 }

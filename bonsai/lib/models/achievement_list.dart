@@ -1,3 +1,5 @@
+/// Model for the Achievements
+/// Author: Mikhailov Kirill (xmikha00)
 import 'package:bonsai/models/achievement.dart';
 import 'package:flutter/material.dart';
 
@@ -37,6 +39,18 @@ class Achievements extends ChangeNotifier {
   int _wateringCounter = 0;
   int _sprayingCounter = 0;
   int _fertilizingCounter = 0;
+
+  void setWateringCounter(int value) {
+    _wateringCounter = value;
+  }
+
+  void setSprayingCounter(int value) {
+    _sprayingCounter = value;
+  }
+
+  void setFertilizingCounter(int value) {
+    _fertilizingCounter = value;
+  }
 
   void incrementWateringCounter() {
     _wateringCounter++;

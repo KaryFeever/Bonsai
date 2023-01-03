@@ -1,3 +1,5 @@
+/// Model for the Care type
+/// Author: Naumenko Maksim (xnaume01)
 class CareType {
   String _name = "";
   int _frequency = 0;
@@ -6,20 +8,13 @@ class CareType {
   bool _enabled = false;
   DateTime? _lastCare = null;
   DateTime? _nextCare = null;
-  bool test = false;
 
   void setCareTime(DateTime date) {
     _lastCare = date;
   }
 
   void updateNextCareTime() {
-    if (test) {
-      _nextCare = _lastCare?.add(Duration(days: _frequency));
-      test = false;
-    } else {
-      _nextCare = _lastCare?.add(Duration(days: _frequency - 1));
-      test = true;
-    }
+    _nextCare = _lastCare?.add(Duration(days: _frequency));
   }
 
   int? getDaysUntilNextCare() {
@@ -31,11 +26,6 @@ class CareType {
   }
 
   bool careNeeded() {
-    // if ((DateTime.now().year == _nextCare?.year) &&
-    //     (DateTime.now().month == _nextCare?.month) &&
-    //     (DateTime.now().day == _nextCare?.day)) {
-    //   return true;
-    // }
     if (_nextCare
             ?.difference(DateTime(
                 DateTime.now().year, DateTime.now().month, DateTime.now().day))

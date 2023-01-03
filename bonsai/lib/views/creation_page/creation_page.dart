@@ -1,3 +1,5 @@
+/// View for the plant creation page
+/// Author: Naumenko Maksim (xnaume01)
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
 import 'package:bonsai/models/achievement_list.dart';
@@ -20,6 +22,7 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
   Widget build(BuildContext context) {
     watchOnly((CreationController x) => x.getSumbit());
     watchOnly((CreationController x) => x.careChanged());
+
     return Container(
       height: MediaQuery.of(context).size.height * 0.92,
       decoration: new BoxDecoration(

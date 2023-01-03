@@ -1,3 +1,5 @@
+/// View for the plant edit page
+/// Author: Naumenko Maksim (xnaume01)
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:bonsai/models/achievement_list.dart';

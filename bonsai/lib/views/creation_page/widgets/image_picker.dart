@@ -1,12 +1,11 @@
+/// Widget for the image picker
+/// Author: Naumenko Maksim (xnaume01)
 import 'dart:io';
-
-import 'package:bonsai/controllers/creation_page/creation_controller.dart';
 import 'package:bonsai/views/creation_page/widgets/image_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:image_cropper/image_cropper.dart';
-
 import '../../../constants/styles.dart';
 
 final imageHelper = ImageHelper();
@@ -41,9 +40,7 @@ class _ImagePickerState extends State<ImagePicker> with GetItStateMixin {
               if (croppedFile != null) {
                 setState(() {
                   widget.image_path = croppedFile.path;
-                  // TODO
                   widget.controller.setImagePath(widget.image_path);
-                  print(widget.image_path);
                 });
               }
             }

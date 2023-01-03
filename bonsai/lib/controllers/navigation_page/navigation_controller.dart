@@ -1,5 +1,6 @@
+/// Controller for the navigation page
+/// Author: Naumenko Maksim (xnaume01)
 import 'package:flutter/material.dart';
-
 import '../../views/achievements_page/achievements_page.dart';
 import '../../views/home_page/home_page.dart';
 import '../../views/settings_page/settings_page.dart';

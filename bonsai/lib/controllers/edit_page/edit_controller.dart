@@ -1,7 +1,8 @@
+/// Controller for the edit plant page
+/// Author: Naumenko Maksim (xnaume01)
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/models/achievement_list.dart';
 import 'package:flutter/material.dart';
-
 import '../../models/plant.dart';
 import '../../models/plants.dart';
 

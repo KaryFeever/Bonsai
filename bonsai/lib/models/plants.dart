@@ -1,3 +1,5 @@
+/// Model for the Plants
+/// Author: Naumenko Maksim (xnaume01)
 import 'package:bonsai/models/plant.dart';
 import 'package:flutter/material.dart';
 

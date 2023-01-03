@@ -1,3 +1,8 @@
+/// Color and text style constants
+/// Authors:
+/// - Naumenko Maksim (xnaume01)
+/// - Mikhailov Kirill (xmikha00)
+/// - Kovalets Vladyslav (xkoval21)
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -9,6 +14,7 @@ class Styles {
   static Color primaryOrangeColor = const Color(0xFFDD9048);
   static Color secondaryOrangeColor = const Color(0x1ADD9048);
   static Color textColorPrimary = const Color(0xFF586336);
+  static Color textColorPrimaryLight = Color.fromRGBO(88, 99, 54, 0.494);
   static Color createPageTextColor = const Color(0xFF979797);
   static Color fieldsBackgroundColor = const Color(0xFFEFF1ED);
   static Color switchOffColor = const Color(0xFFB3BCB3);
@@ -27,7 +33,13 @@ class Styles {
   static TextStyle textGreen = GoogleFonts.nunito(
       fontSize: 16, color: primaryGreenColor, fontWeight: FontWeight.w500);
   static TextStyle rankText = GoogleFonts.nunito(
-      fontSize: 18, color: primaryGreenColor, fontWeight: FontWeight.w500);
+      fontSize: 20, color: primaryGreenColor, fontWeight: FontWeight.w600);
+  static TextStyle countOfAchievesText = GoogleFonts.nunito(
+      fontSize: 19, color: primaryGreenColor, fontWeight: FontWeight.w700);
+  static TextStyle rankLeftBold = GoogleFonts.nunito(
+      fontSize: 18, color: textColorPrimaryLight, fontWeight: FontWeight.w800);
+  static TextStyle rankLeftOfBold = GoogleFonts.nunito(
+      fontSize: 18, color: textColorPrimaryLight, fontWeight: FontWeight.w500);
   static TextStyle optionText = GoogleFonts.nunito(
       fontSize: 18, color: textPaleGreen, fontWeight: FontWeight.w500);
   static TextStyle optionTextBigger = GoogleFonts.nunito(
@@ -39,7 +51,7 @@ class Styles {
   static TextStyle headLine1 = GoogleFonts.nunito(
       fontSize: 34, color: textColorPrimary, fontWeight: FontWeight.w700);
   static TextStyle headLine2 = GoogleFonts.nunito(
-      fontSize: 28, color: textColorPrimary, fontWeight: FontWeight.w700);
+      fontSize: 30, color: textColorPrimary, fontWeight: FontWeight.w700);
   static TextStyle headLine3 = GoogleFonts.nunito(
       fontSize: 22, color: textColorPrimary, fontWeight: FontWeight.w700);
   static TextStyle bottomSheetCloseText = GoogleFonts.nunito(

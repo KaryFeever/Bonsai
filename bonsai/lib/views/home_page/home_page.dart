@@ -1,7 +1,12 @@
+/// View for the home page
+/// Authors:
+/// - Kovalets Vladyslav (xkoval21)
+/// - Naumenko Maksim (xnaume01)
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:bonsai/controllers/home_page/home_controller.dart';
 import 'package:bonsai/models/achievement_list.dart';
+import 'package:bonsai/services/local_notification_service.dart';
 import 'package:bonsai/views/creation_page/creation_page.dart';
 import 'package:bonsai/views/plant_page/plant_page.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +19,7 @@ import '../../constants/styles.dart';
 
 class HomePage extends StatefulWidget with GetItStatefulWidgetMixin {
   HomePage({super.key});
-
+  late final LocalNotificationService service;
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -212,8 +217,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                                         get<Plants>().getPlants()[index],
                                         get<AchievementController>(),
                                         get<Achievements>());
-                                    setState(
-                                        () {}); // обновляет целую страницу (плохо)
+                                    setState(() {});
                                   },
                                   child: ClipPath(
                                     clipper: MyClipper(),
