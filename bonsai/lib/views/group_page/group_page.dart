@@ -86,6 +86,8 @@ class _GroupPageState extends State<GroupPage> with GetItStateMixin {
                   backgroundColor: Styles.secondaryGreenColor,
                   context: context,
                   builder: (context) {
+                    get<GroupEditController>()
+                        .initializeController(widget.group);
                     return GroupEditPage(
                       group: widget.group,
                     );

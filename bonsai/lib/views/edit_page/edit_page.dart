@@ -103,6 +103,7 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                 ImagePicker(
                   image_path: get<EditController>().getImagePath(),
                   controller: get<EditController>(),
+                  plant: true,
                 ),
 
                 /* PLANT NAME */

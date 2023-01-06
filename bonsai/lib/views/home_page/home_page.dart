@@ -462,7 +462,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
                             return Padding(
                                 padding: EdgeInsets.all(10),
                                 child: Opacity(
-                                  opacity: 0.8,
+                                  opacity: 1,
                                   child: Container(
                                     height: 100,
                                     decoration: BoxDecoration(

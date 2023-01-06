@@ -102,6 +102,7 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                 ImagePicker(
                   image_path: get<CreationController>().getImagePath(),
                   controller: get<CreationController>(),
+                  plant: true,
                 ),
 
                 /* PLANT NAME */

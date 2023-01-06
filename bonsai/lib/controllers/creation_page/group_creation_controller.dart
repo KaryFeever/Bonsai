@@ -25,6 +25,9 @@ class GroupCreationController extends ChangeNotifier {
   }
 
   void cancel() {
+    _groupNameController.clear();
+    _groupDescriptionController.clear();
+    _groupPlaceController.clear();
     _imagePath = "";
     _submit = false;
   }
@@ -99,6 +102,7 @@ class GroupCreationController extends ChangeNotifier {
           _imagePath,
           _groupPlaceController.text);
 
+      cancel();
       Navigator.pop(context);
 
       notifyListeners();

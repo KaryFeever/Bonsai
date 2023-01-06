@@ -105,6 +105,7 @@ class _GroupPageState extends State<GroupEditPage> with GetItStateMixin {
                 ImagePicker(
                   image_path: get<GroupEditController>().getImagePath(),
                   controller: get<GroupEditController>(),
+                  plant: false,
                 ),
 
                 /* GROUP NAME */
@@ -130,8 +131,8 @@ class _GroupPageState extends State<GroupEditPage> with GetItStateMixin {
                             SizedBox(
                               height:
                                   get<EditController>().validateName() == null
-                                      ? 48
-                                      : 70,
+                                      ? 38
+                                      : 50,
                               width: MediaQuery.of(context).size.width - 40,
                               child: TextField(
                                 onChanged: (text) => setState(() {}),
@@ -229,6 +230,64 @@ class _GroupPageState extends State<GroupEditPage> with GetItStateMixin {
                     ),
                   ),
                 ),
+                /* GROUP DISPLACEMENT */
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 16.0,
+                    left: 20.0,
+                    right: 20.0,
+                  ),
+                  child: SizedBox(
+                    height: 122,
+                    child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Place (optional)",
+                              style: Styles.headLineBottomSheet,
+                            ),
+                            SizedBox(
+                              height: 96,
+                              width: MediaQuery.of(context).size.width - 40,
+                              child: TextField(
+                                controller: get<GroupEditController>()
+                                    .getGroupPlaceController(),
+                                showCursor: true,
+                                cursorColor: Styles.textColorPrimary,
+                                style: Styles.inputText,
+                                onChanged: (string) => setState(() {}),
+                                decoration: InputDecoration(
+                                    errorText:
+                                        get<GroupEditController>().getSumbit()
+                                            ? get<GroupEditController>()
+                                                .validatePlace()
+                                            : null,
+                                    errorStyle:
+                                        TextStyle(color: Styles.textOrange),
+                                    hintText:
+                                        "Stefanikova 34, flat c.23, livingroom",
+                                    hintStyle: Styles.hintText,
+                                    filled: true,
+                                    fillColor: Styles.fieldsBackgroundColor,
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius:
+                                            BorderRadius.circular(8.0)),
+                                    contentPadding: EdgeInsets.only(
+                                      bottom: 48 / 2,
+                                      left: 12,
+                                      right: 12,
+                                    )),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -276,6 +335,7 @@ class _GroupPageState extends State<GroupEditPage> with GetItStateMixin {
                 Navigator.pop(context);
                 get<GroupEditController>()
                     .deleteGroup(get<Groups>(), widget.group);
+                get<GroupEditController>().initializeController(widget.group);
               },
               child: Container(
                   height: 60,

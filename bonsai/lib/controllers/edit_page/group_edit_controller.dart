@@ -123,11 +123,16 @@ class GroupEditController extends ChangeNotifier {
         (this.validatePlace() == null)) {
       group.setName(_groupNameController.text);
       group.setDescription(_groupDescriptionController.text);
+      group.setPlace(_groupPlaceController.text);
 
       group.setImagePath(_imagePath);
       _changes += 1;
       Navigator.pop(context);
     }
+
+    _groupNameController.text = "";
+    _groupDescriptionController.text = "";
+    _groupPlaceController.text = "";
 
     notifyListeners();
   }
@@ -136,6 +141,7 @@ class GroupEditController extends ChangeNotifier {
     this.setGroupName(group.getName());
     this.setGroupDescription(group.getDescription());
     this.setImagePath(group.getImagePath());
+    this.setGroupPlace(group.getPlace());
 
     _submit = false;
   }

@@ -103,6 +103,7 @@ class _GroupCreationPageState extends State<GroupCreationPage>
                 ImagePicker(
                   image_path: get<GroupCreationController>().getImagePath(),
                   controller: get<GroupCreationController>(),
+                  plant: false,
                 ),
 
                 /* GROUP NAME */
