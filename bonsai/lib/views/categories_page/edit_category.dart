@@ -1,47 +1,29 @@
-/// View for the plant edit page
-/// Author: Naumenko Maksim (xnaume01)
-import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
-import 'package:bonsai/controllers/edit_page/edit_controller.dart';
-import 'package:bonsai/models/achievement_list.dart';
-import 'package:bonsai/models/categories.dart';
-import 'package:bonsai/views/categories_page/create_category.dart';
-import 'package:get_it_mixin/get_it_mixin.dart';
+/// View for the edit category page
+/// Authors: Naumenko Maksim (xnaume01)
+///          Vladyslav Kovalets (xkoval21)
+
+import 'package:bonsai/constants/styles.dart';
+import 'package:bonsai/controllers/edit_category_page/edit_category_controller.dart';
+import 'package:bonsai/models/category.dart';
+import 'package:bonsai/models/plants.dart';
+import 'package:bonsai/views/creation_page/widgets/care_configuration.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it_mixin/get_it_mixin.dart';
 
-import '../../constants/styles.dart';
-import '../../models/plant.dart';
-import '../../models/plants.dart';
-import '../creation_page/widgets/care_configuration.dart';
-import '../creation_page/widgets/image_picker.dart';
-
-class EditPage extends StatefulWidget with GetItStatefulWidgetMixin {
-  EditPage({required this.plant});
-  Plant plant;
+class EditCategoryPage extends StatefulWidget with GetItStatefulWidgetMixin {
+  EditCategoryPage({required this.category});
+  Category category;
 
   @override
-  State<EditPage> createState() => _EditPageeState();
+  State<EditCategoryPage> createState() => _EditCategoryPageState();
 }
 
-String selectedValue = Styles.notSelected;
-List<DropdownMenuItem<String>> dropdownItems(Categories categories) {
-  List<DropdownMenuItem<String>> menuItems = [
-    DropdownMenuItem(
-        child: Text(Styles.notSelected), value: Styles.notSelected),
-  ];
-
-  for (int i = 0; i < categories.getCategoriesCounter(); i++)
-    menuItems.add(DropdownMenuItem(
-        child: Text(categories.getCategories().elementAt(i).getName()),
-        value: categories.getCategories().elementAt(i).getName()));
-
-  return menuItems;
-}
-
-class _EditPageeState extends State<EditPage> with GetItStateMixin {
+class _EditCategoryPageState extends State<EditCategoryPage>
+    with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
-    watchOnly((EditController x) => x.getSumbit());
-
+    watchOnly((EditCategoryController x) => x.getSumbit());
+    watchOnly((EditCategoryController x) => x.careChanged());
     return Container(
       height: MediaQuery.of(context).size.height * 0.92,
       decoration: new BoxDecoration(
@@ -82,12 +64,13 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Edit plant",
+                    "Edit category",
                     style: Styles.headLine2,
                   ),
                   GestureDetector(
                     onTap: () {
-                      get<EditController>().initializeController(widget.plant);
+                      get<EditCategoryController>()
+                          .initializeController(widget.category);
                       Navigator.pop(context);
                     },
                     child: Text(
@@ -117,47 +100,46 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
           Expanded(
             child: ListView(
               children: [
-                /* IMAGE */
-                ImagePicker(
-                  image_path: get<EditController>().getImagePath(),
-                  controller: get<EditController>(),
-                ),
-
-                /* PLANT NAME */
+                /* CATEGORY NAME */
                 Padding(
                   padding: EdgeInsets.only(
+                    top: 15.0,
                     bottom: 16.0,
                     left: 20.0,
                     right: 20.0,
                   ),
                   child: SizedBox(
-                    height:
-                        get<EditController>().validateName() == null ? 74 : 90,
+                    height: get<EditCategoryController>().validateName() == null
+                        ? 74
+                        : 90,
                     child: Row(
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Plant name",
+                              "Category name",
                               style: Styles.headLineBottomSheet,
                             ),
                             SizedBox(
-                              height:
-                                  get<EditController>().validateName() == null
-                                      ? 48
-                                      : 70,
+                              height: get<EditCategoryController>()
+                                          .validateName() ==
+                                      null
+                                  ? 48
+                                  : 70,
                               width: MediaQuery.of(context).size.width - 40,
                               child: TextField(
                                 onChanged: (text) => setState(() {}),
-                                controller: get<EditController>()
-                                    .getPlantNameController(),
+                                controller: get<EditCategoryController>()
+                                    .getCategoryNameController(),
                                 showCursor: true,
                                 cursorColor: Styles.textColorPrimary,
                                 style: Styles.inputText,
                                 decoration: InputDecoration(
-                                    errorText: get<EditController>().getSumbit()
-                                        ? get<EditController>().validateName()
+                                    errorText: get<EditCategoryController>()
+                                            .getSumbit()
+                                        ? get<EditCategoryController>()
+                                            .validateName()
                                         : null,
                                     errorStyle:
                                         TextStyle(color: Styles.textOrange),
@@ -183,7 +165,7 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                   ),
                 ),
 
-                /* PLANT DESCRIPTION */
+                /* CATEGORY DESCRIPTION */
                 Padding(
                   padding: EdgeInsets.only(
                     bottom: 16.0,
@@ -205,16 +187,17 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                               height: 96,
                               width: MediaQuery.of(context).size.width - 40,
                               child: TextField(
-                                controller: get<EditController>()
-                                    .getPlantDescriptionController(),
+                                controller: get<EditCategoryController>()
+                                    .getCategoryDescriptionController(),
                                 maxLines: 5,
                                 showCursor: true,
                                 cursorColor: Styles.textColorPrimary,
                                 style: Styles.inputText,
                                 onChanged: (string) => setState(() {}),
                                 decoration: InputDecoration(
-                                    errorText: get<EditController>().getSumbit()
-                                        ? get<EditController>()
+                                    errorText: get<EditCategoryController>()
+                                            .getSumbit()
+                                        ? get<EditCategoryController>()
                                             .validateDescription()
                                         : null,
                                     errorStyle:
@@ -241,75 +224,6 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 20.0,
-                    right: 20.0,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Category",
-                        style: Styles.headLineBottomSheet,
-                      ),
-
-                      /* Button to edit the categories */
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 250.0,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Styles.secondaryGreenColor,
-                              context: context,
-                              builder: (context) => CreateCategory(),
-                            );
-                          },
-                          child: Container(
-                            height: 20,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
-                              color: Styles.fieldsBackgroundColor,
-                              // boxShadow: [
-                              //   BoxShadow(
-                              //     color: Styles.primaryGreenColor,
-                              //     blurRadius: 1,
-                              //     spreadRadius: 1,
-                              //   ),
-                              // ],
-                            ),
-                            child: Center(
-                              child: Text("New",
-                                  style: Styles.headLineBottomSheet),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-
-                /* DROPDOWN LIST */
-                Padding(
-                    padding: EdgeInsets.only(
-                      bottom: 6.0,
-                      left: 20.0,
-                      right: 20.0,
-                    ),
-                    child: DropdownButton(
-                        value: widget.plant.getPlantCategory().getName() == ""
-                            ? selectedValue
-                            : widget.plant.getPlantCategory().getName(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedValue = newValue!;
-                          });
-                        },
-                        items: dropdownItems(get<Categories>()))),
 
                 /* TYPES OF CARE */
                 Padding(
@@ -322,10 +236,10 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        get<EditController>().getSumbit()
-                            ? get<EditController>().validateCare()
+                        get<EditCategoryController>().getSumbit()
+                            ? get<EditCategoryController>().validateCare()
                             : "Type of care",
-                        style: get<EditController>().validateCare() ==
+                        style: get<EditCategoryController>().validateCare() ==
                                 "Type of care"
                             ? Styles.headLineBottomSheet
                             : Styles.headLineBottomSheetError,
@@ -338,27 +252,27 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                 CareConfiguration(
                   index: 0,
                   careType: "Watering",
-                  controller: get<EditController>(),
+                  controller: get<EditCategoryController>(),
                   mode: true,
-                  isCategory: false,
+                  isCategory: true,
                 ),
 
                 /* SPRAYING */
                 CareConfiguration(
                   index: 1,
                   careType: "Spraying",
-                  controller: get<EditController>(),
+                  controller: get<EditCategoryController>(),
                   mode: true,
-                  isCategory: false,
+                  isCategory: true,
                 ),
 
                 /* FERTILIZING */
                 CareConfiguration(
                   index: 2,
                   careType: "Fertilizing",
-                  controller: get<EditController>(),
+                  controller: get<EditCategoryController>(),
                   mode: true,
-                  isCategory: false,
+                  isCategory: true,
                 ),
               ],
             ),
@@ -367,12 +281,15 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
             padding: EdgeInsets.only(
               left: 20.0,
               right: 20.0,
-              bottom: 12.0,
+              bottom: 25.0,
             ),
             child: GestureDetector(
               onTap: () {
-                get<EditController>().saveChanges(widget.plant, context,
-                    get<AchievementController>(), get<Achievements>());
+                get<EditCategoryController>().saveChanges(
+                  widget.category,
+                  context,
+                  get<Plants>().getPlants(),
+                );
               },
               child: Container(
                 height: 60,
@@ -391,38 +308,6 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                   ],
                 ),
               ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(
-              left: 20.0,
-              right: 20.0,
-              bottom: 20.0,
-            ),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.pop(context);
-                get<EditController>().deletePlant(get<Plants>(), widget.plant);
-                get<AchievementController>()
-                    .unlockDeletedAchievement(get<Achievements>());
-              },
-              child: Container(
-                  height: 60,
-                  width: MediaQuery.of(context).size.width - 40,
-                  decoration: BoxDecoration(
-                    color: Styles.secondaryOrangeColor,
-                    borderRadius: BorderRadius.all(Radius.circular(20)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Delete plant",
-                        style: Styles.buttonTextOrange,
-                      ),
-                    ],
-                  )),
             ),
           ),
         ],

@@ -1,6 +1,8 @@
 /// Widget for the care configuration
 /// Author: Naumenko Maksim (xnaume01)
+import 'package:bonsai/controllers/categories_page/categories_controller.dart';
 import 'package:bonsai/controllers/creation_page/creation_controller.dart';
+import 'package:bonsai/controllers/edit_category_page/edit_category_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +16,13 @@ class CareConfiguration extends StatefulWidget with GetItStatefulWidgetMixin {
       {required this.index,
       required this.careType,
       required this.controller,
-      required this.mode});
+      required this.mode,
+      required this.isCategory});
   int index;
   String careType;
   final controller;
   bool mode;
+  bool isCategory;
 
   @override
   State<CareConfiguration> createState() => _CareConfigurationState();
@@ -28,19 +32,49 @@ class _CareConfigurationState extends State<CareConfiguration>
     with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
-    bool careEnabled = widget.mode == false
-        ? watchOnly((CreationController x) => x.getFlag(widget.index))
-        : watchOnly((EditController x) => x.getFlag(widget.index));
-    int frequencyIndex = widget.mode == false
-        ? watchOnly((CreationController x) => x.getFrequencyIndex(widget.index))
-        : watchOnly((EditController x) => x.getFrequencyIndex(widget.index));
-    int timeIndex = widget.mode == false
-        ? watchOnly((CreationController x) => x.getTimeIndex(widget.index))
-        : watchOnly((EditController x) => x.getTimeIndex(widget.index));
-    String careFrequencyText = widget.mode == false
-        ? watchOnly(
-            (CreationController x) => x.getCareFrequencyText(widget.index))
-        : watchOnly((EditController x) => x.getCareFrequencyText(widget.index));
+    bool careEnabled = widget.isCategory == false
+        ? widget.mode == false
+            ? watchOnly((CreationController x) => x.getFlag(widget.index))
+            : watchOnly((EditController x) => x.getFlag(widget.index))
+        : widget.mode == false
+            ? watchOnly(
+                (CreationCategoryController x) => x.getFlag(widget.index))
+            : watchOnly(
+                (EditCategoryController x) => x.getFlag(widget.index)); //change
+
+    int frequencyIndex = widget.isCategory == false
+        ? widget.mode == false
+            ? watchOnly(
+                (CreationController x) => x.getFrequencyIndex(widget.index))
+            : watchOnly((EditController x) => x.getFrequencyIndex(widget.index))
+        : widget.mode == false
+            ? watchOnly((CreationCategoryController x) =>
+                x.getFrequencyIndex(widget.index))
+            : watchOnly((EditCategoryController x) =>
+                x.getFrequencyIndex(widget.index));
+
+    int timeIndex = widget.isCategory == false
+        ? widget.mode == false
+            ? watchOnly((CreationController x) => x.getTimeIndex(widget.index))
+            : watchOnly((EditController x) => x.getTimeIndex(widget.index))
+        : widget.mode == false
+            ? watchOnly(
+                (CreationCategoryController x) => x.getTimeIndex(widget.index))
+            : watchOnly(
+                (EditCategoryController x) => x.getTimeIndex(widget.index));
+
+    String careFrequencyText = widget.isCategory == false
+        ? widget.mode == false
+            ? watchOnly(
+                (CreationController x) => x.getCareFrequencyText(widget.index))
+            : watchOnly(
+                (EditController x) => x.getCareFrequencyText(widget.index))
+        : widget.mode == false
+            ? watchOnly((CreationCategoryController x) =>
+                x.getCareFrequencyText(widget.index))
+            : watchOnly((EditCategoryController x) =>
+                x.getCareFrequencyText(widget.index));
+
     return Padding(
       padding: EdgeInsets.only(
         bottom: 16.0,

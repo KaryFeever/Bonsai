@@ -1,16 +1,14 @@
-/// Model for the plant
-/// Author: Naumenko Maksim (xnaume01)
-import 'package:bonsai/models/care_type.dart';
-import 'package:bonsai/models/category.dart';
+/// Model for category
+/// Authors: Vladyslav Kovalets (xkoval21)
 
-class Plant {
+import 'package:bonsai/models/care_type.dart';
+
+class Category {
   String _name = "";
   String _description = "";
-  String _imagePath = "";
   CareType _watering = CareType("Watering");
   CareType _spraying = CareType("Spraying");
   CareType _fertilizing = CareType("Fertilizing");
-  Category _category = Category();
 
   String getName() {
     return _name;
@@ -28,18 +26,6 @@ class Plant {
     _description = description;
   }
 
-  String getImagePath() {
-    return _imagePath;
-  }
-
-  void setImagePath(String imagePath) {
-    _imagePath = imagePath;
-  }
-
-  void setCategory(Category category) {
-    _category = category;
-  }
-
   CareType getWatering() {
     return _watering;
   }
@@ -50,9 +36,5 @@ class Plant {
 
   CareType getFertilizing() {
     return _fertilizing;
-  }
-
-  Category getPlantCategory() {
-    return _category;
   }
 }
