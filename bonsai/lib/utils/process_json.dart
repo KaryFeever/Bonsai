@@ -25,7 +25,7 @@ Future<String> readContent(Plants plants, Achievements achievements) async {
         jsonData['plants']['plants_list'][i]['fertilizing']['enable'],
         jsonData['plants']['plants_list'][i]['fertilizing']['frequency_index'],
         jsonData['plants']['plants_list'][i]['fertilizing']['time_index'],
-        jsonData['plants']['plants_list'][i]['image']);
+        jsonData['plants']['plants_list'][i]['image'],
         jsonData['plants']['plants_list'][i]["category"],
         jsonData['plants']['plants_list'][i]["categories"]);
   }
