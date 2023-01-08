@@ -1,12 +1,9 @@
 /// View for the plant creation page
-/// Authors:
-///         Naumenko Maksim (xnaume01)
-///         Vladyslav Kovalets (xkoval21)
+/// Author: Mikhailov Kirill (xmikha00)
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
-import 'package:bonsai/controllers/creation_page/creation_controller.dart';
-import 'package:bonsai/models/categories.dart';
-import 'package:bonsai/views/categories_page/create_category.dart';
+import 'package:bonsai/controllers/creation_page/group_creation_controller.dart';
 import 'package:bonsai/models/achievement_list.dart';
+import 'package:bonsai/models/groups.dart';
 import 'package:bonsai/models/plants.dart';
 import 'package:bonsai/constants/styles.dart';
 import 'package:bonsai/views/creation_page/widgets/care_configuration.dart';
@@ -14,34 +11,18 @@ import 'package:bonsai/views/creation_page/widgets/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
-class CreationPage extends StatefulWidget with GetItStatefulWidgetMixin {
-  CreationPage({super.key});
+class GroupCreationPage extends StatefulWidget with GetItStatefulWidgetMixin {
+  GroupCreationPage({super.key});
 
   @override
-  State<CreationPage> createState() => _CreationPageState();
+  State<GroupCreationPage> createState() => _GroupCreationPageState();
 }
 
-String selectedValue = Styles.notSelected;
-
-List<DropdownMenuItem<String>> dropdownItems(Categories categories) {
-  List<DropdownMenuItem<String>> menuItems = [
-    DropdownMenuItem(
-        child: Text(Styles.notSelected), value: Styles.notSelected),
-  ];
-
-  for (int i = 0; i < categories.getCategoriesCounter(); i++)
-    menuItems.add(DropdownMenuItem(
-        child: Text(categories.getCategories().elementAt(i).getName()),
-        value: categories.getCategories().elementAt(i).getName()));
-
-  return menuItems;
-}
-
-class _CreationPageState extends State<CreationPage> with GetItStateMixin {
+class _GroupCreationPageState extends State<GroupCreationPage>
+    with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
-    watchOnly((CreationController x) => x.getSumbit());
-    watchOnly((CreationController x) => x.careChanged());
+    watchOnly((GroupCreationController x) => x.getSumbit());
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.92,
@@ -83,12 +64,12 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "New plant",
+                    "New group",
                     style: Styles.headLine2,
                   ),
                   GestureDetector(
                     onTap: () {
-                      get<CreationController>().cancel();
+                      get<GroupCreationController>().cancel();
                       Navigator.pop(context);
                     },
                     child: Text(
@@ -120,12 +101,12 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
               children: [
                 /* IMAGE */
                 ImagePicker(
-                  image_path: get<CreationController>().getImagePath(),
-                  controller: get<CreationController>(),
-                  plant: true,
+                  image_path: get<GroupCreationController>().getImagePath(),
+                  controller: get<GroupCreationController>(),
+                  plant: false,
                 ),
 
-                /* PLANT NAME */
+                /* GROUP NAME */
                 Padding(
                   padding: EdgeInsets.only(
                     bottom: 16.0,
@@ -133,40 +114,42 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                     right: 20.0,
                   ),
                   child: SizedBox(
-                    height: get<CreationController>().validateName() == null
-                        ? 74
-                        : 90,
+                    height:
+                        get<GroupCreationController>().validateName() == null
+                            ? 74
+                            : 90,
                     child: Row(
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Plant name",
+                              "Group name",
                               style: Styles.headLineBottomSheet,
                             ),
                             SizedBox(
-                              height:
-                                  get<CreationController>().validateName() ==
-                                          null
-                                      ? 48
-                                      : 70,
+                              height: get<GroupCreationController>()
+                                          .validateName() ==
+                                      null
+                                  ? 48
+                                  : 70,
                               width: MediaQuery.of(context).size.width - 40,
                               child: TextField(
                                 onChanged: (text) => setState(() {}),
                                 showCursor: true,
-                                controller: get<CreationController>()
-                                    .getPlantNameController(),
+                                controller: get<GroupCreationController>()
+                                    .getGroupNameController(),
                                 cursorColor: Styles.textColorPrimary,
                                 style: Styles.inputText,
                                 decoration: InputDecoration(
-                                  errorText: get<CreationController>()
-                                          .getSumbit()
-                                      ? get<CreationController>().validateName()
-                                      : null,
+                                  errorText:
+                                      get<GroupCreationController>().getSumbit()
+                                          ? get<GroupCreationController>()
+                                              .validateName()
+                                          : null,
                                   errorStyle:
                                       TextStyle(color: Styles.textOrange),
-                                  hintText: "Black Dahlia",
+                                  hintText: "In livingroom",
                                   hintStyle: Styles.hintText,
                                   filled: true,
                                   fillColor: Styles.fieldsBackgroundColor,
@@ -188,7 +171,7 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                   ),
                 ),
 
-                /* PLANT DESCRIPTION */
+                /* GROUP DESCRIPTION */
                 Padding(
                   padding: EdgeInsets.only(
                     bottom: 16.0,
@@ -203,30 +186,30 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Description",
+                              "Description (optional)",
                               style: Styles.headLineBottomSheet,
                             ),
                             SizedBox(
                               height: 96,
                               width: MediaQuery.of(context).size.width - 40,
                               child: TextField(
-                                controller: get<CreationController>()
-                                    .getPlantDescriptionController(),
+                                controller: get<GroupCreationController>()
+                                    .getGroupDescriptionController(),
                                 maxLines: 5,
                                 showCursor: true,
                                 cursorColor: Styles.textColorPrimary,
                                 style: Styles.inputText,
                                 onChanged: (string) => setState(() {}),
                                 decoration: InputDecoration(
-                                    errorText:
-                                        get<CreationController>().getSumbit()
-                                            ? get<CreationController>()
-                                                .validateDescription()
-                                            : null,
+                                    errorText: get<GroupCreationController>()
+                                            .getSumbit()
+                                        ? get<GroupCreationController>()
+                                            .validateDescription()
+                                        : null,
                                     errorStyle:
                                         TextStyle(color: Styles.textOrange),
                                     hintText:
-                                        "The dahlia is a symbol of loyalty and happiness for your loved ones",
+                                        "Group for plants in the livingroom",
                                     hintStyle: Styles.hintText,
                                     filled: true,
                                     fillColor: Styles.fieldsBackgroundColor,
@@ -247,124 +230,64 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                     ),
                   ),
                 ),
+
+                /* GROUP DISPLACEMENT */
                 Padding(
                   padding: EdgeInsets.only(
+                    bottom: 16.0,
                     left: 20.0,
                     right: 20.0,
                   ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Category",
-                        style: Styles.headLineBottomSheet,
-                      ),
-
-                      /* Button to edit the categories */
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 250.0,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Styles.secondaryGreenColor,
-                              context: context,
-                              builder: (context) => CreateCategory(),
-                            );
-                          },
-                          child: Container(
-                            height: 20,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
-                              color: Styles.fieldsBackgroundColor,
-                              // boxShadow: [
-                              //   BoxShadow(
-                              //     color: Styles.primaryGreenColor,
-                              //     blurRadius: 1,
-                              //     spreadRadius: 1,
-                              //   ),
-                              // ],
+                  child: SizedBox(
+                    height: 122,
+                    child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Place (optional)",
+                              style: Styles.headLineBottomSheet,
                             ),
-                            child: Center(
-                              child: Text("New",
-                                  style: Styles.headLineBottomSheet),
+                            SizedBox(
+                              height: 96,
+                              width: MediaQuery.of(context).size.width - 40,
+                              child: TextField(
+                                controller: get<GroupCreationController>()
+                                    .getGroupPlaceController(),
+                                showCursor: true,
+                                cursorColor: Styles.textColorPrimary,
+                                style: Styles.inputText,
+                                onChanged: (string) => setState(() {}),
+                                decoration: InputDecoration(
+                                    errorText: get<GroupCreationController>()
+                                            .getSumbit()
+                                        ? get<GroupCreationController>()
+                                            .validatePlace()
+                                        : null,
+                                    errorStyle:
+                                        TextStyle(color: Styles.textOrange),
+                                    hintText:
+                                        "Stefanikova 34, flat c.23, livingroom",
+                                    hintStyle: Styles.hintText,
+                                    filled: true,
+                                    fillColor: Styles.fieldsBackgroundColor,
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                        borderRadius:
+                                            BorderRadius.circular(8.0)),
+                                    contentPadding: EdgeInsets.only(
+                                      bottom: 48 / 2,
+                                      left: 12,
+                                      right: 12,
+                                    )),
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                ),
-
-                /* DROPDOWN LIST */
-                Padding(
-                    padding: EdgeInsets.only(
-                      bottom: 6.0,
-                      left: 20.0,
-                      right: 20.0,
+                      ],
                     ),
-                    child: DropdownButton(
-                        value: selectedValue,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedValue = newValue!;
-                          });
-                        },
-                        items: dropdownItems(get<Categories>()))),
-
-                /* TYPES OF CARE */
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: 6.0,
-                    left: 20.0,
-                    right: 20.0,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        get<CreationController>().getSumbit()
-                            ? get<CreationController>()
-                                .validateCare(selectedValue)
-                            : "Type of care",
-                        style: get<CreationController>()
-                                    .validateCare(selectedValue) ==
-                                "Type of care"
-                            ? Styles.headLineBottomSheet
-                            : Styles.headLineBottomSheetError,
-                      ),
-                    ],
-                  ),
-                ),
-
-                /* WATERING */
-                CareConfiguration(
-                  index: 0,
-                  careType: "Watering",
-                  controller: get<CreationController>(),
-                  mode: false,
-                  isCategory: false,
-                ),
-
-                /* SPRAYING */
-                CareConfiguration(
-                  index: 1,
-                  careType: "Spraying",
-                  controller: get<CreationController>(),
-                  mode: false,
-                  isCategory: false,
-                ),
-
-                /* FERTILIZING */
-                CareConfiguration(
-                  index: 2,
-                  careType: "Fertilizing",
-                  controller: get<CreationController>(),
-                  mode: false,
-                  isCategory: false,
                 ),
               ],
             ),
@@ -377,15 +300,8 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
             ),
             child: GestureDetector(
               onTap: () {
-                get<CreationController>().createPlant(
-                    get<Plants>(),
-                    context,
-                    selectedValue,
-                    get<Categories>(),
-                    get<AchievementController>(),
-                    get<Achievements>());
-                get<AchievementController>().updatePlantsAchievements(
-                    get<Achievements>(), get<Plants>());
+                get<GroupCreationController>()
+                    .createGroup(get<Groups>(), context);
               },
               child: Container(
                   height: 60,

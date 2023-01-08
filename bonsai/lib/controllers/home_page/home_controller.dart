@@ -1,12 +1,25 @@
 /// Controller for the home page
 /// Author: Kovalets Vladyslav (xkoval21)
+///      -- Mikhailov Kirill (xmikha00)
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/controllers/plant_page/plant_controller.dart';
 import 'package:bonsai/models/achievement_list.dart';
 import 'package:flutter/material.dart';
 import 'package:bonsai/models/plant.dart';
+import 'package:bonsai/models/group.dart';
 
 class HomeController extends ChangeNotifier {
+  bool _viewPlants = true;
+
+  void switchView() {
+    _viewPlants = !_viewPlants;
+    notifyListeners();
+  }
+
+  bool plantsShown() {
+    return _viewPlants;
+  }
+
   /// Check if the plant needs care today.
   bool careTodayPlantNeeded(Plant plant) {
     if (plant.getWatering().careNeeded() ||
@@ -16,6 +29,8 @@ class HomeController extends ChangeNotifier {
     }
     return false;
   }
+
+  void switchPlant(Group group) {}
 
   /// Check if there is at least one plant that needs care today.
   bool careTodayPlantsNeeded(List<Plant> plants) {

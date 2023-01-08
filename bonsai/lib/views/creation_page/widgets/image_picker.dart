@@ -1,5 +1,6 @@
 /// Widget for the image picker
-/// Author: Naumenko Maksim (xnaume01)
+/// Author: Naumenko Maksim (xnaume01),
+///         Mikhailov Kirill(xmikha00)
 import 'dart:io';
 import 'package:bonsai/views/creation_page/widgets/image_helper.dart';
 import 'package:flutter/material.dart';
@@ -14,9 +15,11 @@ class ImagePicker extends StatefulWidget with GetItStatefulWidgetMixin {
   ImagePicker({
     required this.image_path,
     required this.controller,
+    required this.plant,
   });
   String image_path;
   final controller;
+  bool plant;
   @override
   State<ImagePicker> createState() => _ImagePickerState();
 }
@@ -73,7 +76,9 @@ class _ImagePickerState extends State<ImagePicker> with GetItStateMixin {
                         ),
                       ),
                       Text(
-                        "Add photo for your plant",
+                        widget.plant == true
+                            ? "Add photo for your plant"
+                            : "Add photo for group",
                         style: widget.controller.getImagePath() == "" &&
                                 widget.controller.getSumbit()
                             ? Styles.inputTextError
