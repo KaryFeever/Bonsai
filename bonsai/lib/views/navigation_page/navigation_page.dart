@@ -3,6 +3,7 @@
 import 'package:bonsai/controllers/navigation_page/navigation_controller.dart';
 import 'package:bonsai/constants/styles.dart';
 import 'package:bonsai/models/achievement_list.dart';
+import 'package:bonsai/models/categories.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
@@ -21,7 +22,8 @@ class _NavigationPageState extends State<NavigationPage>
   initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    readContent(get<Plants>(), get<Achievements>()).then((String value) {});
+    readContent(get<Plants>(), get<Achievements>(), get<Categories>())
+        .then((String value) {});
   }
 
   @override
@@ -41,7 +43,7 @@ class _NavigationPageState extends State<NavigationPage>
     final isBackground = state == AppLifecycleState.paused;
 
     if (isBackground) {
-      writeContent(get<Plants>(), get<Achievements>());
+      writeContent(get<Plants>(), get<Achievements>(), get<Categories>());
     }
   }
 

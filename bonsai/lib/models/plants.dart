@@ -45,7 +45,9 @@ class Plants extends ChangeNotifier {
     plant.setDescription(description);
     plant.setImagePath(imagePath);
 
-    if (categoryName != Styles.notSelected) {
+    if (categoryName != Styles.notSelected &&
+        categories.getCategoriesCounter() != 0 &&
+        categoryName != "") {
       Category category = categories.getCategory(categoryName)!;
       plant.setCategory(category);
 
