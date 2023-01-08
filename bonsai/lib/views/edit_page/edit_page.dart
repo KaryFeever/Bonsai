@@ -1,6 +1,7 @@
 /// View for the plant edit page
 /// Author: Naumenko Maksim (xnaume01)
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
+import 'package:bonsai/controllers/categories_page/categories_controller.dart';
 import 'package:bonsai/controllers/edit_page/edit_controller.dart';
 import 'package:bonsai/models/achievement_list.dart';
 import 'package:bonsai/models/categories.dart';
@@ -23,24 +24,19 @@ class EditPage extends StatefulWidget with GetItStatefulWidgetMixin {
 }
 
 String selectedValue = Styles.notSelected;
-List<DropdownMenuItem<String>> dropdownItems(Categories categories) {
-  List<DropdownMenuItem<String>> menuItems = [
-    DropdownMenuItem(
-        child: Text(Styles.notSelected), value: Styles.notSelected),
-  ];
-
-  for (int i = 0; i < categories.getCategoriesCounter(); i++)
-    menuItems.add(DropdownMenuItem(
-        child: Text(categories.getCategories().elementAt(i).getName()),
-        value: categories.getCategories().elementAt(i).getName()));
-
-  return menuItems;
-}
+bool selected = false;
 
 class _EditPageeState extends State<EditPage> with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
     watchOnly((EditController x) => x.getSumbit());
+    if (widget.plant.getPlantCategory().getName() != "" && !selected) {
+      selectedValue = widget.plant.getPlantCategory().getName();
+    }
+
+    // widget.plant.getPlantCategory().getName() == ""
+    //     ? selectedValue
+    //     : widget.plant.getPlantCategory().getName(),
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.92,
@@ -88,6 +84,7 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                   GestureDetector(
                     onTap: () {
                       get<EditController>().initializeController(widget.plant);
+                      selected = false;
                       Navigator.pop(context);
                     },
                     child: Text(
@@ -302,15 +299,18 @@ class _EditPageeState extends State<EditPage> with GetItStateMixin {
                       right: 20.0,
                     ),
                     child: DropdownButton(
-                        value: widget.plant.getPlantCategory().getName() == ""
-                            ? selectedValue
-                            : widget.plant.getPlantCategory().getName(),
+                        value: selectedValue,
+                        // widget.plant.getPlantCategory().getName() == ""
+                        //     ? selectedValue
+                        //     : widget.plant.getPlantCategory().getName(),
                         onChanged: (String? newValue) {
                           setState(() {
                             selectedValue = newValue!;
+                            selected = true;
                           });
                         },
-                        items: dropdownItems(get<Categories>()))),
+                        items: get<CreationCategoryController>()
+                            .dropdownItems(get<Categories>()))),
 
                 /* TYPES OF CARE */
                 Padding(

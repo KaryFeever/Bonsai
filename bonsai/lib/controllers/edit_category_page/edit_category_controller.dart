@@ -298,8 +298,4 @@ class EditCategoryController extends ChangeNotifier {
       }
     }
   }
-
-  void deleteCategory(Categories categories, Category category) {
-    categories.removeCategory(category.getName());
-  }
 }

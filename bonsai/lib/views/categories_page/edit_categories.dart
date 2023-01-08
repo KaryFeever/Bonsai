@@ -6,6 +6,7 @@ import 'package:bonsai/controllers/creation_page/creation_controller.dart';
 import 'package:bonsai/controllers/edit_category_page/edit_category_controller.dart';
 import 'package:bonsai/models/categories.dart';
 import 'package:bonsai/constants/styles.dart';
+import 'package:bonsai/models/plants.dart';
 import 'package:bonsai/views/categories_page/edit_category.dart';
 import 'package:bonsai/controllers/categories_page/categories_controller.dart';
 import 'package:flutter/material.dart';
@@ -182,13 +183,14 @@ class _EditCategoriesState extends State<EditCategories> with GetItStateMixin {
                                                           left: 5),
                                                       child: GestureDetector(
                                                         onTap: () {
-                                                          get<Categories>()
-                                                              .removeCategory(get<
-                                                                      Categories>()
+                                                          get<Categories>().removeCategory(
+                                                              get<Categories>()
                                                                   .getCategories()
                                                                   .elementAt(
                                                                       index)
-                                                                  .getName());
+                                                                  .getName(),
+                                                              get<Plants>()
+                                                                  .getPlants());
                                                           //refresh
                                                           setState(() {});
                                                         },

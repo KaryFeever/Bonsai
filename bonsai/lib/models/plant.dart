@@ -40,6 +40,10 @@ class Plant {
     _category = category;
   }
 
+  void removeCategory() {
+    _category = Category();
+  }
+
   CareType getWatering() {
     return _watering;
   }

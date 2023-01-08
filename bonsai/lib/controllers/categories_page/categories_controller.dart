@@ -2,6 +2,7 @@
 /// Authors: Naumenko Maksim (xnaume01)
 ///          Vladyslav Kovalets (xkoval21)
 
+import 'package:bonsai/constants/styles.dart';
 import 'package:flutter/material.dart';
 import '../../models/categories.dart';
 
@@ -214,58 +215,8 @@ class CreationCategoryController extends ChangeNotifier {
       cancel();
       Navigator.pop(context);
     }
-
-    // if (_careFlags[0]) {
-    //   LocalNotificationService().showScheduledNotification(
-    //       id: _categoryCounter * 20,
-    //       title: "Bonsai",
-    //       body: _categoryNameController.text + "requires watering",
-    //       seconds: _careFrequencyInDays[0] * 86400);
-    // }
-    // if (_careFlags[1]) {
-    //   LocalNotificationService().showScheduledNotification(
-    //       id: _categoryCounter * 21,
-    //       title: "Bonsai",
-    //       body: _categoryNameController.text + "requires spraying",
-    //       seconds: _careFrequencyInDays[1] * 86400);
-    // }
-    // if (_careFlags[2]) {
-    //   LocalNotificationService().showScheduledNotification(
-    //       id: _categoryCounter * 22,
-    //       title: "Bonsai",
-    //       body: _categoryNameController.text + "requires fertilizing",
-    //       seconds: _careFrequencyInDays[2] * 86400);
-    // }
-
     notifyListeners();
   }
-
-  // String selectedValue =
-  //     "Not selected                                                       ";
-
-  // List<DropdownMenuItem<String>> dropdownItems(Categories categories) {
-  //   List<DropdownMenuItem<String>> menuItems = [
-  //     DropdownMenuItem(
-  //         child: Text(
-  //             "Not selected                                                       "),
-  //         value:
-  //             "Not selected                                                       "),
-  //   ];
-  //   menuItems.add(DropdownMenuItem(
-  //     child: Text("text"),
-  //     value: "text",
-  //   ));
-
-  //   for (int i = 0; i < categories.getCategoriesCounter(); i++)
-  //     menuItems.add(DropdownMenuItem(
-  //         child: Text(categories.getCategories().elementAt(i).getName()),
-  //         value: categories.getCategories().elementAt(i).getName()));
-  //   // DropdownMenuItem(
-  //   //     child: Text(Plants().getPlants().elementAt(i).getName()),
-  //   //     value: Plants().getPlants().elementAt(i).getName())
-
-  //   return menuItems;
-  // }
 
   double setHeightOfDescriptionField(Category category) {
     if (category.getDescription().length < 40) {
@@ -275,5 +226,20 @@ class CreationCategoryController extends ChangeNotifier {
     } else {
       return category.getDescription().length.toDouble();
     }
+  }
+
+  List<DropdownMenuItem<String>> dropdownItems(Categories categories) {
+    List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(
+          child: Text(Styles.notSelected), value: Styles.notSelected),
+    ];
+
+    for (int i = 0; i < categories.getCategoriesCounter(); i++) {
+      menuItems.add(DropdownMenuItem(
+          child: Text(categories.getCategories().elementAt(i).getName()),
+          value: categories.getCategories().elementAt(i).getName()));
+    }
+
+    return menuItems;
   }
 }

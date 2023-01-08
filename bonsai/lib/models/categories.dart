@@ -2,6 +2,9 @@
 /// Authors: Naumenko Maksim (xnaume01)
 ///          Vladyslav Kovalets (xkoval21)
 
+import 'package:bonsai/constants/styles.dart';
+import 'package:bonsai/models/plant.dart';
+import 'package:bonsai/views/edit_page/edit_page.dart';
 import 'package:flutter/material.dart';
 import 'package:bonsai/models/category.dart';
 
@@ -68,12 +71,6 @@ class Categories extends ChangeNotifier {
     _categories.add(category);
     _categories_counter++;
     notifyListeners();
-    print(_categories_counter);
-    print(_categories);
-
-    for (Category category in _categories) {
-      print(category.getName());
-    }
   }
 
   Category? getCategory(String categoryName) {
@@ -83,11 +80,20 @@ class Categories extends ChangeNotifier {
     return null;
   }
 
-  void removeCategory(String name) {
+  void removeCategory(String name, List<Plant> plants) {
     for (Category category in _categories) {
       if (category.getName() == name) {
+        for (Plant plant in plants) {
+          if (plant.getPlantCategory().getName() == name) {
+            plant.removeCategory();
+          }
+        }
+
         _categories.removeAt(_categories.indexOf(category));
         _categories_counter--;
+
+        selectedValue = Styles.notSelected;
+
         notifyListeners();
         break;
       }

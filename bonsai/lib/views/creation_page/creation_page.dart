@@ -14,6 +14,8 @@ import 'package:bonsai/views/creation_page/widgets/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 
+import '../../controllers/categories_page/categories_controller.dart';
+
 class CreationPage extends StatefulWidget with GetItStatefulWidgetMixin {
   CreationPage({super.key});
 
@@ -22,20 +24,6 @@ class CreationPage extends StatefulWidget with GetItStatefulWidgetMixin {
 }
 
 String selectedValue = Styles.notSelected;
-
-List<DropdownMenuItem<String>> dropdownItems(Categories categories) {
-  List<DropdownMenuItem<String>> menuItems = [
-    DropdownMenuItem(
-        child: Text(Styles.notSelected), value: Styles.notSelected),
-  ];
-
-  for (int i = 0; i < categories.getCategoriesCounter(); i++)
-    menuItems.add(DropdownMenuItem(
-        child: Text(categories.getCategories().elementAt(i).getName()),
-        value: categories.getCategories().elementAt(i).getName()));
-
-  return menuItems;
-}
 
 class _CreationPageState extends State<CreationPage> with GetItStateMixin {
   @override
@@ -313,7 +301,8 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                             selectedValue = newValue!;
                           });
                         },
-                        items: dropdownItems(get<Categories>()))),
+                        items: get<CreationCategoryController>()
+                            .dropdownItems(get<Categories>()))),
 
                 /* TYPES OF CARE */
                 Padding(
@@ -386,6 +375,7 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                     get<Achievements>());
                 get<AchievementController>().updatePlantsAchievements(
                     get<Achievements>(), get<Plants>());
+                selectedValue = Styles.notSelected;
               },
               child: Container(
                   height: 60,
