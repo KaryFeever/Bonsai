@@ -1,7 +1,10 @@
 /// View for the setting page
 /// Author: Mikhailov Kirill (xmikha00)
+///         Kovalets Vladyslav (xkoval21)
 import 'package:bonsai/constants/styles.dart';
 import 'package:bonsai/controllers/settings_page/settings_controller.dart';
+import 'package:bonsai/views/categories_page/create_category.dart';
+import 'package:bonsai/views/categories_page/edit_categories.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,69 +43,164 @@ class _SettingsPageState extends State<SettingsPage> with GetItStateMixin {
         ),
         body: Padding(
             padding: EdgeInsets.only(left: 20, right: 20, top: 28),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Padding(
-                padding: EdgeInsets.only(top: 10, bottom: 4),
-                child: Text(
-                  "Notifications",
-                  style: Styles.settingDescription,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(top: 10, bottom: 4),
+                  child: Text(
+                    "Categories",
+                    style: Styles.settingDescription,
+                  ),
                 ),
-              ),
-              Container(
-                  height: 51,
-                  width: MediaQuery.of(context).size.width - 40,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      color: Styles.cupertinoSwitchBlock),
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16, right: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(children: [
-                          SizedBox(
-                            height: 24,
-                            width: 24,
-                            child: SvgPicture.asset(
-                              "assets/icons/notification.svg",
-                              fit: BoxFit.scaleDown,
-                            ),
+                GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        isScrollControlled: true,
+                        backgroundColor: Styles.secondaryGreenColor,
+                        context: context,
+                        builder: (context) => CreateCategory(),
+                      );
+                    },
+                    child: Container(
+                        height: 51,
+                        width: MediaQuery.of(context).size.width - 40,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            color: Styles.cupertinoSwitchBlock),
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 16, right: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(children: [
+                                SizedBox(
+                                  height: 24,
+                                  width: 24,
+                                  child: SvgPicture.asset(
+                                    "assets/icons/add-category-icon.svg",
+                                    color: Styles.primaryGreenColor,
+                                    fit: BoxFit.scaleDown,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    "Create a category",
+                                    style: Styles.settingsHeader,
+                                  ),
+                                )
+                              ]),
+                            ],
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10),
-                            child: Text(
-                              "Push notifications",
-                              style: Styles.settingsHeader,
+                        ))),
+                Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 4),
+                    child: GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            backgroundColor: Styles.secondaryGreenColor,
+                            context: context,
+                            builder: (context) => EditCategories(),
+                          );
+                        },
+                        child: Container(
+                            height: 51,
+                            width: MediaQuery.of(context).size.width - 40,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                color: Styles.cupertinoSwitchBlock),
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 16, right: 16),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(children: [
+                                    SizedBox(
+                                      height: 24,
+                                      width: 24,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/category-icon.svg",
+                                        color: Styles.primaryGreenColor,
+                                        fit: BoxFit.scaleDown,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Text(
+                                        "Edit сategories",
+                                        style: Styles.settingsHeader,
+                                      ),
+                                    )
+                                  ]),
+                                ],
+                              ),
+                            )))),
+                Padding(
+                  padding: EdgeInsets.only(top: 10, bottom: 4),
+                  child: Text(
+                    "Notifications",
+                    style: Styles.settingDescription,
+                  ),
+                ),
+                Container(
+                    height: 51,
+                    width: MediaQuery.of(context).size.width - 40,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: Styles.cupertinoSwitchBlock),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 16, right: 16),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(children: [
+                            SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: SvgPicture.asset(
+                                "assets/icons/notification.svg",
+                                fit: BoxFit.scaleDown,
+                              ),
                             ),
-                          )
-                        ]),
-                        SizedBox(
-                            width: 40,
-                            height: 24,
-                            child: FittedBox(
-                              fit: BoxFit.fill,
-                              child: CupertinoSwitch(
-                                  // overrides the default green color of the track
-                                  activeColor: Styles.primaryGreenColor,
-                                  // color of the round icon, which moves from right to left
-                                  thumbColor: Colors.white,
-                                  // when the switch is off
-                                  trackColor: Styles.switchOffColor,
-                                  // boolean variable value
-                                  value: get<SettingsController>()
-                                      .notificationsEnabled(),
-                                  // changes the state of the switch
-                                  onChanged: (value) {
-                                    setState(() {
-                                      get<SettingsController>()
-                                          .setEnableNotifications(value);
-                                    });
-                                  }),
-                            ))
-                      ],
-                    ),
-                  )),
-            ])));
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Text(
+                                "Push notifications",
+                                style: Styles.settingsHeader,
+                              ),
+                            )
+                          ]),
+                          SizedBox(
+                              width: 40,
+                              height: 24,
+                              child: FittedBox(
+                                fit: BoxFit.fill,
+                                child: CupertinoSwitch(
+                                    // overrides the default green color of the track
+                                    activeColor: Styles.primaryGreenColor,
+                                    // color of the round icon, which moves from right to left
+                                    thumbColor: Colors.white,
+                                    // when the switch is off
+                                    trackColor: Styles.switchOffColor,
+                                    // boolean variable value
+                                    value: get<SettingsController>()
+                                        .notificationsEnabled(),
+                                    // changes the state of the switch
+                                    onChanged: (value) {
+                                      setState(() {
+                                        get<SettingsController>()
+                                            .setEnableNotifications(value);
+                                      });
+                                    }),
+                              ))
+                        ],
+                      ),
+                    )),
+              ],
+            )));
   }
 }

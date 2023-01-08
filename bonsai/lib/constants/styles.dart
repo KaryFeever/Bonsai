@@ -140,4 +140,7 @@ class Styles {
       fontSize: 16,
       color: textColorPrimary.withOpacity(0.65),
       fontWeight: FontWeight.w500);
+
+  static String notSelected =
+      "Not selected                                                       ";
 }

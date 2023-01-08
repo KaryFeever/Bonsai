@@ -1,47 +1,26 @@
-/// View for the plant creation page
-/// Authors:
-///         Naumenko Maksim (xnaume01)
-///         Vladyslav Kovalets (xkoval21)
-import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
-import 'package:bonsai/controllers/creation_page/creation_controller.dart';
-import 'package:bonsai/models/categories.dart';
-import 'package:bonsai/views/categories_page/create_category.dart';
-import 'package:bonsai/models/achievement_list.dart';
-import 'package:bonsai/models/plants.dart';
+/// View for the category creation page
+/// Authors: Naumenko Maksim (xnaume01)
+///          Vladyslav Kovalets (xkoval21)
+
 import 'package:bonsai/constants/styles.dart';
 import 'package:bonsai/views/creation_page/widgets/care_configuration.dart';
-import 'package:bonsai/views/creation_page/widgets/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
+import 'package:bonsai/controllers/categories_page/categories_controller.dart';
+import '../../models/categories.dart';
 
-class CreationPage extends StatefulWidget with GetItStatefulWidgetMixin {
-  CreationPage({super.key});
+class CreateCategory extends StatefulWidget with GetItStatefulWidgetMixin {
+  CreateCategory({super.key});
 
   @override
-  State<CreationPage> createState() => _CreationPageState();
+  State<CreateCategory> createState() => _CreateCategoryState();
 }
 
-String selectedValue = Styles.notSelected;
-
-List<DropdownMenuItem<String>> dropdownItems(Categories categories) {
-  List<DropdownMenuItem<String>> menuItems = [
-    DropdownMenuItem(
-        child: Text(Styles.notSelected), value: Styles.notSelected),
-  ];
-
-  for (int i = 0; i < categories.getCategoriesCounter(); i++)
-    menuItems.add(DropdownMenuItem(
-        child: Text(categories.getCategories().elementAt(i).getName()),
-        value: categories.getCategories().elementAt(i).getName()));
-
-  return menuItems;
-}
-
-class _CreationPageState extends State<CreationPage> with GetItStateMixin {
+class _CreateCategoryState extends State<CreateCategory> with GetItStateMixin {
   @override
   Widget build(BuildContext context) {
-    watchOnly((CreationController x) => x.getSumbit());
-    watchOnly((CreationController x) => x.careChanged());
+    watchOnly((CreationCategoryController x) => x.getSumbit());
+    watchOnly((CreationCategoryController x) => x.careChanged());
 
     return Container(
       height: MediaQuery.of(context).size.height * 0.92,
@@ -83,12 +62,12 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "New plant",
+                    "New category",
                     style: Styles.headLine2,
                   ),
                   GestureDetector(
                     onTap: () {
-                      get<CreationController>().cancel();
+                      get<CreationCategoryController>().cancel();
                       Navigator.pop(context);
                     },
                     child: Text(
@@ -113,19 +92,14 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
               )
             ],
           ),
-
+          SizedBox(
+            height: 20,
+          ),
           /* BODY */
           Expanded(
             child: ListView(
               children: [
-                /* IMAGE */
-                ImagePicker(
-                  image_path: get<CreationController>().getImagePath(),
-                  controller: get<CreationController>(),
-                  plant: true,
-                ),
-
-                /* PLANT NAME */
+                /* CATEGORY NAME */
                 Padding(
                   padding: EdgeInsets.only(
                     bottom: 16.0,
@@ -133,40 +107,42 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                     right: 20.0,
                   ),
                   child: SizedBox(
-                    height: get<CreationController>().validateName() == null
-                        ? 74
-                        : 90,
+                    height:
+                        get<CreationCategoryController>().validateName() == null
+                            ? 74
+                            : 90,
                     child: Row(
                       children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Plant name",
+                              "Category name",
                               style: Styles.headLineBottomSheet,
                             ),
                             SizedBox(
-                              height:
-                                  get<CreationController>().validateName() ==
-                                          null
-                                      ? 48
-                                      : 70,
+                              height: get<CreationCategoryController>()
+                                          .validateName() ==
+                                      null
+                                  ? 48
+                                  : 70,
                               width: MediaQuery.of(context).size.width - 40,
                               child: TextField(
                                 onChanged: (text) => setState(() {}),
                                 showCursor: true,
-                                controller: get<CreationController>()
-                                    .getPlantNameController(),
+                                controller: get<CreationCategoryController>()
+                                    .getCategoryNameController(),
                                 cursorColor: Styles.textColorPrimary,
                                 style: Styles.inputText,
                                 decoration: InputDecoration(
-                                  errorText: get<CreationController>()
+                                  errorText: get<CreationCategoryController>()
                                           .getSumbit()
-                                      ? get<CreationController>().validateName()
+                                      ? get<CreationCategoryController>()
+                                          .validateName()
                                       : null,
                                   errorStyle:
                                       TextStyle(color: Styles.textOrange),
-                                  hintText: "Black Dahlia",
+                                  hintText: "Cacti and Succulents",
                                   hintStyle: Styles.hintText,
                                   filled: true,
                                   fillColor: Styles.fieldsBackgroundColor,
@@ -188,7 +164,7 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                   ),
                 ),
 
-                /* PLANT DESCRIPTION */
+                /* CATEGORY DESCRIPTION */
                 Padding(
                   padding: EdgeInsets.only(
                     bottom: 16.0,
@@ -210,23 +186,23 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                               height: 96,
                               width: MediaQuery.of(context).size.width - 40,
                               child: TextField(
-                                controller: get<CreationController>()
-                                    .getPlantDescriptionController(),
+                                controller: get<CreationCategoryController>()
+                                    .getCategoryDescriptionController(),
                                 maxLines: 5,
                                 showCursor: true,
                                 cursorColor: Styles.textColorPrimary,
                                 style: Styles.inputText,
                                 onChanged: (string) => setState(() {}),
                                 decoration: InputDecoration(
-                                    errorText:
-                                        get<CreationController>().getSumbit()
-                                            ? get<CreationController>()
-                                                .validateDescription()
-                                            : null,
+                                    errorText: get<CreationCategoryController>()
+                                            .getSumbit()
+                                        ? get<CreationCategoryController>()
+                                            .validateDescription()
+                                        : null,
                                     errorStyle:
                                         TextStyle(color: Styles.textOrange),
                                     hintText:
-                                        "The dahlia is a symbol of loyalty and happiness for your loved ones",
+                                        "Succulents store water in their leaves. They can survive quite a while without being watered.",
                                     hintStyle: Styles.hintText,
                                     filled: true,
                                     fillColor: Styles.fieldsBackgroundColor,
@@ -247,73 +223,6 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    left: 20.0,
-                    right: 20.0,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "Category",
-                        style: Styles.headLineBottomSheet,
-                      ),
-
-                      /* Button to edit the categories */
-                      Padding(
-                        padding: EdgeInsets.only(
-                          left: 250.0,
-                        ),
-                        child: GestureDetector(
-                          onTap: () {
-                            showModalBottomSheet(
-                              isScrollControlled: true,
-                              backgroundColor: Styles.secondaryGreenColor,
-                              context: context,
-                              builder: (context) => CreateCategory(),
-                            );
-                          },
-                          child: Container(
-                            height: 20,
-                            width: 60,
-                            decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16)),
-                              color: Styles.fieldsBackgroundColor,
-                              // boxShadow: [
-                              //   BoxShadow(
-                              //     color: Styles.primaryGreenColor,
-                              //     blurRadius: 1,
-                              //     spreadRadius: 1,
-                              //   ),
-                              // ],
-                            ),
-                            child: Center(
-                              child: Text("New",
-                                  style: Styles.headLineBottomSheet),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-
-                /* DROPDOWN LIST */
-                Padding(
-                    padding: EdgeInsets.only(
-                      bottom: 6.0,
-                      left: 20.0,
-                      right: 20.0,
-                    ),
-                    child: DropdownButton(
-                        value: selectedValue,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedValue = newValue!;
-                          });
-                        },
-                        items: dropdownItems(get<Categories>()))),
 
                 /* TYPES OF CARE */
                 Padding(
@@ -326,15 +235,14 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        get<CreationController>().getSumbit()
-                            ? get<CreationController>()
-                                .validateCare(selectedValue)
+                        get<CreationCategoryController>().getSumbit()
+                            ? get<CreationCategoryController>().validateCare()
                             : "Type of care",
-                        style: get<CreationController>()
-                                    .validateCare(selectedValue) ==
-                                "Type of care"
-                            ? Styles.headLineBottomSheet
-                            : Styles.headLineBottomSheetError,
+                        style:
+                            get<CreationCategoryController>().validateCare() ==
+                                    "Type of care"
+                                ? Styles.headLineBottomSheet
+                                : Styles.headLineBottomSheetError,
                       ),
                     ],
                   ),
@@ -344,27 +252,27 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
                 CareConfiguration(
                   index: 0,
                   careType: "Watering",
-                  controller: get<CreationController>(),
+                  controller: get<CreationCategoryController>(),
                   mode: false,
-                  isCategory: false,
+                  isCategory: true,
                 ),
 
                 /* SPRAYING */
                 CareConfiguration(
                   index: 1,
                   careType: "Spraying",
-                  controller: get<CreationController>(),
+                  controller: get<CreationCategoryController>(),
                   mode: false,
-                  isCategory: false,
+                  isCategory: true,
                 ),
 
                 /* FERTILIZING */
                 CareConfiguration(
                   index: 2,
                   careType: "Fertilizing",
-                  controller: get<CreationController>(),
+                  controller: get<CreationCategoryController>(),
                   mode: false,
-                  isCategory: false,
+                  isCategory: true,
                 ),
               ],
             ),
@@ -377,15 +285,8 @@ class _CreationPageState extends State<CreationPage> with GetItStateMixin {
             ),
             child: GestureDetector(
               onTap: () {
-                get<CreationController>().createPlant(
-                    get<Plants>(),
-                    context,
-                    selectedValue,
-                    get<Categories>(),
-                    get<AchievementController>(),
-                    get<Achievements>());
-                get<AchievementController>().updatePlantsAchievements(
-                    get<Achievements>(), get<Plants>());
+                get<CreationCategoryController>()
+                    .createCategory(get<Categories>(), context);
               },
               child: Container(
                   height: 60,

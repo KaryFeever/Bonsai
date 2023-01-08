@@ -1,7 +1,9 @@
 /// Controller for the plant creation page
 /// Author: Naumenko Maksim (xnaume01)
+import 'package:bonsai/constants/styles.dart';
 import 'package:bonsai/controllers/achievements_page/achievement_controller.dart';
 import 'package:bonsai/models/achievement_list.dart';
+import 'package:bonsai/models/categories.dart';
 import 'package:bonsai/services/local_notification_service.dart';
 import 'package:flutter/material.dart';
 import '../../models/plants.dart';
@@ -94,10 +96,19 @@ class CreationController extends ChangeNotifier {
     return null;
   }
 
-  String validateCare() {
-    if ((_careFlags[0] == false) &&
-        (_careFlags[1] == false) &&
-        (_careFlags[2] == false) &&
+  bool validateCategory(String categoryName) {
+    if (categoryName == Styles.notSelected) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  String validateCare(String categoryName) {
+    if (((_careFlags[0] == false) &&
+                (_careFlags[1] == false) &&
+                (_careFlags[2] == false) ||
+            validateCategory(categoryName) == true) &&
         _submit == true) {
       return "Select at least one type of care";
     }
@@ -199,34 +210,45 @@ class CreationController extends ChangeNotifier {
     }
   }
 
-  void createPlant(Plants plants, BuildContext context,
-      AchievementController controller, Achievements achievements) {
+  void createPlant(
+      Plants plants,
+      BuildContext context,
+      String categoryName,
+      Categories categories,
+      AchievementController controller,
+      Achievements achievements) {
     _plantCounter++;
     _submit = true;
     if ((this.validateDescription() == null) &&
         (this.validateName() == null) &&
-        (this.validateCare() == "Type of care") &&
+        (this.validateCare(categoryName) == "Type of care" ||
+            validateCategory(categoryName) == true) &&
         (_imagePath != "")) {
       _transformCareFrequency();
+
       if (_plantDescriptionController.text != "") {
         controller.unlockDescriptionAchievement(achievements);
       }
+
       plants.addPlant(
-          _plantNameController.text,
-          _plantDescriptionController.text,
-          _careFrequencyInDays[0],
-          _careFlags[0],
-          _careFrequency[0][0],
-          _careFrequency[0][1],
-          _careFrequencyInDays[1],
-          _careFlags[1],
-          _careFrequency[1][0],
-          _careFrequency[1][1],
-          _careFrequencyInDays[2],
-          _careFlags[2],
-          _careFrequency[2][0],
-          _careFrequency[2][1],
-          _imagePath);
+        _plantNameController.text,
+        _plantDescriptionController.text,
+        _careFrequencyInDays[0],
+        _careFlags[0],
+        _careFrequency[0][0],
+        _careFrequency[0][1],
+        _careFrequencyInDays[1],
+        _careFlags[1],
+        _careFrequency[1][0],
+        _careFrequency[1][1],
+        _careFrequencyInDays[2],
+        _careFlags[2],
+        _careFrequency[2][0],
+        _careFrequency[2][1],
+        _imagePath,
+        categoryName,
+        categories,
+      );
       cancel();
       Navigator.pop(context);
     }
