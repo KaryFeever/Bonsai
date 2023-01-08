@@ -17,6 +17,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it_mixin/get_it_mixin.dart';
 import 'package:proste_bezier_curve/proste_bezier_curve.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import '../../controllers/plant_page/plant_controller.dart';
 import '../../models/group.dart';
 import '../../models/groups.dart';
 import '../../models/plants.dart';
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> with GetItStateMixin {
   Widget build(BuildContext context) {
     int plantsCounter = watchOnly((Plants x) => x.getPlantsCounter());
     int groupsCounter = watchOnly((Groups x) => x.getGroupsCounter());
-
+    watchOnly((PlantController x) => x.getChanged());
     watchOnly((EditController x) => x.getChanged());
     watchOnly((HomeController a) => a.plantsShown());
     return Scaffold(
